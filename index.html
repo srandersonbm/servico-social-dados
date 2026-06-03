@@ -186,6 +186,7 @@ tbody tr:hover td{background:var(--s2)}
   </div>
   <nav class="hdr-nav">
     <button class="nb on"  onclick="goPage('atend')">Atendimentos</button>
+    <button class="nb"     onclick="goPage('demanda')">Demanda Espontânea</button>
     <button class="nb"     onclick="goPage('ind')">Indicadores</button>
     <button class="nb"     onclick="goPage('enc')">Encaminhamentos</button>
     <button class="nb"     onclick="goPage('dash')">Dashboard</button>
@@ -251,7 +252,66 @@ tbody tr:hover td{background:var(--s2)}
   </div>
 </div>
 
-<!-- ═══════════════════ INDICADORES ═══════════════════ -->
+<!-- ═══════════════════ DEMANDA ESPONTÂNEA ═══════════════════ -->
+<div id="page-demanda" class="page">
+  <div class="fbar">
+    <label>Filtrar:</label>
+    <select id="deTipo" onchange="mudarFiltroDe()">
+      <option value="dia">Dia</option>
+      <option value="mes">Mês</option>
+      <option value="periodo">Período</option>
+    </select>
+    <span id="des-dia" style="display:flex;align-items:center;gap:6px">
+      <input type="date" id="deDia"/>
+    </span>
+    <span id="des-mes" style="display:none;align-items:center;gap:6px">
+      <input type="month" id="deMes"/>
+    </span>
+    <span id="des-periodo" style="display:none;align-items:center;gap:6px">
+      <input type="date" id="deIni"/> <span style="color:var(--t3)">até</span> <input type="date" id="deFim"/>
+    </span>
+    <button class="btn btn-p" onclick="filtrarDemanda()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      Filtrar
+    </button>
+    <button class="btn btn-xl" onclick="exportarExcelDemanda()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      Excel
+    </button>
+  </div>
+
+  <!-- Métricas rápidas -->
+  <div class="mrow" id="deMetrics"></div>
+
+  <!-- Tabela detalhada -->
+  <div class="card">
+    <div class="ct" id="deTitulo">Demandas Espontâneas</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Data</th><th>Idade</th><th>Perfil</th><th>Obs</th><th style="width:60px"></th>
+          </tr>
+        </thead>
+        <tbody id="deTblBody"></tbody>
+      </table>
+    </div>
+    <div id="deTblEmpty" class="empty" style="display:none">Nenhuma demanda espontânea encontrada.</div>
+    <div id="deSumario" style="margin-top:10px;font-size:12px;color:var(--t2)"></div>
+  </div>
+
+  <!-- Distribuição por perfil -->
+  <div class="g2col">
+    <div class="card">
+      <div class="ct">Distribuição por Perfil</div>
+      <div id="dePerfDist"></div>
+    </div>
+    <div class="card">
+      <div class="ct">Distribuição por Faixa Etária</div>
+      <div style="position:relative;height:200px"><canvas id="deFaixaChart"></canvas></div>
+    </div>
+  </div>
+</div>
 <div id="page-ind" class="page">
 
   <div class="fbar">
@@ -463,36 +523,22 @@ tbody tr:hover td{background:var(--s2)}
           <label>Data do Atendimento</label>
           <input type="date" id="mData"/>
         </div>
-        <div class="field" style="min-width:140px">
+        <div class="field" style="min-width:150px">
           <label>Idade do Paciente</label>
-          <select id="mIdade"></select>
+          <select id="mIdade" onchange="autoPerfilIdade()"></select>
         </div>
       </div>
 
-      <!-- Atividades -->
-      <div style="margin-bottom:16px">
-        <div class="ct" style="margin-bottom:8px">Atividades Realizadas</div>
-        <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;flex-wrap:wrap">
-          <select id="selAtiv" style="flex:1;min-width:220px"></select>
-          <button class="btn btn-p btn-sm" onclick="addItem('atv')">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            Adicionar
-          </button>
-        </div>
-        <div id="listaAtv" style="display:flex;flex-wrap:wrap;gap:5px;min-height:28px"></div>
+      <!-- Atividade — seleção única -->
+      <div class="field" style="margin-bottom:14px">
+        <label>Atividade Realizada</label>
+        <select id="selAtiv" style="width:100%"></select>
       </div>
 
-      <!-- Perfil -->
-      <div style="margin-bottom:16px">
-        <div class="ct" style="margin-bottom:8px">Perfil do Usuário</div>
-        <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;flex-wrap:wrap">
-          <select id="selPerfil" style="flex:1;min-width:200px"></select>
-          <button class="btn btn-p btn-sm" onclick="addItem('prf')">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            Adicionar
-          </button>
-        </div>
-        <div id="listaPrf" style="display:flex;flex-wrap:wrap;gap:5px;min-height:28px"></div>
+      <!-- Perfil — seleção única -->
+      <div class="field" style="margin-bottom:14px">
+        <label>Perfil do Usuário</label>
+        <select id="selPerfil" style="width:100%"></select>
       </div>
 
       <!-- Observações -->
@@ -793,9 +839,10 @@ function goPage(p){
   document.querySelectorAll('.page').forEach(e=>e.classList.remove('on'));
   document.querySelectorAll('.nb').forEach(e=>e.classList.remove('on'));
   document.getElementById('page-'+p).classList.add('on');
-  const idx={atend:0,ind:1,enc:2,dash:3}[p];
+  const idx={atend:0,demanda:1,ind:2,enc:3,dash:4}[p];
   document.querySelectorAll('.nb')[idx].classList.add('on');
   if(p==='dash') renderDash();
+  if(p==='demanda'){ document.getElementById('deDia').value=hoje; filtrarDemanda(); }
 }
 function goTab(grupo, tab){
   const prefix = grupo+'-';
@@ -820,53 +867,32 @@ function goTab(grupo, tab){
 (function buildModal(){
   // Select idade
   const si=document.getElementById('mIdade');
-  for(let i=18;i<=100;i++){const o=document.createElement('option');o.value=i;o.textContent=i+' anos';si.appendChild(o);}
-  // Select atividades
+  for(let i=18;i<=100;i++){
+    const o=document.createElement('option');o.value=i;o.textContent=i+' anos';si.appendChild(o);
+  }
+  // Select atividades (seleção única)
   const sa=document.getElementById('selAtiv');
-  sa.innerHTML='<option value="">— selecione atividade —</option>';
+  sa.innerHTML='';
   ATIVIDADES.forEach(a=>{const o=document.createElement('option');o.value=a;o.textContent=a;sa.appendChild(o);});
-  // Select perfil
+
+  // Select perfil (seleção única)
   const sp=document.getElementById('selPerfil');
-  sp.innerHTML='<option value="">— selecione perfil —</option>';
+  sp.innerHTML='';
   PERFIL.forEach(p=>{const o=document.createElement('option');o.value=p;o.textContent=p;sp.appendChild(o);});
-  // Enter nos selects
-  sa.addEventListener('keydown',e=>{ if(e.key==='Enter'){e.preventDefault();addItem('atv');} });
-  sp.addEventListener('keydown',e=>{ if(e.key==='Enter'){e.preventDefault();addItem('prf');} });
 })();
 
-// listas temporárias no modal
-let _atv=[], _prf=[];
-
-function addItem(tipo){
-  const selId = tipo==='atv'?'selAtiv':'selPerfil';
-  const val = document.getElementById(selId).value;
-  if(!val) return;
-  const arr = tipo==='atv'?_atv:_prf;
-  if(arr.includes(val)){
-    // já existe: pisca o tag
-    renderModalListas(); return;
+/* Auto-seleciona perfil idoso quando idade ≥ 60 */
+function autoPerfilIdade(){
+  const idade = parseInt(document.getElementById('mIdade').value);
+  const sp = document.getElementById('selPerfil');
+  if(idade >= 60){
+    // Detecta sexo já selecionado: se já for idoso, mantém; senão tenta inferir do perfil atual
+    const atual = sp.value;
+    if(!atual.includes('Idosa')){
+      // Padrão: Pessoa Idosa mulher; usuário pode trocar
+      sp.value = 'Pessoa Idosa mulher';
+    }
   }
-  arr.push(val);
-  renderModalListas();
-  document.getElementById(selId).value='';
-}
-
-function removeItem(tipo, val){
-  if(tipo==='atv') _atv=_atv.filter(v=>v!==val);
-  else             _prf=_prf.filter(v=>v!==val);
-  renderModalListas();
-}
-
-function renderModalListas(){
-  const mkTag=(tipo,arr,cls)=>arr.length
-    ? arr.map(v=>`<span style="display:inline-flex;align-items:center;gap:4px;padding:3px 9px 3px 10px;border-radius:20px;font-size:12px;font-weight:500;border:1px solid;cursor:default" class="${cls}">
-        ${v}
-        <button onclick="removeItem('${tipo}','${v.replace(/'/g,"\\'")}');event.stopPropagation()"
-          style="background:transparent;border:none;cursor:pointer;font-size:13px;line-height:1;padding:0 0 0 2px;opacity:.6">×</button>
-      </span>`).join('')
-    : `<span style="font-size:12px;color:var(--t3)">Nenhum selecionado</span>`;
-  document.getElementById('listaAtv').innerHTML = mkTag('atv',_atv,'tag');
-  document.getElementById('listaPrf').innerHTML = mkTag('prf',_prf,'tag tag-p');
 }
 
 let editId = null;
@@ -874,23 +900,22 @@ let editId = null;
 function abrirModal(id){
   editId = id||null;
   document.getElementById('modalTitulo').textContent = id?'Editar Atendimento':'Novo Atendimento';
-  // reset
-  _atv=[]; _prf=[];
-  document.getElementById('mData').value  = hoje;
-  document.getElementById('mIdade').value = 18;
-  document.getElementById('mObs').value   = '';
-  document.getElementById('selAtiv').value  = '';
-  document.getElementById('selPerfil').value= '';
-  // preencher se edição
+  document.getElementById('mData').value    = hoje;
+  document.getElementById('mIdade').value   = 18;
+  document.getElementById('mObs').value     = '';
+  // Padrões: Demanda Espontânea + Homem adulto
+  document.getElementById('selAtiv').value   = 'Atendimento de Demanda Espontânea';
+  document.getElementById('selPerfil').value = 'Homem adulto';
+
   if(id && pacDB[id]){
     const r=pacDB[id];
-    document.getElementById('mData').value  = r.data;
-    document.getElementById('mIdade').value = r.idade;
-    document.getElementById('mObs').value   = r.obs||'';
-    _atv = [...(r.atividades||[])];
-    _prf = [...(r.perfil||[])];
+    document.getElementById('mData').value    = r.data;
+    document.getElementById('mIdade').value   = r.idade;
+    document.getElementById('mObs').value     = r.obs||'';
+    document.getElementById('selAtiv').value  = (r.atividades&&r.atividades[0])||'Atendimento de Demanda Espontânea';
+    document.getElementById('selPerfil').value= (r.perfil&&r.perfil[0])||'Homem adulto';
+    // Se já era idoso, mantém o perfil salvo
   }
-  renderModalListas();
   document.getElementById('overlay').classList.add('on');
   setTimeout(()=>document.getElementById('mData').focus(),50);
 }
@@ -899,23 +924,27 @@ function fecharModal(){
   document.getElementById('overlay').classList.remove('on');
   editId=null;
 }
-
 document.getElementById('overlay').addEventListener('click',function(e){
   if(e.target===this) fecharModal();
 });
 
 /* ═══════════════════════════════════ SALVAR/EDITAR ═══════════════════════════════════ */
 function salvarAtendimento(){
-  const data  = document.getElementById('mData').value;
-  const idade = parseInt(document.getElementById('mIdade').value);
+  const data   = document.getElementById('mData').value;
+  const idade  = parseInt(document.getElementById('mIdade').value);
+  const ativ   = document.getElementById('selAtiv').value;
+  const perfil = document.getElementById('selPerfil').value;
   if(!data){showMsg('msgModal','Selecione a data do atendimento.','err');return;}
-  if(!_atv.length && !_prf.length){
-    showMsg('msgModal','Adicione pelo menos uma atividade ou perfil.','err'); return;
-  }
+  if(!ativ){showMsg('msgModal','Selecione a atividade realizada.','err');return;}
+  if(!perfil){showMsg('msgModal','Selecione o perfil do usuário.','err');return;}
   const obs = document.getElementById('mObs').value.trim();
   const id  = editId || uid();
-  pacDB[id]={ id, data, idade, atividades:[..._atv], perfil:[..._prf], obs,
-    criado: pacDB[id]?.criado||new Date().toISOString() };
+  pacDB[id]={ id, data, idade,
+    atividades: [ativ],
+    perfil:     [perfil],
+    obs,
+    criado: pacDB[id]?.criado||new Date().toISOString()
+  };
   dbSave();
   fecharModal();
   filtrarAtend();
@@ -1356,7 +1385,171 @@ function renderDash(){
     data:{labels:meses,datasets:[{data:mVals,borderColor:'#1B4F8A',backgroundColor:'rgba(27,79,138,.1)',fill:true,tension:.35,pointRadius:4,pointBackgroundColor:'#1B4F8A',borderWidth:2}]},
     options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true},x:{grid:{display:false}}}}
   });
+/* ═══════════════════════════════════ DEMANDA ESPONTÂNEA ═══════════════════════════════════ */
+const DE_KEY = 'Atendimento de Demanda Espontânea';
+let _deFaixaChart = null;
+let _deRegsAtual  = [];
+
+document.addEventListener('DOMContentLoaded', ()=>{
+  const deDia = document.getElementById('deDia');
+  const deMes = document.getElementById('deMes');
+  if(deDia) deDia.value = hoje;
+  if(deMes) deMes.value = mesAtual;
+});
+
+function mudarFiltroDe(){
+  const t=document.getElementById('deTipo').value;
+  document.getElementById('des-dia').style.display     = t==='dia'?'flex':'none';
+  document.getElementById('des-mes').style.display     = t==='mes'?'flex':'none';
+  document.getElementById('des-periodo').style.display = t==='periodo'?'flex':'none';
 }
+
+function filtrarDemanda(){
+  const t=document.getElementById('deTipo').value;
+  // todos os registros que têm Demanda Espontânea como atividade
+  let regs = Object.values(pacDB).filter(r=>
+    (r.atividades||[]).includes(DE_KEY)
+  );
+  let titulo='Demandas Espontâneas — todos os períodos';
+
+  if(t==='dia'){
+    const d=document.getElementById('deDia').value;
+    regs=regs.filter(r=>r.data===d);
+    titulo='Demandas Espontâneas — '+fmtDate(d);
+  } else if(t==='mes'){
+    const m=document.getElementById('deMes').value;
+    regs=regs.filter(r=>r.data.startsWith(m));
+    titulo='Demandas Espontâneas — '+m;
+  } else if(t==='periodo'){
+    const ini=document.getElementById('deIni').value, fim=document.getElementById('deFim').value;
+    if(ini&&fim){ regs=regs.filter(r=>r.data>=ini&&r.data<=fim); titulo=`Demandas Espontâneas — ${fmtDate(ini)} a ${fmtDate(fim)}`; }
+  }
+
+  regs.sort((a,b)=>a.data<b.data?-1:a.data>b.data?1:0);
+  _deRegsAtual = regs;
+  renderDemanda(regs, titulo);
+}
+
+function renderDemanda(regs, titulo){
+  document.getElementById('deTitulo').textContent = titulo;
+  const body  = document.getElementById('deTblBody');
+  const empty = document.getElementById('deTblEmpty');
+  const sum   = document.getElementById('deSumario');
+
+  // ── Métricas ──
+  const total = regs.length;
+  const diasU = new Set(regs.map(r=>r.data)).size;
+  const idMedia = total ? Math.round(regs.reduce((s,r)=>s+r.idade,0)/total) : 0;
+  const perfilTop = (() => {
+    const cnt={};
+    regs.forEach(r=>(r.perfil||[]).forEach(p=>cnt[p]=(cnt[p]||0)+1));
+    return Object.entries(cnt).sort((a,b)=>b[1]-a[1])[0]?.[0]||'—';
+  })();
+  document.getElementById('deMetrics').innerHTML=`
+    <div class="mc"><div class="mc-lbl">Total demandas</div><div class="mc-val">${total}</div><div class="mc-sub">${diasU} dia(s)</div></div>
+    <div class="mc"><div class="mc-lbl">Média por dia</div><div class="mc-val">${diasU?+(total/diasU).toFixed(1):0}</div></div>
+    <div class="mc"><div class="mc-lbl">Idade média</div><div class="mc-val">${idMedia} a</div></div>
+    <div class="mc"><div class="mc-lbl">Perfil predominante</div><div class="mc-val" style="font-size:14px">${perfilTop}</div></div>`;
+
+  // ── Tabela ──
+  if(!regs.length){
+    body.innerHTML=''; empty.style.display='block'; sum.textContent='';
+    renderDePerfDist([]);
+    renderDeFaixa([]);
+    return;
+  }
+  empty.style.display='none';
+  sum.textContent=`${total} demanda(s) — ${diasU} dia(s)`;
+
+  body.innerHTML=regs.map(r=>`
+    <tr>
+      <td><strong>${fmtDate(r.data)}</strong></td>
+      <td><span class="badge badge-b">${r.idade} anos</span></td>
+      <td><div class="tag-list">${(r.perfil||[]).map(p=>`<span class="tag tag-p">${p}</span>`).join('')||'—'}</div></td>
+      <td style="font-size:12px;color:var(--t2)">${r.obs||''}</td>
+      <td><button class="btn btn-sm" onclick="abrirModal(${r.id})" title="Editar">✏️</button></td>
+    </tr>`).join('');
+
+  // ── Perfil dist ──
+  renderDePerfDist(regs);
+  renderDeFaixa(regs);
+}
+
+function renderDePerfDist(regs){
+  const cnt={};
+  regs.forEach(r=>(r.perfil||[]).forEach(p=>cnt[p]=(cnt[p]||0)+1));
+  const total=Object.values(cnt).reduce((s,v)=>s+v,0);
+  const sorted=Object.entries(cnt).sort((a,b)=>b[1]-a[1]);
+  const el=document.getElementById('dePerfDist');
+  if(!sorted.length){el.innerHTML='<div class="empty">Sem dados</div>';return;}
+  el.innerHTML=sorted.map(([p,v])=>{
+    const pct=total?Math.round(v/total*100):0;
+    return `<div style="margin-bottom:8px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px">
+        <span style="color:var(--text)">${p}</span>
+        <span style="font-weight:600;color:var(--accent)">${v} <span style="font-weight:400;color:var(--t3)">(${pct}%)</span></span>
+      </div>
+      <div style="height:6px;background:var(--s2);border-radius:4px;overflow:hidden">
+        <div style="height:100%;width:${pct}%;background:var(--accent);border-radius:4px;transition:width .3s"></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderDeFaixa(regs){
+  const faixas=[['18–29',[18,29]],['30–39',[30,39]],['40–49',[40,49]],['50–59',[50,59]],
+    ['60–69',[60,69]],['70–79',[70,79]],['80–89',[80,89]],['90–100',[90,100]]];
+  const colors=['#378ADD','#1D9E75','#D85A30','#D4537E','#7F77DD','#639922','#BA7517','#E24B4A'];
+  const vals=faixas.map(([,[a,b]])=>regs.filter(r=>r.idade>=a&&r.idade<=b).length);
+  if(_deFaixaChart) _deFaixaChart.destroy();
+  _deFaixaChart=new Chart(document.getElementById('deFaixaChart'),{
+    type:'bar',
+    data:{labels:faixas.map(([l])=>l),datasets:[{data:vals,backgroundColor:colors,borderWidth:0,borderRadius:4}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+      scales:{y:{beginAtZero:true,ticks:{stepSize:1}},x:{grid:{display:false}}}}
+  });
+}
+
+function exportarExcelDemanda(){
+  const regs=_deRegsAtual;
+  if(!regs.length){alert('Nenhuma demanda para exportar. Aplique um filtro primeiro.');return;}
+  const wb=XLSX.utils.book_new();
+
+  // Aba detalhada
+  const r1=[['Data','Idade','Perfil','Observações']];
+  regs.forEach(r=>r1.push([r.data, r.idade, (r.perfil||[]).join('; '), r.obs||'']));
+  r1.push([],['TOTAL',regs.length,'','']);
+  const ws1=XLSX.utils.aoa_to_sheet(r1);
+  ws1['!cols']=[{wch:12},{wch:8},{wch:25},{wch:35}];
+  XLSX.utils.book_append_sheet(wb,ws1,'Demandas');
+
+  // Aba perfil
+  const cnt={};
+  regs.forEach(r=>(r.perfil||[]).forEach(p=>cnt[p]=(cnt[p]||0)+1));
+  const r2=[['Perfil','Qtd','% do Total']];
+  const tot=Object.values(cnt).reduce((s,v)=>s+v,0);
+  Object.entries(cnt).sort((a,b)=>b[1]-a[1])
+    .forEach(([p,v])=>r2.push([p,v,parseFloat((v/tot*100).toFixed(1))]));
+  r2.push(['TOTAL',tot,100]);
+  const ws2=XLSX.utils.aoa_to_sheet(r2);
+  ws2['!cols']=[{wch:25},{wch:8},{wch:12}];
+  XLSX.utils.book_append_sheet(wb,ws2,'Por Perfil');
+
+  // Aba faixa etária
+  const faixas=[['18–29',[18,29]],['30–39',[30,39]],['40–49',[40,49]],['50–59',[50,59]],
+    ['60–69',[60,69]],['70–79',[70,79]],['80–89',[80,89]],['90–100',[90,100]]];
+  const r3=[['Faixa Etária','Qtd','% do Total']];
+  faixas.forEach(([l,[a,b]])=>{
+    const v=regs.filter(r=>r.idade>=a&&r.idade<=b).length;
+    r3.push([l,v,parseFloat((v/regs.length*100).toFixed(1))]);
+  });
+  const ws3=XLSX.utils.aoa_to_sheet(r3);
+  ws3['!cols']=[{wch:14},{wch:8},{wch:12}];
+  XLSX.utils.book_append_sheet(wb,ws3,'Por Faixa Etária');
+
+  XLSX.writeFile(wb,`demanda_espontanea_${hoje}.xlsx`);
+}
+
 </script>
 </body>
 </html>
