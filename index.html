@@ -748,18 +748,22 @@ async function ghPull(){
   if(!ghOk()) return false;
   setSyncStatus('syncing');
   try{
-    const res = await fetch(ghFileUrl(), { headers: ghHeaders() });
+    const res = await fetch(ghFileUrl(), {
+      headers: ghHeaders(),
+      cache: 'no-store'
+    });
     if(res.status===404){
-      // arquivo não existe ainda — tudo bem, será criado no primeiro push
       _ghSHA = null;
       setSyncStatus('ok');
       return true;
     }
+    if(res.status===401){ setSyncStatus('err','Token inválido'); return false; }
     if(!res.ok) throw new Error('HTTP '+res.status);
     const json = await res.json();
     _ghSHA = json.sha;
-    const decoded = JSON.parse(atob(json.content.replace(/\n/g,'')));
-    // Mescla: GitHub é fonte da verdade
+    // Decodifica conteúdo base64 do GitHub (pode vir com quebras de linha)
+    const raw = json.content.replace(/\s/g,'');
+    const decoded = JSON.parse(decodeURIComponent(escape(atob(raw))));
     pacDB  = decoded.pacDB  || {};
     istDB  = decoded.istDB  || {};
     encDB  = decoded.encDB  || {};
@@ -771,7 +775,7 @@ async function ghPull(){
     return true;
   } catch(e){
     console.error('ghPull',e);
-    setSyncStatus('err');
+    setSyncStatus('err','Falha ao carregar: '+e.message);
     return false;
   }
 }
@@ -780,9 +784,19 @@ async function ghPush(){
   if(!ghOk()) return false;
   setSyncStatus('syncing');
   try{
+    // Se não temos SHA, busca antes de tentar escrever
+    if(!_ghSHA){
+      const check = await fetch(ghFileUrl(), { headers: ghHeaders(), cache:'no-store' });
+      if(check.ok){
+        const j = await check.json();
+        _ghSHA = j.sha;
+      } else if(check.status !== 404){
+        throw new Error('HTTP '+check.status+' ao verificar arquivo');
+      }
+    }
     const payload = { pacDB, istDB, encDB, encRec, savedAt: new Date().toISOString() };
     const content = btoa(unescape(encodeURIComponent(JSON.stringify(payload, null, 2))));
-    const c=ghCfg();
+    const c = ghCfg();
     const body = {
       message: 'Atualização '+new Date().toLocaleString('pt-BR'),
       content,
@@ -793,13 +807,16 @@ async function ghPush(){
       method:'PUT', headers: ghHeaders(), body: JSON.stringify(body)
     });
     if(!res.ok){
-      const err=await res.json().catch(()=>({}));
-      // Conflito de SHA: puxa e tenta de novo
-      if(res.status===409||res.status===422){
-        await ghPull();
+      const err = await res.json().catch(()=>({}));
+      // SHA desatualizado — pega o novo SHA e tenta de novo (1 retry)
+      if((res.status===409||res.status===422) && !body._retry){
+        _ghSHA = null;
+        body._retry = true;
+        const check2 = await fetch(ghFileUrl(), { headers: ghHeaders(), cache:'no-store' });
+        if(check2.ok){ const j2=await check2.json(); _ghSHA=j2.sha; }
         return await ghPush();
       }
-      throw new Error((err.message||'HTTP '+res.status));
+      throw new Error(err.message||'HTTP '+res.status);
     }
     const json = await res.json();
     _ghSHA = json.content?.sha || _ghSHA;
@@ -807,7 +824,7 @@ async function ghPush(){
     return true;
   } catch(e){
     console.error('ghPush',e);
-    setSyncStatus('err','Erro ao salvar no GitHub: '+e.message);
+    setSyncStatus('err','Erro ao salvar: '+e.message);
     return false;
   }
 }
@@ -893,34 +910,56 @@ function salvarConfigGH(){
 }
 
 async function testarConexaoGH(){
-  const user  = document.getElementById('ghUser').value.trim();
-  const repo  = document.getElementById('ghRepo').value.trim();
-  const token = document.getElementById('ghToken').value.trim();
-  const branch= document.getElementById('ghBranch').value.trim()||'main';
+  const user   = document.getElementById('ghUser').value.trim();
+  const repo   = document.getElementById('ghRepo').value.trim();
+  const token  = document.getElementById('ghToken').value.trim();
+  const branch = document.getElementById('ghBranch').value.trim()||'main';
   if(!user||!repo||!token){ showMsg('msgGH','Preencha os campos primeiro.','err'); return; }
   showMsg('msgGH','Testando conexão…','ok');
   try{
-    const res = await fetch(
-      `https://api.github.com/repos/${user}/${repo}`,
-      { headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'} }
-    );
-    if(res.status===401){ showMsg('msgGH','❌ Token inválido ou sem permissão.','err'); return; }
-    if(res.status===404){ showMsg('msgGH','❌ Repositório não encontrado. Verifique usuário e nome do repositório.','err'); return; }
-    if(!res.ok){ showMsg('msgGH','❌ Erro HTTP '+res.status,'err'); return; }
-    const json=await res.json();
-    showMsg('msgGH','✓ Conexão OK! Repositório: '+json.full_name+(json.private?' (privado)':' (público)'),'ok');
+    // Testa lendo o conteúdo do repositório (rota que sabemos que funciona)
+    const url = `https://api.github.com/repos/${user}/${repo}/contents/?ref=${branch}`;
+    const res = await fetch(url, {
+      headers:{
+        'Authorization':'token '+token,
+        'Accept':'application/vnd.github.v3+json',
+        'Cache-Control':'no-cache'
+      }
+    });
+    if(res.status===401){
+      showMsg('msgGH','❌ Token inválido ou expirado. Gere um novo token no GitHub.','err'); return;
+    }
+    if(res.status===403){
+      showMsg('msgGH','❌ Sem permissão. Verifique se o token tem permissão "repo".','err'); return;
+    }
+    if(res.status===404){
+      showMsg('msgGH','❌ Repositório não encontrado. Verifique o usuário e nome.','err'); return;
+    }
+    if(!res.ok){
+      showMsg('msgGH','❌ Erro HTTP '+res.status+'. Tente novamente.','err'); return;
+    }
+    // Sucesso — salva config e mostra ok
+    localStorage.setItem(KEY_GH, JSON.stringify({user,repo,token,branch}));
+    showMsg('msgGH','✓ Conexão OK! Repositório '+user+'/'+repo+' acessível.','ok');
+    document.getElementById('btnSincNow').style.display='inline-flex';
   } catch(e){
-    showMsg('msgGH','❌ Erro de rede: '+e.message,'err');
+    // Erro de rede (CORS, offline, etc)
+    if(e.message&&e.message.includes('fetch')){
+      showMsg('msgGH','❌ Erro de rede. Verifique sua conexão com a internet.','err');
+    } else {
+      showMsg('msgGH','❌ '+e.message,'err');
+    }
   }
 }
 
 async function sincronizarAgora(){
+  showMsg('msgGH','Sincronizando…','ok');
   const ok = await ghPull();
   if(ok){
     updateChip(); filtrarAtend();
-    showMsg('msgGH','✓ Dados sincronizados com sucesso!','ok');
+    showMsg('msgGH','✓ Sincronizado! '+Object.keys(pacDB).length+' registro(s) carregado(s).','ok');
   } else {
-    showMsg('msgGH','❌ Falha na sincronização. Verifique a configuração.','err');
+    showMsg('msgGH','❌ Falha ao sincronizar. Verifique token e repositório.','err');
   }
 }
 
