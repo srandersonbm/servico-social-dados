@@ -181,19 +181,6 @@
       ],
       "obs": "",
       "criado": "2026-06-03T15:00:36.230Z"
-    },
-    "16": {
-      "id": 16,
-      "data": "2026-06-03",
-      "idade": 60,
-      "atividades": [
-        "Atendimento de Demanda Espontânea"
-      ],
-      "perfil": [
-        "Pessoa Idosa mulher"
-      ],
-      "obs": "",
-      "criado": "2026-06-03T16:33:37.195Z"
     }
   },
   "istDB": {},
@@ -210,5 +197,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-06-03T16:33:38.711Z"
+  "savedAt": "2026-06-03T20:12:22.048Z"
 }
