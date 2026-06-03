@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Sistema de Atendimentos — Serviço Social</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+:root{
+  --bg:#F4F2ED;--surface:#FFF;--s2:#EDEAE3;--s3:#E4E0D8;
+  --border:#D6D2C8;--b2:#C4BFB3;
+  --text:#1A1916;--t2:#6B6860;--t3:#9E9B94;
+  --accent:#1B4F8A;--a2:#E8F0FA;--a3:#B5D4F4;
+  --green:#0F6E56;--g2:#E1F5EE;
+  --red:#993C1D;--r2:#FAECE7;
+  --amber:#8A5A0A;--am2:#FEF3DC;
+  --rad:10px;--radl:14px;
+  --shadow:0 1px 3px rgba(0,0,0,.07),0 4px 12px rgba(0,0,0,.04);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:14px}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+/* HEADER */
+.hdr{background:var(--surface);border-bottom:1px solid var(--border);padding:0 20px;
+  display:flex;align-items:center;gap:12px;height:54px;position:sticky;top:0;z-index:200}
+.hdr-logo{font-size:15px;font-weight:600;color:var(--accent);display:flex;align-items:center;gap:7px;letter-spacing:-.02em;white-space:nowrap}
+.hdr-logo svg{width:20px;height:20px}
+.hdr-nav{display:flex;gap:2px;margin-left:8px;flex-wrap:wrap}
+.nb{padding:6px 13px;border:none;background:transparent;cursor:pointer;
+  font-family:'DM Sans',sans-serif;font-size:13px;color:var(--t2);border-radius:6px;transition:all .15s}
+.nb:hover{background:var(--s2);color:var(--text)}
+.nb.on{background:var(--a2);color:var(--accent);font-weight:500}
+.hdr-right{margin-left:auto;display:flex;align-items:center;gap:8px}
+.chip{padding:3px 10px;border-radius:20px;font-size:11px;font-weight:500;
+  background:var(--s2);color:var(--t2);border:1px solid var(--border)}
+
+/* LAYOUT */
+.main{max-width:1180px;margin:0 auto;padding:22px 18px}
+.page{display:none}.page.on{display:block}
+
+/* CARD */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radl);
+  padding:18px;box-shadow:var(--shadow);margin-bottom:14px}
+.ct{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--t3);margin-bottom:12px}
+
+/* INPUTS */
+input[type=date],input[type=month],input[type=number],input[type=text],select,textarea{
+  border:1px solid var(--b2);border-radius:var(--rad);padding:7px 10px;
+  font-family:'DM Sans',sans-serif;font-size:13px;background:var(--surface);
+  color:var(--text);outline:none;transition:border-color .15s}
+input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(27,79,138,.08)}
+textarea{resize:vertical;width:100%}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 15px;
+  border-radius:var(--rad);border:1px solid var(--b2);background:var(--surface);
+  cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);
+  font-weight:500;transition:all .15s;white-space:nowrap}
+.btn:hover{background:var(--s2)}.btn:active{transform:scale(.98)}
+.btn-p{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn-p:hover{background:#163e6d;border-color:#163e6d;color:#fff}
+.btn-xl{background:#1D6F42;color:#fff;border-color:#1D6F42}
+.btn-xl:hover{background:#155233;color:#fff;border-color:#155233}
+.btn-d{background:var(--red);color:#fff;border-color:var(--red)}
+.btn-d:hover{background:#712B13;color:#fff}
+.btn-sm{padding:4px 10px;font-size:12px}
+.brow{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+
+/* MENSAGENS */
+.msg{padding:9px 14px;border-radius:var(--rad);font-size:13px;margin-bottom:12px;
+  display:none;font-weight:500}
+.msg.ok{background:var(--g2);color:var(--green);border:1px solid #9FE1CB}
+.msg.err{background:var(--r2);color:var(--red);border:1px solid #F0997B}
+
+/* MODAL */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:500;
+  display:none;align-items:center;justify-content:center;padding:16px}
+.overlay.on{display:flex}
+.modal{background:var(--surface);border-radius:var(--radl);box-shadow:0 8px 40px rgba(0,0,0,.18);
+  width:100%;max-width:740px;max-height:90vh;display:flex;flex-direction:column}
+.modal-hdr{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.modal-hdr h2{font-size:15px;font-weight:600;flex:1}
+.modal-hdr button{background:transparent;border:none;cursor:pointer;color:var(--t2);font-size:20px;line-height:1}
+.modal-body{padding:20px;overflow-y:auto;flex:1}
+.modal-foot{padding:14px 20px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end}
+
+/* FORM GRID */
+.fgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-bottom:14px}
+.fgrid.g2{grid-template-columns:1fr 1fr}
+.field{display:flex;flex-direction:column;gap:4px}
+.field label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--t3)}
+.field input,.field select{width:100%}
+.field-full{grid-column:1/-1}
+
+/* TABELA PACIENTES */
+.tbl-wrap{overflow-x:auto;max-height:520px;overflow-y:auto;
+  scrollbar-width:thin;scrollbar-color:var(--b2) transparent}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead th{padding:8px 10px;text-align:left;font-size:11px;font-weight:600;
+  letter-spacing:.05em;text-transform:uppercase;color:var(--t3);
+  border-bottom:1px solid var(--border);background:var(--surface);
+  position:sticky;top:0;z-index:1}
+tbody td{padding:8px 10px;border-bottom:1px solid var(--border);color:var(--text)}
+tbody tr:hover td{background:var(--s2)}
+.badge{display:inline-block;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600}
+.badge-b{background:var(--a2);color:var(--accent)}
+.badge-g{background:var(--g2);color:var(--green)}
+.badge-a{background:var(--am2);color:var(--amber)}
+
+/* INDICADORES TABLE */
+.ind-wrap{overflow-x:auto;margin-bottom:4px}
+.ind-tbl{border-collapse:collapse;font-size:12px;min-width:800px;width:100%}
+.ind-tbl th{padding:5px 7px;border:1px solid var(--border);background:var(--s2);
+  font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;
+  color:var(--t3);text-align:center;white-space:nowrap}
+.ind-tbl th.th-label{text-align:left;min-width:200px}
+.ind-tbl td{padding:5px 8px;border:1px solid var(--border);text-align:center;
+  font-family:'DM Mono',monospace;font-size:12px;color:var(--text)}
+.ind-tbl td.td-label{text-align:left;background:var(--s2);font-family:'DM Sans',sans-serif;
+  font-size:12px;font-weight:500;white-space:nowrap}
+.ind-tbl td.td-tot{background:var(--a2);color:var(--accent);font-weight:700}
+.ind-tbl tr.tr-prod td{background:var(--a2);font-weight:700;color:var(--accent)}
+.ind-tbl td.zero{color:var(--t3)}
+
+/* TABS */
+.tabs{display:flex;gap:3px;margin-bottom:14px;flex-wrap:wrap}
+.tab{padding:6px 15px;border:1px solid var(--b2);border-radius:var(--rad);
+  background:var(--surface);cursor:pointer;font-family:'DM Sans',sans-serif;
+  font-size:13px;color:var(--t2);font-weight:400;transition:all .15s}
+.tab:hover{background:var(--s2)}
+.tab.on{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:500}
+.tp{display:none}.tp.on{display:block}
+
+/* FILTER BAR */
+.fbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;
+  padding:12px 16px;background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radl);margin-bottom:14px;box-shadow:var(--shadow)}
+.fbar label{font-size:12px;font-weight:500;color:var(--t2)}
+
+/* METRICS */
+.mrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px;margin-bottom:14px}
+.mc{background:var(--surface);border:1px solid var(--border);border-radius:var(--radl);padding:14px}
+.mc-lbl{font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--t3);margin-bottom:4px}
+.mc-val{font-size:24px;font-weight:600;color:var(--text);font-variant-numeric:tabular-nums}
+.mc-sub{font-size:11px;color:var(--t3);margin-top:2px}
+
+/* TAGS */
+.tag-list{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.tag{padding:2px 8px;border-radius:12px;font-size:11px;font-weight:500;
+  background:var(--a2);color:var(--accent);border:1px solid var(--a3)}
+.tag-p{background:var(--g2);color:var(--green);border-color:#9FE1CB}
+
+/* EMPTY */
+.empty{text-align:center;padding:36px 20px;color:var(--t3);font-size:13px}
+
+/* CHART */
+.chart-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radl);
+  padding:18px;box-shadow:var(--shadow);margin-bottom:14px}
+.chart-title{font-size:13px;font-weight:500;color:var(--t2);margin-bottom:10px}
+.g2col{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:700px){.g2col{grid-template-columns:1fr}}
+
+/* IST ROW */
+.ist-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px;
+  padding:12px 14px;background:var(--s2);border-radius:var(--rad);border:1px solid var(--border)}
+.ist-row label{font-size:12px;font-weight:500;color:var(--t2)}
+.ist-row input[type=number]{width:70px}
+.ist-row input[type=text]{flex:1;min-width:140px}
+
+@media print{.hdr,.nb,.brow,.fbar .btn{display:none!important}body{background:#fff}.card,.chart-card{box-shadow:none}}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-logo">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+      <circle cx="9" cy="7" r="4"/>
+      <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+    </svg>
+    Serviço Social
+  </div>
+  <nav class="hdr-nav">
+    <button class="nb on"  onclick="goPage('atend')">Atendimentos</button>
+    <button class="nb"     onclick="goPage('ind')">Indicadores</button>
+    <button class="nb"     onclick="goPage('enc')">Encaminhamentos</button>
+    <button class="nb"     onclick="goPage('dash')">Dashboard</button>
+  </nav>
+  <div class="hdr-right">
+    <span class="chip" id="chipSync" onclick="abrirConfigGH()" title="Configurar GitHub" style="cursor:pointer">⚙ GitHub</span>
+    <span class="chip" id="chipTotal">0 registros</span>
+  </div>
+</header>
+
+<main class="main">
+
+<!-- ═══════════════════ ATENDIMENTOS ═══════════════════ -->
+<div id="page-atend" class="page on">
+
+  <!-- Barra de filtro / ações -->
+  <div class="fbar">
+    <label>Filtrar:</label>
+    <select id="fTipo" onchange="mudarFiltroAtend()">
+      <option value="dia">Dia</option>
+      <option value="mes">Mês</option>
+      <option value="periodo">Período</option>
+    </select>
+    <span id="fs-dia" style="display:flex;align-items:center;gap:6px">
+      <input type="date" id="fDia"/>
+    </span>
+    <span id="fs-mes" style="display:none;align-items:center;gap:6px">
+      <input type="month" id="fMes"/>
+    </span>
+    <span id="fs-periodo" style="display:none;align-items:center;gap:6px">
+      <input type="date" id="fIni"/> <span style="color:var(--t3)">até</span> <input type="date" id="fFim"/>
+    </span>
+    <button class="btn btn-p" onclick="filtrarAtend()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      Filtrar
+    </button>
+    <button class="btn btn-p" onclick="abrirModal()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Novo Atendimento
+    </button>
+    <button class="btn btn-xl" onclick="exportarExcelAtend()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      Excel
+    </button>
+  </div>
+
+  <div id="msgAtend" class="msg"></div>
+
+  <div class="card">
+    <div class="ct" id="tblTitulo">Todos os atendimentos</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Data</th><th>Idade</th><th>Perfil</th><th>Atividades</th><th>Obs</th><th style="width:80px"></th>
+          </tr>
+        </thead>
+        <tbody id="tblBody"></tbody>
+      </table>
+    </div>
+    <div id="tblEmpty" class="empty" style="display:none">Nenhum atendimento encontrado.</div>
+    <div id="tblSumario" style="margin-top:10px;font-size:12px;color:var(--t2)"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════ INDICADORES ═══════════════════ -->
+<div id="page-ind" class="page">
+
+  <div class="fbar">
+    <label>Mês/Ano:</label>
+    <input type="month" id="indMes"/>
+    <label>Unidade:</label>
+    <input type="text" id="indUnidade" placeholder="Unidade de saúde" style="min-width:160px"/>
+    <label>Assistente Social:</label>
+    <input type="text" id="indAssistente" placeholder="Nome" style="min-width:160px"/>
+    <button class="btn btn-p" onclick="renderIndicadores()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-5"/></svg>
+      Gerar
+    </button>
+    <button class="btn btn-xl" onclick="exportarExcelIndicadores()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      Excel
+    </button>
+  </div>
+
+  <div class="tabs">
+    <button class="tab on" onclick="goTab('ind','ativ')">Atividades Realizadas</button>
+    <button class="tab" onclick="goTab('ind','perfil')">Perfil dos Usuários</button>
+  </div>
+
+  <div class="tp on" id="ind-ativ">
+    <div class="card">
+      <div class="ct">Indicador 1 — Atividades Realizadas por Dia</div>
+      <div class="ind-wrap"><table class="ind-tbl" id="tblAtiv"></table></div>
+    </div>
+  </div>
+  <div class="tp" id="ind-perfil">
+    <div class="card">
+      <div class="ct">Indicador 1 — Perfil dos Usuários por Dia</div>
+      <div class="ind-wrap"><table class="ind-tbl" id="tblPerfil"></table></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ ENCAMINHAMENTOS (Ind 2 e 3) ═══════════════════ -->
+<div id="page-enc" class="page">
+
+  <div class="fbar">
+    <label>Mês/Ano:</label>
+    <input type="month" id="encMes"/>
+    <button class="btn btn-p" onclick="renderEnc()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-5"/></svg>
+      Gerar
+    </button>
+    <button class="btn btn-xl" onclick="exportarExcelEnc()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      Excel
+    </button>
+  </div>
+
+  <div class="tabs">
+    <button class="tab on" onclick="goTab('enc','viol')">Violência</button>
+    <button class="tab" onclick="goTab('enc','ist')">ISTs / HIV</button>
+    <button class="tab" onclick="goTab('enc','enc3')">Encaminhamentos</button>
+  </div>
+
+  <!-- Violência -->
+  <div class="tp on" id="enc-viol">
+    <div class="card">
+      <div class="ct" style="margin-bottom:8px">Ind. 2 — Violência Interpessoal</div>
+      <div style="overflow-x:auto;margin-bottom:20px" id="tblViolInter"></div>
+      <div class="ct" style="margin-bottom:8px">Ind. 2 — Violência Autoprovocada</div>
+      <div style="overflow-x:auto" id="tblViolAuto"></div>
+    </div>
+  </div>
+
+  <!-- ISTs -->
+  <div class="tp" id="enc-ist">
+    <div class="card">
+      <div class="ct">Ind. 2 — Aconselhamento ISTs/HIV</div>
+      <div class="ist-row">
+        <label>Teste HIV:</label><input type="number" id="istHIV" min="0" value="0"/>
+        <label>Hep. A:</label><input type="number" id="istHepA" min="0" value="0"/>
+        <label>Hep. C:</label><input type="number" id="istHepC" min="0" value="0"/>
+        <label>Sífilis:</label><input type="number" id="istSif" min="0" value="0"/>
+        <label>Outros:</label><input type="number" id="istOut" min="0" value="0"/>
+        <label>Obs:</label><input type="text" id="istObs" placeholder="observações..."/>
+      </div>
+      <div class="brow">
+        <button class="btn btn-p" onclick="salvarIST()">Salvar ISTs</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Encaminhamentos -->
+  <div class="tp" id="enc-enc3">
+    <div class="card">
+      <div class="ct">Ind. 3 — Encaminhamentos Realizados por Dia</div>
+      <div style="overflow-x:auto" id="tblEnc3"></div>
+    </div>
+    <div class="card">
+      <div class="ct">Encaminhamentos Recebidos</div>
+      <div id="encRecLista" style="display:flex;flex-direction:column;gap:6px;margin-bottom:12px"></div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <input type="text" id="encRecItem" placeholder="Item/origem..." style="flex:1;min-width:160px"/>
+        <input type="number" id="encRecQtd" min="0" value="0" style="width:80px"/>
+        <button class="btn btn-p" onclick="adicionarEncRec()">Adicionar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ DASHBOARD ═══════════════════ -->
+<div id="page-dash" class="page">
+  <div class="fbar">
+    <label>Período:</label>
+    <select id="dashPeriodo" onchange="renderDash()">
+      <option value="mes">Mês atual</option>
+      <option value="ano">Ano atual</option>
+      <option value="tudo">Tudo</option>
+    </select>
+  </div>
+  <div class="mrow" id="dashMetrics"></div>
+  <div class="g2col">
+    <div class="chart-card">
+      <div class="chart-title">Atendimentos por faixa etária</div>
+      <div style="position:relative;height:230px"><canvas id="cFaixa"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Atividades mais realizadas</div>
+      <div style="position:relative;height:230px"><canvas id="cAtiv"></canvas></div>
+    </div>
+  </div>
+  <div class="chart-card">
+    <div class="chart-title">Atendimentos por mês</div>
+    <div style="position:relative;height:200px"><canvas id="cMensal"></canvas></div>
+  </div>
+</div>
+
+</main>
+
+<!-- ═══════════════════ MODAL GITHUB CONFIG ═══════════════════ -->
+<div class="overlay" id="overlayGH">
+  <div class="modal" style="max-width:540px">
+    <div class="modal-hdr">
+      <h2>Configuração GitHub</h2>
+      <button onclick="fecharConfigGH()" aria-label="Fechar">×</button>
+    </div>
+    <div class="modal-body">
+      <div id="msgGH" class="msg"></div>
+
+      <div style="background:var(--am2);border:1px solid #e8c96a;border-radius:var(--rad);padding:12px 14px;font-size:12px;color:var(--amber);margin-bottom:16px;line-height:1.6">
+        <strong>Como configurar:</strong><br>
+        1. No GitHub, vá em <strong>Settings → Developer Settings → Personal Access Tokens → Tokens (classic)</strong><br>
+        2. Clique em <strong>Generate new token (classic)</strong><br>
+        3. Marque apenas a permissão <strong>repo</strong><br>
+        4. Copie o token gerado e cole abaixo<br>
+        5. Informe seu usuário GitHub e o nome de um repositório (pode ser privado)
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div class="field">
+          <label>Usuário GitHub</label>
+          <input type="text" id="ghUser" placeholder="seu-usuario" autocomplete="off"/>
+        </div>
+        <div class="field">
+          <label>Nome do Repositório</label>
+          <input type="text" id="ghRepo" placeholder="servico-social-dados" autocomplete="off"/>
+        </div>
+        <div class="field">
+          <label>Personal Access Token</label>
+          <input type="password" id="ghToken" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off"/>
+          <span style="font-size:11px;color:var(--t3);margin-top:3px">O token é salvo apenas neste navegador (localStorage). Nunca compartilhe este arquivo com o token preenchido.</span>
+        </div>
+        <div class="field">
+          <label>Branch (padrão: main)</label>
+          <input type="text" id="ghBranch" placeholder="main" autocomplete="off"/>
+        </div>
+      </div>
+
+      <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-p" onclick="testarConexaoGH()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+          Testar Conexão
+        </button>
+        <button class="btn" onclick="sincronizarAgora()" id="btnSincNow" style="display:none">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-5"/></svg>
+          Sincronizar Agora
+        </button>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" onclick="fecharConfigGH()">Fechar</button>
+      <button class="btn btn-p" onclick="salvarConfigGH()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/></svg>
+        Salvar Configuração
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ MODAL ATENDIMENTO ═══════════════════ -->
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <div class="modal-hdr">
+      <h2 id="modalTitulo">Novo Atendimento</h2>
+      <button onclick="fecharModal()" aria-label="Fechar">×</button>
+    </div>
+    <div class="modal-body">
+      <div id="msgModal" class="msg"></div>
+
+      <!-- Data + Idade -->
+      <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap">
+        <div class="field" style="min-width:160px">
+          <label>Data do Atendimento</label>
+          <input type="date" id="mData"/>
+        </div>
+        <div class="field" style="min-width:140px">
+          <label>Idade do Paciente</label>
+          <select id="mIdade"></select>
+        </div>
+      </div>
+
+      <!-- Atividades -->
+      <div style="margin-bottom:16px">
+        <div class="ct" style="margin-bottom:8px">Atividades Realizadas</div>
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;flex-wrap:wrap">
+          <select id="selAtiv" style="flex:1;min-width:220px"></select>
+          <button class="btn btn-p btn-sm" onclick="addItem('atv')">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Adicionar
+          </button>
+        </div>
+        <div id="listaAtv" style="display:flex;flex-wrap:wrap;gap:5px;min-height:28px"></div>
+      </div>
+
+      <!-- Perfil -->
+      <div style="margin-bottom:16px">
+        <div class="ct" style="margin-bottom:8px">Perfil do Usuário</div>
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;flex-wrap:wrap">
+          <select id="selPerfil" style="flex:1;min-width:200px"></select>
+          <button class="btn btn-p btn-sm" onclick="addItem('prf')">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Adicionar
+          </button>
+        </div>
+        <div id="listaPrf" style="display:flex;flex-wrap:wrap;gap:5px;min-height:28px"></div>
+      </div>
+
+      <!-- Observações -->
+      <div class="field">
+        <label>Observações</label>
+        <textarea id="mObs" rows="2" placeholder="Observações sobre o atendimento..."></textarea>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" onclick="fecharModal()">Cancelar</button>
+      <button class="btn btn-p" onclick="salvarAtendimento()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/></svg>
+        Salvar
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════ DADOS ═══════════════════════════════════ */
+const ATIVIDADES = [
+  'Entrevista Social de 1ª vez/Admissão',
+  'Visita Social Beira Leito',
+  'Visita Domiciliar',
+  'Atendimento de Demanda Espontânea',
+  'Orientação pós-óbito',
+  'Visita Multiprofissional/Round',
+  'Autorizações de exceção',
+  'Orientação na alta hospitalar',
+  'Orientação na situação de alta a pedido',
+  'Contatos Institucionais/Familiares',
+  'Reuniões familiares',
+];
+const PERFIL = [
+  'Homem adulto','Mulher adulta','Criança','Adolescente',
+  'Pessoa Idosa homem','Pessoa Idosa mulher','LGBTI+',
+  'Pessoa com deficiência','Indígena','Quilombola',
+  'População de rua','Apenados',
+];
+const VIOL_INTER = ['Sexual','Psicológica','Física','Negligência/abandono',
+  'Tráfico de seres humanos','Tortura','Trabalho infantil','Financeira/econômica','Intervenção legal'];
+const VIOL_AUTO  = ['Tentativa de Suicídio','Suicídio','Autoflagelação','Automutilação','Autopunição'];
+const VIOL_COLS  = ['Homem','Mulher','Criança','Adolescente','Pessoa Idosa','LGBTQI+'];
+const ENC_DEST   = ['CRAS','CREAS','CAPS','CENTRO POP','UBS','DELEG. MULHER',
+  'DELEG. IDOSO','BENEF. EVENTUAIS','DEFENSORIA','PSICOLOGIA','INSS',
+  'INST. IDENT.','CARTÓRIO','PMEC','TFD','OUTROS'];
+
+/* ═══════════════════════════════════ STORAGE + GITHUB ═══════════════════════════════════ */
+const KEY_PAC  = 'ss_pacientes_v1';
+const KEY_IST  = 'ss_ist_v1';
+const KEY_ENC  = 'ss_enc_v1';
+const KEY_EREC = 'ss_encrec_v1';
+const KEY_GH   = 'ss_github_cfg';
+
+let pacDB  = {};
+let istDB  = {};
+let encDB  = {};
+let encRec = {};
+let nextId = 1;
+let _ghSHA = null;       // SHA do arquivo no GitHub (necessário para PUT)
+let _syncPending = false;
+
+/* ── Config GitHub ── */
+function ghCfg(){ try{ return JSON.parse(localStorage.getItem(KEY_GH)||'{}'); }catch(e){return{};} }
+function ghOk(){ const c=ghCfg(); return !!(c.user&&c.repo&&c.token); }
+
+/* ── localStorage (fallback local sempre atualizado) ── */
+function localSave(){
+  localStorage.setItem(KEY_PAC,  JSON.stringify(pacDB));
+  localStorage.setItem(KEY_IST,  JSON.stringify(istDB));
+  localStorage.setItem(KEY_ENC,  JSON.stringify(encDB));
+  localStorage.setItem(KEY_EREC, JSON.stringify(encRec));
+}
+function localLoad(){
+  try{ pacDB  = JSON.parse(localStorage.getItem(KEY_PAC)||'{}');  }catch(e){pacDB={};}
+  try{ istDB  = JSON.parse(localStorage.getItem(KEY_IST)||'{}');  }catch(e){istDB={};}
+  try{ encDB  = JSON.parse(localStorage.getItem(KEY_ENC)||'{}');  }catch(e){encDB={};}
+  try{ encRec = JSON.parse(localStorage.getItem(KEY_EREC)||'{}'); }catch(e){encRec={};}
+  recalcNextId();
+}
+function recalcNextId(){
+  const ids=Object.keys(pacDB).map(Number).filter(n=>!isNaN(n));
+  nextId=ids.length?Math.max(...ids)+1:1;
+}
+
+/* ── GitHub API ── */
+function ghHeaders(){
+  const c=ghCfg();
+  return { 'Authorization':'token '+c.token, 'Content-Type':'application/json', 'Accept':'application/vnd.github.v3+json' };
+}
+function ghFileUrl(){
+  const c=ghCfg();
+  const branch=c.branch||'main';
+  return `https://api.github.com/repos/${c.user}/${c.repo}/contents/dados.json?ref=${branch}`;
+}
+function ghFileUrlPut(){
+  const c=ghCfg();
+  return `https://api.github.com/repos/${c.user}/${c.repo}/contents/dados.json`;
+}
+
+async function ghPull(){
+  if(!ghOk()) return false;
+  setSyncStatus('syncing');
+  try{
+    const res = await fetch(ghFileUrl(), { headers: ghHeaders() });
+    if(res.status===404){
+      // arquivo não existe ainda — tudo bem, será criado no primeiro push
+      _ghSHA = null;
+      setSyncStatus('ok');
+      return true;
+    }
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const json = await res.json();
+    _ghSHA = json.sha;
+    const decoded = JSON.parse(atob(json.content.replace(/\n/g,'')));
+    // Mescla: GitHub é fonte da verdade
+    pacDB  = decoded.pacDB  || {};
+    istDB  = decoded.istDB  || {};
+    encDB  = decoded.encDB  || {};
+    encRec = decoded.encRec || {};
+    recalcNextId();
+    localSave();
+    updateChip();
+    setSyncStatus('ok');
+    return true;
+  } catch(e){
+    console.error('ghPull',e);
+    setSyncStatus('err');
+    return false;
+  }
+}
+
+async function ghPush(){
+  if(!ghOk()) return false;
+  setSyncStatus('syncing');
+  try{
+    const payload = { pacDB, istDB, encDB, encRec, savedAt: new Date().toISOString() };
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(payload, null, 2))));
+    const c=ghCfg();
+    const body = {
+      message: 'Atualização '+new Date().toLocaleString('pt-BR'),
+      content,
+      branch: c.branch||'main',
+    };
+    if(_ghSHA) body.sha = _ghSHA;
+    const res = await fetch(ghFileUrlPut(), {
+      method:'PUT', headers: ghHeaders(), body: JSON.stringify(body)
+    });
+    if(!res.ok){
+      const err=await res.json().catch(()=>({}));
+      // Conflito de SHA: puxa e tenta de novo
+      if(res.status===409||res.status===422){
+        await ghPull();
+        return await ghPush();
+      }
+      throw new Error((err.message||'HTTP '+res.status));
+    }
+    const json = await res.json();
+    _ghSHA = json.content?.sha || _ghSHA;
+    setSyncStatus('ok');
+    return true;
+  } catch(e){
+    console.error('ghPush',e);
+    setSyncStatus('err','Erro ao salvar no GitHub: '+e.message);
+    return false;
+  }
+}
+
+/* ── dbLoad / dbSave públicos ── */
+function dbLoad(){
+  localLoad();
+  updateChip();
+  if(ghOk()){
+    ghPull().then(ok=>{
+      if(ok){ updateChip(); filtrarAtend(); }
+    });
+  }
+}
+
+let _saveTimer = null;
+function dbSave(){
+  localSave();
+  updateChip();
+  // Debounce: espera 1.5s de inatividade antes de enviar ao GitHub
+  clearTimeout(_saveTimer);
+  if(ghOk()){
+    setSyncStatus('pending');
+    _saveTimer = setTimeout(()=>ghPush(), 1500);
+  }
+}
+
+/* ── Status de sync no chip ── */
+function setSyncStatus(state, msg){
+  const el=document.getElementById('chipSync');
+  if(!el) return;
+  const states={
+    ok:     {txt:'✓ GitHub',  style:'background:#E1F5EE;color:#0F6E56;border-color:#9FE1CB'},
+    pending:{txt:'● pendente',style:'background:var(--am2);color:var(--amber);border-color:#e8c96a'},
+    syncing:{txt:'↻ sincronizando',style:'background:var(--a2);color:var(--accent);border-color:var(--a3)'},
+    err:    {txt:'✗ erro sync',style:'background:var(--r2);color:var(--red);border-color:#F0997B'},
+    off:    {txt:'⚙ GitHub',  style:''},
+  };
+  const s=states[state]||states.off;
+  el.textContent=s.txt;
+  el.style.cssText='cursor:pointer;'+s.style;
+  if(msg) console.warn('[GitHub sync]',msg);
+}
+
+function updateChip(){
+  const n=Object.keys(pacDB).length;
+  document.getElementById('chipTotal').textContent=n+(n===1?' registro':' registros');
+  if(!ghOk()) setSyncStatus('off');
+}
+
+/* ── Modal de configuração ── */
+function abrirConfigGH(){
+  const c=ghCfg();
+  document.getElementById('ghUser').value   = c.user||'';
+  document.getElementById('ghRepo').value   = c.repo||'';
+  document.getElementById('ghToken').value  = c.token||'';
+  document.getElementById('ghBranch').value = c.branch||'main';
+  document.getElementById('btnSincNow').style.display = ghOk()?'inline-flex':'none';
+  document.getElementById('overlayGH').classList.add('on');
+}
+function fecharConfigGH(){
+  document.getElementById('overlayGH').classList.remove('on');
+}
+document.getElementById('overlayGH').addEventListener('click',function(e){ if(e.target===this) fecharConfigGH(); });
+
+function salvarConfigGH(){
+  const user   = document.getElementById('ghUser').value.trim();
+  const repo   = document.getElementById('ghRepo').value.trim();
+  const token  = document.getElementById('ghToken').value.trim();
+  const branch = document.getElementById('ghBranch').value.trim()||'main';
+  if(!user||!repo||!token){
+    showMsg('msgGH','Preencha usuário, repositório e token.','err'); return;
+  }
+  localStorage.setItem(KEY_GH, JSON.stringify({user,repo,token,branch}));
+  showMsg('msgGH','Configuração salva! Clique em "Testar Conexão".','ok');
+  document.getElementById('btnSincNow').style.display='inline-flex';
+}
+
+async function testarConexaoGH(){
+  const user  = document.getElementById('ghUser').value.trim();
+  const repo  = document.getElementById('ghRepo').value.trim();
+  const token = document.getElementById('ghToken').value.trim();
+  const branch= document.getElementById('ghBranch').value.trim()||'main';
+  if(!user||!repo||!token){ showMsg('msgGH','Preencha os campos primeiro.','err'); return; }
+  showMsg('msgGH','Testando conexão…','ok');
+  try{
+    const res = await fetch(
+      `https://api.github.com/repos/${user}/${repo}`,
+      { headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'} }
+    );
+    if(res.status===401){ showMsg('msgGH','❌ Token inválido ou sem permissão.','err'); return; }
+    if(res.status===404){ showMsg('msgGH','❌ Repositório não encontrado. Verifique usuário e nome do repositório.','err'); return; }
+    if(!res.ok){ showMsg('msgGH','❌ Erro HTTP '+res.status,'err'); return; }
+    const json=await res.json();
+    showMsg('msgGH','✓ Conexão OK! Repositório: '+json.full_name+(json.private?' (privado)':' (público)'),'ok');
+  } catch(e){
+    showMsg('msgGH','❌ Erro de rede: '+e.message,'err');
+  }
+}
+
+async function sincronizarAgora(){
+  const ok = await ghPull();
+  if(ok){
+    updateChip(); filtrarAtend();
+    showMsg('msgGH','✓ Dados sincronizados com sucesso!','ok');
+  } else {
+    showMsg('msgGH','❌ Falha na sincronização. Verifique a configuração.','err');
+  }
+}
+
+dbLoad();
+
+/* ═══════════════════════════════════ UTILS ═══════════════════════════════════ */
+const hoje = new Date().toISOString().slice(0,10);
+const anoAtual = new Date().getFullYear();
+const mesAtual = new Date().toISOString().slice(0,7);
+
+function fmtDate(d){ if(!d)return''; const[y,m,dia]=d.split('-'); return`${dia}/${m}/${y}`; }
+function showMsg(id,txt,tipo){
+  const el=document.getElementById(id);
+  if(!el)return;
+  el.textContent=txt; el.className='msg '+tipo; el.style.display='block';
+  clearTimeout(el._t); el._t=setTimeout(()=>el.style.display='none',5000);
+}
+function diasNoMes(ym){
+  if(!ym)return 31;
+  const[y,m]=ym.split('-').map(Number);
+  return new Date(y,m,0).getDate();
+}
+function uid(){ return nextId++; }
+
+/* ═══════════════════════════════════ NAVEGAÇÃO ═══════════════════════════════════ */
+function goPage(p){
+  document.querySelectorAll('.page').forEach(e=>e.classList.remove('on'));
+  document.querySelectorAll('.nb').forEach(e=>e.classList.remove('on'));
+  document.getElementById('page-'+p).classList.add('on');
+  const idx={atend:0,ind:1,enc:2,dash:3}[p];
+  document.querySelectorAll('.nb')[idx].classList.add('on');
+  if(p==='dash') renderDash();
+}
+function goTab(grupo, tab){
+  const prefix = grupo+'-';
+  document.querySelectorAll(`[id^="${prefix}"]`).forEach(e=>e.classList.remove('on'));
+  document.getElementById(prefix+tab).classList.add('on');
+  // tabs visuais: pega o .tabs dentro do mesmo page
+  const page = document.getElementById('page-'+grupo);
+  if(page){
+    page.querySelectorAll('.tab').forEach(e=>e.classList.remove('on'));
+    const tabIdx = ['ativ','perfil','viol','ist','enc3'].indexOf(tab);
+    const tabs = page.querySelectorAll('.tab');
+    if(tabs[tabIdx]) tabs[tabIdx].classList.add('on');
+    else { // fallback: encontra pelo textContent
+      tabs.forEach(t=>{
+        if(t.getAttribute('onclick')&&t.getAttribute('onclick').includes("'"+tab+"'")) t.classList.add('on');
+      });
+    }
+  }
+}
+
+/* ═══════════════════════════════════ MODAL — BUILD ═══════════════════════════════════ */
+(function buildModal(){
+  // Select idade
+  const si=document.getElementById('mIdade');
+  for(let i=18;i<=100;i++){const o=document.createElement('option');o.value=i;o.textContent=i+' anos';si.appendChild(o);}
+  // Select atividades
+  const sa=document.getElementById('selAtiv');
+  sa.innerHTML='<option value="">— selecione atividade —</option>';
+  ATIVIDADES.forEach(a=>{const o=document.createElement('option');o.value=a;o.textContent=a;sa.appendChild(o);});
+  // Select perfil
+  const sp=document.getElementById('selPerfil');
+  sp.innerHTML='<option value="">— selecione perfil —</option>';
+  PERFIL.forEach(p=>{const o=document.createElement('option');o.value=p;o.textContent=p;sp.appendChild(o);});
+  // Enter nos selects
+  sa.addEventListener('keydown',e=>{ if(e.key==='Enter'){e.preventDefault();addItem('atv');} });
+  sp.addEventListener('keydown',e=>{ if(e.key==='Enter'){e.preventDefault();addItem('prf');} });
+})();
+
+// listas temporárias no modal
+let _atv=[], _prf=[];
+
+function addItem(tipo){
+  const selId = tipo==='atv'?'selAtiv':'selPerfil';
+  const val = document.getElementById(selId).value;
+  if(!val) return;
+  const arr = tipo==='atv'?_atv:_prf;
+  if(arr.includes(val)){
+    // já existe: pisca o tag
+    renderModalListas(); return;
+  }
+  arr.push(val);
+  renderModalListas();
+  document.getElementById(selId).value='';
+}
+
+function removeItem(tipo, val){
+  if(tipo==='atv') _atv=_atv.filter(v=>v!==val);
+  else             _prf=_prf.filter(v=>v!==val);
+  renderModalListas();
+}
+
+function renderModalListas(){
+  const mkTag=(tipo,arr,cls)=>arr.length
+    ? arr.map(v=>`<span style="display:inline-flex;align-items:center;gap:4px;padding:3px 9px 3px 10px;border-radius:20px;font-size:12px;font-weight:500;border:1px solid;cursor:default" class="${cls}">
+        ${v}
+        <button onclick="removeItem('${tipo}','${v.replace(/'/g,"\\'")}');event.stopPropagation()"
+          style="background:transparent;border:none;cursor:pointer;font-size:13px;line-height:1;padding:0 0 0 2px;opacity:.6">×</button>
+      </span>`).join('')
+    : `<span style="font-size:12px;color:var(--t3)">Nenhum selecionado</span>`;
+  document.getElementById('listaAtv').innerHTML = mkTag('atv',_atv,'tag');
+  document.getElementById('listaPrf').innerHTML = mkTag('prf',_prf,'tag tag-p');
+}
+
+let editId = null;
+
+function abrirModal(id){
+  editId = id||null;
+  document.getElementById('modalTitulo').textContent = id?'Editar Atendimento':'Novo Atendimento';
+  // reset
+  _atv=[]; _prf=[];
+  document.getElementById('mData').value  = hoje;
+  document.getElementById('mIdade').value = 18;
+  document.getElementById('mObs').value   = '';
+  document.getElementById('selAtiv').value  = '';
+  document.getElementById('selPerfil').value= '';
+  // preencher se edição
+  if(id && pacDB[id]){
+    const r=pacDB[id];
+    document.getElementById('mData').value  = r.data;
+    document.getElementById('mIdade').value = r.idade;
+    document.getElementById('mObs').value   = r.obs||'';
+    _atv = [...(r.atividades||[])];
+    _prf = [...(r.perfil||[])];
+  }
+  renderModalListas();
+  document.getElementById('overlay').classList.add('on');
+  setTimeout(()=>document.getElementById('mData').focus(),50);
+}
+
+function fecharModal(){
+  document.getElementById('overlay').classList.remove('on');
+  editId=null;
+}
+
+document.getElementById('overlay').addEventListener('click',function(e){
+  if(e.target===this) fecharModal();
+});
+
+/* ═══════════════════════════════════ SALVAR/EDITAR ═══════════════════════════════════ */
+function salvarAtendimento(){
+  const data  = document.getElementById('mData').value;
+  const idade = parseInt(document.getElementById('mIdade').value);
+  if(!data){showMsg('msgModal','Selecione a data do atendimento.','err');return;}
+  if(!_atv.length && !_prf.length){
+    showMsg('msgModal','Adicione pelo menos uma atividade ou perfil.','err'); return;
+  }
+  const obs = document.getElementById('mObs').value.trim();
+  const id  = editId || uid();
+  pacDB[id]={ id, data, idade, atividades:[..._atv], perfil:[..._prf], obs,
+    criado: pacDB[id]?.criado||new Date().toISOString() };
+  dbSave();
+  fecharModal();
+  filtrarAtend();
+  showMsg('msgAtend',(editId?'✓ Atendimento atualizado!':'✓ Atendimento registrado!'),'ok');
+}
+
+/* ═══════════════════════════════════ LISTAR / FILTRAR ═══════════════════════════════════ */
+document.getElementById('fDia').value = hoje;
+document.getElementById('fMes').value = mesAtual;
+
+function mudarFiltroAtend(){
+  const t=document.getElementById('fTipo').value;
+  document.getElementById('fs-dia').style.display    = t==='dia'?'flex':'none';
+  document.getElementById('fs-mes').style.display    = t==='mes'?'flex':'none';
+  document.getElementById('fs-periodo').style.display= t==='periodo'?'flex':'none';
+}
+
+function filtrarAtend(){
+  const t=document.getElementById('fTipo').value;
+  let regs=Object.values(pacDB);
+  let titulo='Todos os atendimentos';
+  if(t==='dia'){
+    const d=document.getElementById('fDia').value;
+    regs=regs.filter(r=>r.data===d);
+    titulo='Atendimentos de '+fmtDate(d);
+  } else if(t==='mes'){
+    const m=document.getElementById('fMes').value;
+    regs=regs.filter(r=>r.data.startsWith(m));
+    titulo='Atendimentos de '+m;
+  } else if(t==='periodo'){
+    const ini=document.getElementById('fIni').value, fim=document.getElementById('fFim').value;
+    if(ini&&fim){ regs=regs.filter(r=>r.data>=ini&&r.data<=fim); titulo=`Período ${fmtDate(ini)} – ${fmtDate(fim)}`; }
+  }
+  regs.sort((a,b)=>a.data<b.data?-1:a.data>b.data?1:0);
+  _filtroAtual=regs;
+  renderTabelaAtend(regs, titulo);
+}
+let _filtroAtual=[];
+filtrarAtend();
+
+function renderTabelaAtend(regs, titulo){
+  document.getElementById('tblTitulo').textContent=titulo;
+  const body=document.getElementById('tblBody');
+  const empty=document.getElementById('tblEmpty');
+  const sumario=document.getElementById('tblSumario');
+  if(!regs.length){ body.innerHTML=''; empty.style.display='block'; sumario.textContent=''; return; }
+  empty.style.display='none';
+  sumario.textContent=`${regs.length} atendimento(s) — ${new Set(regs.map(r=>r.data)).size} dia(s)`;
+  body.innerHTML=regs.map(r=>`
+    <tr>
+      <td><strong>${fmtDate(r.data)}</strong></td>
+      <td><span class="badge badge-b">${r.idade} anos</span></td>
+      <td><div class="tag-list">${(r.perfil||[]).map(p=>`<span class="tag tag-p">${p}</span>`).join('')||'<span style="color:var(--t3);font-size:11px">—</span>'}</div></td>
+      <td><div class="tag-list">${(r.atividades||[]).map(a=>`<span class="tag">${a}</span>`).join('')||'<span style="color:var(--t3);font-size:11px">—</span>'}</div></td>
+      <td style="font-size:12px;color:var(--t2);max-width:160px">${r.obs||''}</td>
+      <td style="white-space:nowrap">
+        <button class="btn btn-sm" onclick="abrirModal(${r.id})" title="Editar">✏️</button>
+        <button class="btn btn-sm btn-d" onclick="excluirAtend(${r.id})" title="Excluir">🗑</button>
+      </td>
+    </tr>`).join('');
+}
+
+function excluirAtend(id){
+  if(!confirm('Excluir este atendimento?')) return;
+  delete pacDB[id]; dbSave(); filtrarAtend();
+  showMsg('msgAtend','Atendimento excluído.','ok');
+}
+
+/* ═══════════════════════════════════ EXCEL ATENDIMENTOS ═══════════════════════════════════ */
+function exportarExcelAtend(){
+  const regs=_filtroAtual.length?_filtroAtual:Object.values(pacDB).sort((a,b)=>a.data<b.data?-1:1);
+  const wb=XLSX.utils.book_new();
+  const rows=[['Data','Idade','Tipo Atendimento','Atividades','Perfil','Observações']];
+  regs.forEach(r=>rows.push([r.data,r.idade,r.tipoAtend||'',(r.atividades||[]).join('; '),(r.perfil||[]).join('; '),r.obs||'']));
+  const ws=XLSX.utils.aoa_to_sheet(rows);
+  ws['!cols']=[{wch:12},{wch:8},{wch:30},{wch:60},{wch:40},{wch:30}];
+  XLSX.utils.book_append_sheet(wb,ws,'Atendimentos');
+  XLSX.writeFile(wb,`atendimentos_${hoje}.xlsx`);
+}
+
+/* ═══════════════════════════════════ INDICADORES — CALC ═══════════════════════════════════ */
+function calcInd(mes){
+  const n=diasNoMes(mes);
+  const atv = {}; // atv[ativIndex][dia] = count
+  const prf = {}; // prf[perfilIndex][dia] = count
+  ATIVIDADES.forEach((_,i)=>{ atv[i]={};for(let d=1;d<=n;d++)atv[i][d]=0; });
+  PERFIL.forEach((_,i)=>{ prf[i]={};for(let d=1;d<=n;d++)prf[i][d]=0; });
+
+  Object.values(pacDB).filter(r=>r.data&&r.data.startsWith(mes)).forEach(r=>{
+    const dia=parseInt(r.data.split('-')[2]);
+    (r.atividades||[]).forEach(a=>{ const idx=ATIVIDADES.indexOf(a); if(idx>=0) atv[idx][dia]=(atv[idx][dia]||0)+1; });
+    (r.perfil||[]).forEach(p=>{ const idx=PERFIL.indexOf(p); if(idx>=0) prf[idx][dia]=(prf[idx][dia]||0)+1; });
+  });
+  return {atv,prf,n};
+}
+
+function renderIndicadores(){
+  const mes=document.getElementById('indMes').value;
+  if(!mes){alert('Selecione o mês.');return;}
+  const {atv,prf,n}=calcInd(mes);
+  document.getElementById('tblAtiv').innerHTML  = buildIndTable(ATIVIDADES,atv,n);
+  document.getElementById('tblPerfil').innerHTML= buildIndTable(PERFIL,prf,n);
+}
+
+function buildIndTable(items,data,n){
+  // cabeçalho
+  let h=`<thead><tr><th class="th-label">Atividade / Perfil</th>`;
+  for(let d=1;d<=n;d++) h+=`<th>${d}</th>`;
+  h+=`<th style="background:var(--a2);color:var(--accent)">Total</th></tr></thead>`;
+  // corpo
+  let b='<tbody>';
+  items.forEach((item,i)=>{
+    let tot=0;
+    b+=`<tr><td class="td-label">${item}</td>`;
+    for(let d=1;d<=n;d++){
+      const v=(data[i]&&data[i][d])||0;
+      tot+=v;
+      b+=`<td class="${v?'':'zero'}">${v||''}</td>`;
+    }
+    b+=`<td class="td-tot">${tot||''}</td></tr>`;
+  });
+  // linha produtividade
+  b+=`<tr class="tr-prod"><td class="td-label">Produtividade diária</td>`;
+  let gTot=0;
+  for(let d=1;d<=n;d++){
+    let col=0; items.forEach((_,i)=>col+=(data[i]&&data[i][d])||0);
+    gTot+=col;
+    b+=`<td>${col||''}</td>`;
+  }
+  b+=`<td>${gTot||''}</td></tr></tbody>`;
+  return h+b;
+}
+
+/* ═══════════════════════════════════ ENCAMINHAMENTOS — RENDER ═══════════════════════════════════ */
+document.getElementById('indMes').value = mesAtual;
+document.getElementById('encMes').value = mesAtual;
+
+function renderEnc(){
+  const mes=document.getElementById('encMes').value;
+  if(!mes){alert('Selecione o mês.');return;}
+  renderViol(mes);
+  renderEnc3(mes);
+  renderEncRec(mes);
+  carregarIST(mes);
+}
+
+/* Violência — calculada a partir dos atendimentos que tiverem campo violência
+   (por ora apresenta tabela zerada editável — campo violência pode ser adicionado
+   no modal futuramente; por ora os dados são inseridos manualmente via campos) */
+function renderViol(mes){
+  const buildViol=(tipos,prefix)=>{
+    let h=`<table style="border-collapse:collapse;font-size:12px;width:100%">
+      <thead><tr><th style="padding:5px 10px;border:1px solid var(--border);background:var(--s2);text-align:left;min-width:180px">Tipo</th>`;
+    VIOL_COLS.forEach(c=>h+=`<th style="padding:5px 8px;border:1px solid var(--border);background:var(--s2);text-align:center;white-space:nowrap">${c}</th>`);
+    h+=`<th style="padding:5px 8px;border:1px solid var(--border);background:var(--a2);color:var(--accent);text-align:center">Total</th></tr></thead><tbody>`;
+    tipos.forEach((tipo,r)=>{
+      h+=`<tr><td style="padding:5px 10px;border:1px solid var(--border);background:var(--s2);font-size:12px">${tipo}</td>`;
+      let tot=0;
+      VIOL_COLS.forEach((_,c)=>{
+        const v=getViolVal(mes,prefix,r,c);
+        tot+=v;
+        h+=`<td style="padding:0;border:1px solid var(--border)">
+          <input type="number" min="0" value="${v}" style="width:100%;border:none;background:transparent;text-align:center;padding:5px 4px;font-family:'DM Mono',monospace;font-size:12px;outline:none"
+            onchange="setViolVal('${mes}','${prefix}',${r},${c},this.value)" onfocus="this.style.background='var(--a2)'" onblur="this.style.background='transparent';updateViolTot(this,${r},'${prefix}')"/>
+          </td>`;
+      });
+      h+=`<td id="${prefix}_tot_${r}" style="padding:5px 8px;border:1px solid var(--border);background:var(--a2);text-align:center;font-weight:700;color:var(--accent);font-family:'DM Mono',monospace">${tot||''}</td></tr>`;
+    });
+    h+=`</tbody></table>`;
+    return h;
+  };
+  document.getElementById('tblViolInter').innerHTML=buildViol(VIOL_INTER,'vi');
+  document.getElementById('tblViolAuto').innerHTML=buildViol(VIOL_AUTO,'va');
+}
+
+function getViolKey(mes){ return `viol_${mes}`; }
+function getViolVal(mes,prefix,r,c){
+  const k=getViolKey(mes); if(!encDB[k])return 0;
+  return (encDB[k][prefix]&&encDB[k][prefix][r]&&encDB[k][prefix][r][c])||0;
+}
+function setViolVal(mes,prefix,r,c,val){
+  const k=getViolKey(mes);
+  if(!encDB[k]) encDB[k]={};
+  if(!encDB[k][prefix]) encDB[k][prefix]={};
+  if(!encDB[k][prefix][r]) encDB[k][prefix][r]={};
+  encDB[k][prefix][r][c]=parseInt(val)||0;
+  dbSave();
+}
+function updateViolTot(input,r,prefix){
+  const row=input.closest('tr');
+  if(!row)return;
+  const inputs=[...row.querySelectorAll('input[type=number]')];
+  const tot=inputs.reduce((s,i)=>s+(parseInt(i.value)||0),0);
+  const el=document.getElementById(`${prefix}_tot_${r}`);
+  if(el) el.textContent=tot||'';
+}
+
+/* IST */
+function carregarIST(mes){
+  const r=istDB[mes]||{};
+  document.getElementById('istHIV').value=r.HIV||0;
+  document.getElementById('istHepA').value=r.HepA||0;
+  document.getElementById('istHepC').value=r.HepC||0;
+  document.getElementById('istSif').value=r.Sif||0;
+  document.getElementById('istOut').value=r.Out||0;
+  document.getElementById('istObs').value=r.obs||'';
+}
+function salvarIST(){
+  const mes=document.getElementById('encMes').value;
+  if(!mes){alert('Selecione o mês.');return;}
+  istDB[mes]={
+    HIV:+document.getElementById('istHIV').value||0,
+    HepA:+document.getElementById('istHepA').value||0,
+    HepC:+document.getElementById('istHepC').value||0,
+    Sif:+document.getElementById('istSif').value||0,
+    Out:+document.getElementById('istOut').value||0,
+    obs:document.getElementById('istObs').value
+  };
+  dbSave();
+  alert('✓ Dados de ISTs salvos!');
+}
+
+/* Encaminhamentos por dia */
+function renderEnc3(mes){
+  const n=diasNoMes(mes);
+  const k=`enc3_${mes}`;
+  let h=`<table style="border-collapse:collapse;font-size:11px;width:100%">
+    <thead><tr><th style="padding:5px 7px;border:1px solid var(--border);background:var(--s2);width:36px">Dia</th>`;
+  ENC_DEST.forEach(d=>h+=`<th style="padding:4px 5px;border:1px solid var(--border);background:var(--s2);white-space:nowrap;font-size:10px">${d}</th>`);
+  h+=`<th style="padding:4px 7px;border:1px solid var(--border);background:var(--a2);color:var(--accent)">Total</th></tr></thead><tbody>`;
+  for(let d=1;d<=n;d++){
+    h+=`<tr><td style="padding:4px 7px;border:1px solid var(--border);background:var(--s2);font-weight:600;text-align:center">${d}</td>`;
+    let tot=0;
+    ENC_DEST.forEach((_,c)=>{
+      const v=(encDB[k]&&encDB[k][d]&&encDB[k][d][c])||0;
+      tot+=v;
+      h+=`<td style="padding:0;border:1px solid var(--border)">
+        <input type="number" min="0" value="${v||''}" placeholder="0"
+          style="width:100%;min-width:38px;border:none;background:transparent;text-align:center;padding:4px 2px;font-family:'DM Mono',monospace;font-size:11px;outline:none"
+          onchange="setEnc3('${mes}',${d},${c},this.value)"
+          onfocus="this.style.background='var(--a2)'" onblur="this.style.background='transparent';recalcEnc3Row(this,'enc3r_${mes}_${d}')"/>
+      </td>`;
+    });
+    h+=`<td id="enc3r_${mes}_${d}" style="padding:4px 7px;border:1px solid var(--border);background:var(--a2);color:var(--accent);font-weight:700;font-family:'DM Mono',monospace;text-align:center">${tot||''}</td></tr>`;
+  }
+  // Linha de total
+  h+=`<tr style="background:var(--a2)"><td style="padding:5px 7px;border:1px solid var(--border);font-weight:700;text-align:center;color:var(--accent)">Total</td>`;
+  let gTot=0;
+  ENC_DEST.forEach((_,c)=>{
+    let col=0; for(let d=1;d<=n;d++) col+=(encDB[k]&&encDB[k][d]&&encDB[k][d][c])||0;
+    gTot+=col;
+    h+=`<td style="padding:4px 5px;border:1px solid var(--border);text-align:center;font-weight:700;color:var(--accent);font-family:'DM Mono',monospace">${col||''}</td>`;
+  });
+  h+=`<td style="padding:4px 7px;border:1px solid var(--border);font-weight:700;color:var(--accent);text-align:center;font-family:'DM Mono',monospace">${gTot||''}</td></tr>`;
+  h+=`</tbody></table>`;
+  document.getElementById('tblEnc3').innerHTML=h;
+}
+
+function setEnc3(mes,d,c,val){
+  const k=`enc3_${mes}`;
+  if(!encDB[k])encDB[k]={};
+  if(!encDB[k][d])encDB[k][d]={};
+  encDB[k][d][c]=parseInt(val)||0;
+  dbSave();
+}
+function recalcEnc3Row(input,totId){
+  const row=input.closest('tr');
+  if(!row)return;
+  const inputs=[...row.querySelectorAll('input[type=number]')];
+  const tot=inputs.reduce((s,i)=>s+(parseInt(i.value)||0),0);
+  const el=document.getElementById(totId);
+  if(el) el.textContent=tot||'';
+}
+
+/* Encaminhamentos recebidos */
+function renderEncRec(mes){
+  const lista=encRec[mes]||[];
+  const el=document.getElementById('encRecLista');
+  if(!lista.length){el.innerHTML='<div style="color:var(--t3);font-size:12px">Nenhum lançado.</div>';return;}
+  el.innerHTML=lista.map((r,i)=>`
+    <div style="display:flex;align-items:center;gap:8px;padding:6px 10px;background:var(--s2);border:1px solid var(--border);border-radius:8px">
+      <span style="flex:1;font-size:13px">${r.item}</span>
+      <span class="badge badge-b">${r.qtd}</span>
+      <button class="btn btn-sm btn-d" onclick="removerEncRec('${mes}',${i})">✕</button>
+    </div>`).join('');
+}
+function adicionarEncRec(){
+  const mes=document.getElementById('encMes').value;
+  if(!mes){alert('Selecione o mês.');return;}
+  const item=document.getElementById('encRecItem').value.trim();
+  const qtd=parseInt(document.getElementById('encRecQtd').value)||0;
+  if(!item){alert('Informe o item.');return;}
+  if(!encRec[mes])encRec[mes]=[];
+  encRec[mes].push({item,qtd});
+  dbSave();
+  document.getElementById('encRecItem').value='';
+  document.getElementById('encRecQtd').value=0;
+  renderEncRec(mes);
+}
+function removerEncRec(mes,i){
+  encRec[mes].splice(i,1);
+  dbSave();
+  renderEncRec(mes);
+}
+
+/* ═══════════════════════════════════ EXCEL INDICADORES ═══════════════════════════════════ */
+function exportarExcelIndicadores(){
+  const mes=document.getElementById('indMes').value;
+  if(!mes){alert('Selecione o mês primeiro e clique em Gerar.');return;}
+  const {atv,prf,n}=calcInd(mes);
+  const unid=document.getElementById('indUnidade').value;
+  const assist=document.getElementById('indAssistente').value;
+  const wb=XLSX.utils.book_new();
+
+  function buildSheet(items,data,titulo){
+    const rows=[[titulo],['Unidade:',unid,'Mês:',mes,'Assistente Social:',assist],[]];
+    const hd=['Atividade / Perfil']; for(let d=1;d<=n;d++) hd.push(d); hd.push('TOTAL');
+    rows.push(hd);
+    items.forEach((item,i)=>{
+      const row=[item]; let tot=0;
+      for(let d=1;d<=n;d++){const v=(data[i]&&data[i][d])||0; row.push(v); tot+=v;}
+      row.push(tot); rows.push(row);
+    });
+    const prodRow=['Produtividade diária']; let gTot=0;
+    for(let d=1;d<=n;d++){let c=0;items.forEach((_,i)=>c+=(data[i]&&data[i][d])||0);prodRow.push(c);gTot+=c;}
+    prodRow.push(gTot); rows.push(prodRow);
+    const ws=XLSX.utils.aoa_to_sheet(rows);
+    ws['!cols']=[{wch:28},...Array(n).fill({wch:5}),{wch:8}];
+    return ws;
+  }
+
+  XLSX.utils.book_append_sheet(wb,buildSheet(ATIVIDADES,atv,'Atividades Realizadas'),'Atividades');
+  XLSX.utils.book_append_sheet(wb,buildSheet(PERFIL,prf,'Perfil dos Usuários'),'Perfil');
+
+  // Aba atendimentos raw
+  const rows2=[['Data','Idade','Tipo Atendimento','Atividades','Perfil','Obs']];
+  Object.values(pacDB).filter(r=>r.data.startsWith(mes))
+    .sort((a,b)=>a.data<b.data?-1:1)
+    .forEach(r=>rows2.push([r.data,r.idade,r.tipoAtend||'',(r.atividades||[]).join('; '),(r.perfil||[]).join('; '),r.obs||'']));
+  const ws3=XLSX.utils.aoa_to_sheet(rows2);
+  ws3['!cols']=[{wch:12},{wch:8},{wch:30},{wch:60},{wch:40},{wch:30}];
+  XLSX.utils.book_append_sheet(wb,ws3,'Registros Individuais');
+
+  XLSX.writeFile(wb,`indicadores_${mes}.xlsx`);
+}
+
+/* ═══════════════════════════════════ EXCEL ENCAMINHAMENTOS ═══════════════════════════════════ */
+function exportarExcelEnc(){
+  const mes=document.getElementById('encMes').value;
+  if(!mes){alert('Selecione o mês.');return;}
+  const n=diasNoMes(mes);
+  const wb=XLSX.utils.book_new();
+  const k=`enc3_${mes}`;
+
+  // Violência
+  const rv=[['Violência Interpessoal'],['Tipo',...VIOL_COLS,'TOTAL']];
+  VIOL_INTER.forEach((t,r)=>{
+    const row=[t]; let tot=0;
+    VIOL_COLS.forEach((_,c)=>{const v=getViolVal(mes,'vi',r,c);row.push(v);tot+=v;});
+    row.push(tot);rv.push(row);
+  });
+  rv.push([]);rv.push(['Violência Autoprovocada'],['Tipo',...VIOL_COLS,'TOTAL']);
+  VIOL_AUTO.forEach((t,r)=>{
+    const row=[t]; let tot=0;
+    VIOL_COLS.forEach((_,c)=>{const v=getViolVal(mes,'va',r,c);row.push(v);tot+=v;});
+    row.push(tot);rv.push(row);
+  });
+  const wv=XLSX.utils.aoa_to_sheet(rv);
+  wv['!cols']=[{wch:26},...Array(7).fill({wch:12})];
+  XLSX.utils.book_append_sheet(wb,wv,'Violência');
+
+  // Encaminhamentos
+  const re=[['Encaminhamentos por Dia'],['Dia',...ENC_DEST,'Total']];
+  for(let d=1;d<=n;d++){
+    const row=[d]; let tot=0;
+    ENC_DEST.forEach((_,c)=>{const v=(encDB[k]&&encDB[k][d]&&encDB[k][d][c])||0;row.push(v);tot+=v;});
+    row.push(tot);re.push(row);
+  }
+  const totRow=['TOTAL']; let gTot=0;
+  ENC_DEST.forEach((_,c)=>{let col=0;for(let d=1;d<=n;d++)col+=(encDB[k]&&encDB[k][d]&&encDB[k][d][c])||0;totRow.push(col);gTot+=col;});
+  totRow.push(gTot);re.push(totRow);
+  const we=XLSX.utils.aoa_to_sheet(re);
+  we['!cols']=[{wch:6},...Array(ENC_DEST.length+1).fill({wch:10})];
+  XLSX.utils.book_append_sheet(wb,we,'Encaminhamentos');
+
+  XLSX.writeFile(wb,`encaminhamentos_${mes}.xlsx`);
+}
+
+/* ═══════════════════════════════════ DASHBOARD ═══════════════════════════════════ */
+let cFaixa=null,cAtiv=null,cMensal=null;
+
+function renderDash(){
+  const p=document.getElementById('dashPeriodo').value;
+  let regs=Object.values(pacDB);
+  if(p==='mes') regs=regs.filter(r=>r.data.startsWith(mesAtual));
+  else if(p==='ano') regs=regs.filter(r=>r.data.startsWith(String(anoAtual)));
+
+  const total=regs.length;
+  const idades=regs.map(r=>+r.idade);
+  const idadeMed=idades.length?Math.round(idades.reduce((a,b)=>a+b,0)/idades.length):0;
+  const diasUnicos=new Set(regs.map(r=>r.data)).size;
+  const mediaDia=diasUnicos?+(total/diasUnicos).toFixed(1):0;
+
+  document.getElementById('dashMetrics').innerHTML=`
+    <div class="mc"><div class="mc-lbl">Total registros</div><div class="mc-val">${total.toLocaleString('pt-BR')}</div><div class="mc-sub">${diasUnicos} dias atendidos</div></div>
+    <div class="mc"><div class="mc-lbl">Média por dia</div><div class="mc-val">${mediaDia}</div></div>
+    <div class="mc"><div class="mc-lbl">Idade média</div><div class="mc-val">${idadeMed} a</div></div>
+    <div class="mc"><div class="mc-lbl">Perfis distintos</div><div class="mc-val">${new Set(regs.flatMap(r=>r.perfil||[])).size}</div></div>`;
+
+  // Faixas etárias
+  const faixas=[['18–29',[18,29]],['30–39',[30,39]],['40–49',[40,49]],['50–59',[50,59]],
+    ['60–69',[60,69]],['70–79',[70,79]],['80–89',[80,89]],['90–100',[90,100]]];
+  const colors=['#378ADD','#1D9E75','#D85A30','#D4537E','#7F77DD','#639922','#BA7517','#E24B4A'];
+  const fVals=faixas.map(([,[a,b]])=>regs.filter(r=>r.idade>=a&&r.idade<=b).length);
+  if(cFaixa)cFaixa.destroy();
+  cFaixa=new Chart(document.getElementById('cFaixa'),{
+    type:'bar',data:{labels:faixas.map(([l])=>l),datasets:[{data:fVals,backgroundColor:colors,borderWidth:0,borderRadius:4}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true},x:{grid:{display:false}}}}
+  });
+
+  // Atividades top
+  const atvCount={};
+  regs.forEach(r=>(r.atividades||[]).forEach(a=>atvCount[a]=(atvCount[a]||0)+1));
+  const topAtv=Object.entries(atvCount).sort((a,b)=>b[1]-a[1]).slice(0,8);
+  if(cAtiv)cAtiv.destroy();
+  cAtiv=new Chart(document.getElementById('cAtiv'),{
+    type:'bar',
+    data:{labels:topAtv.map(([a])=>a.length>25?a.slice(0,23)+'…':a),datasets:[{data:topAtv.map(([,v])=>v),backgroundColor:'#1B4F8A',borderWidth:0,borderRadius:4}]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{beginAtZero:true},y:{grid:{display:false},ticks:{font:{size:10}}}}}
+  });
+
+  // Mensal
+  const meses=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+  const mVals=meses.map((_,mi)=>Object.values(pacDB).filter(r=>r.data.startsWith(anoAtual+'-'+String(mi+1).padStart(2,'0'))).length);
+  if(cMensal)cMensal.destroy();
+  cMensal=new Chart(document.getElementById('cMensal'),{
+    type:'line',
+    data:{labels:meses,datasets:[{data:mVals,borderColor:'#1B4F8A',backgroundColor:'rgba(27,79,138,.1)',fill:true,tension:.35,pointRadius:4,pointBackgroundColor:'#1B4F8A',borderWidth:2}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true},x:{grid:{display:false}}}}
+  });
+}
+</script>
+</body>
+</html>
