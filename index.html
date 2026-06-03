@@ -24,8 +24,8 @@ html{font-size:14px}
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 
 /* HEADER */
-.hdr{background:var(--surface);border-bottom:1px solid var(--border);padding:0 20px;
-  display:flex;align-items:center;gap:12px;height:54px;position:sticky;top:0;z-index:200}
+.hdr{background:var(--surface);border-bottom:1px solid var(--border);padding:0 16px;
+  display:flex;align-items:center;gap:10px;height:54px;position:sticky;top:0;z-index:200}
 .hdr-logo{font-size:15px;font-weight:600;color:var(--accent);display:flex;align-items:center;gap:7px;letter-spacing:-.02em;white-space:nowrap}
 .hdr-logo svg{width:20px;height:20px}
 .hdr-nav{display:flex;gap:2px;margin-left:8px;flex-wrap:wrap}
@@ -36,6 +36,39 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .hdr-right{margin-left:auto;display:flex;align-items:center;gap:8px}
 .chip{padding:3px 10px;border-radius:20px;font-size:11px;font-weight:500;
   background:var(--s2);color:var(--t2);border:1px solid var(--border)}
+
+/* HAMBURGUER — só aparece no mobile */
+.hbg{display:none;flex-direction:column;justify-content:center;gap:5px;
+  width:38px;height:38px;padding:7px 8px;border:1px solid var(--border);
+  border-radius:var(--rad);background:var(--surface);cursor:pointer;flex-shrink:0}
+.hbg span{display:block;height:2px;background:var(--text);border-radius:2px;transition:all .2s}
+
+/* DRAWER — menu lateral mobile */
+.drawer-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:300}
+.drawer-overlay.on{display:block}
+.drawer{position:fixed;top:0;left:-280px;width:260px;height:100%;
+  background:var(--surface);z-index:400;transition:left .25s ease;
+  display:flex;flex-direction:column;box-shadow:4px 0 20px rgba(0,0,0,.12)}
+.drawer.on{left:0}
+.drawer-hdr{padding:16px 18px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between}
+.drawer-hdr span{font-size:14px;font-weight:600;color:var(--accent)}
+.drawer-hdr button{background:transparent;border:none;font-size:22px;cursor:pointer;color:var(--t2);line-height:1}
+.drawer-nav{display:flex;flex-direction:column;padding:10px 10px;gap:2px;flex:1;overflow-y:auto}
+.drawer-nav .nb{text-align:left;padding:11px 14px;font-size:14px;border-radius:8px;width:100%}
+.drawer-chips{padding:12px 14px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:6px}
+
+@media(max-width:768px){
+  .hdr-nav{display:none}
+  .hbg{display:flex}
+  .main{padding:14px 12px}
+  .fbar{gap:6px;padding:10px 12px}
+  .fbar label{display:none}
+  .g2col{grid-template-columns:1fr!important}
+  .mrow{grid-template-columns:1fr 1fr}
+  .mc-val{font-size:20px}
+  .modal{max-height:95vh}
+}
 
 /* LAYOUT */
 .main{max-width:1180px;margin:0 auto;padding:22px 18px}
@@ -175,7 +208,46 @@ tbody tr:hover td{background:var(--s2)}
 </head>
 <body>
 
+<!-- DRAWER MOBILE -->
+<div class="drawer-overlay" id="drawerOverlay" onclick="fecharDrawer()"></div>
+<div class="drawer" id="drawer">
+  <div class="drawer-hdr">
+    <span>Serviço Social</span>
+    <button onclick="fecharDrawer()" aria-label="Fechar menu">×</button>
+  </div>
+  <nav class="drawer-nav">
+    <button class="nb on"  onclick="goPage('atend');fecharDrawer()">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:6px;vertical-align:middle"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+      Atendimentos
+    </button>
+    <button class="nb" onclick="goPage('demanda');fecharDrawer()">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:6px;vertical-align:middle"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      Demanda Espontânea
+    </button>
+    <button class="nb" onclick="goPage('ind');fecharDrawer()">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:6px;vertical-align:middle"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      Indicadores
+    </button>
+    <button class="nb" onclick="goPage('enc');fecharDrawer()">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:6px;vertical-align:middle"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      Encaminhamentos
+    </button>
+    <button class="nb" onclick="goPage('dash');fecharDrawer()">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:6px;vertical-align:middle"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      Dashboard
+    </button>
+  </nav>
+  <div class="drawer-chips">
+    <span class="chip" id="chipSyncD" onclick="abrirConfigGH();fecharDrawer()" style="cursor:pointer;text-align:center">⚙ GitHub</span>
+    <span class="chip" id="chipTotalD" style="text-align:center">0 registros</span>
+  </div>
+</div>
+
 <header class="hdr">
+  <!-- Hamburguer — só aparece no mobile -->
+  <button class="hbg" onclick="abrirDrawer()" aria-label="Abrir menu">
+    <span></span><span></span><span></span>
+  </button>
   <div class="hdr-logo">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
@@ -309,6 +381,39 @@ tbody tr:hover td{background:var(--s2)}
     <div class="card">
       <div class="ct">Distribuição por Faixa Etária</div>
       <div style="position:relative;height:200px"><canvas id="deFaixaChart"></canvas></div>
+    </div>
+  </div>
+
+  <!-- Tabela por idade específica -->
+  <div class="card">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+      <div class="ct" style="margin-bottom:0">Quantidade por Idade Específica</div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <label style="font-size:12px;color:var(--t2)">Ordenar:</label>
+        <select id="deIdadeOrdem" onchange="renderDeIdadeTabela()" style="font-size:12px;padding:4px 8px">
+          <option value="idade">Por idade</option>
+          <option value="qtd">Por quantidade</option>
+        </select>
+      </div>
+    </div>
+    <div class="g2col" style="gap:12px">
+      <div class="tbl-wrap" style="max-height:360px">
+        <table>
+          <thead>
+            <tr>
+              <th>Idade</th>
+              <th>Qtd. Demandas</th>
+              <th>% do Total</th>
+              <th>Perfis</th>
+            </tr>
+          </thead>
+          <tbody id="deIdadeTblBody"></tbody>
+        </table>
+        <div id="deIdadeEmpty" class="empty" style="display:none">Sem dados.</div>
+      </div>
+      <div style="position:relative;height:360px">
+        <canvas id="deIdadeChart"></canvas>
+      </div>
     </div>
   </div>
 </div>
@@ -732,8 +837,6 @@ function dbSave(){
 
 /* ── Status de sync no chip ── */
 function setSyncStatus(state, msg){
-  const el=document.getElementById('chipSync');
-  if(!el) return;
   const states={
     ok:     {txt:'✓ GitHub',  style:'background:#E1F5EE;color:#0F6E56;border-color:#9FE1CB'},
     pending:{txt:'● pendente',style:'background:var(--am2);color:var(--amber);border-color:#e8c96a'},
@@ -742,15 +845,23 @@ function setSyncStatus(state, msg){
     off:    {txt:'⚙ GitHub',  style:''},
   };
   const s=states[state]||states.off;
-  el.textContent=s.txt;
-  el.style.cssText='cursor:pointer;'+s.style;
+  ['chipSync','chipSyncD'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el) return;
+    el.textContent=s.txt;
+    el.style.cssText='cursor:pointer;'+s.style;
+  });
   if(msg) console.warn('[GitHub sync]',msg);
 }
 
 function updateChip(){
   const n=Object.keys(pacDB).length;
-  document.getElementById('chipTotal').textContent=n+(n===1?' registro':' registros');
-  if(!ghOk()) setSyncStatus('off');
+  const txt=n+(n===1?' registro':' registros');
+  const el=document.getElementById('chipTotal');
+  const elD=document.getElementById('chipTotalD');
+  if(el) el.textContent=txt;
+  if(elD) elD.textContent=txt;
+  if(!ghOk()){ setSyncStatus('off'); }
 }
 
 /* ── Modal de configuração ── */
@@ -835,12 +946,31 @@ function diasNoMes(ym){
 function uid(){ return nextId++; }
 
 /* ═══════════════════════════════════ NAVEGAÇÃO ═══════════════════════════════════ */
+function abrirDrawer(){
+  document.getElementById('drawer').classList.add('on');
+  document.getElementById('drawerOverlay').classList.add('on');
+  document.body.style.overflow='hidden';
+}
+function fecharDrawer(){
+  document.getElementById('drawer').classList.remove('on');
+  document.getElementById('drawerOverlay').classList.remove('on');
+  document.body.style.overflow='';
+}
+// Fechar drawer com Escape
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') fecharDrawer(); });
+
 function goPage(p){
   document.querySelectorAll('.page').forEach(e=>e.classList.remove('on'));
+  // Sincroniza nav desktop e drawer
   document.querySelectorAll('.nb').forEach(e=>e.classList.remove('on'));
   document.getElementById('page-'+p).classList.add('on');
   const idx={atend:0,demanda:1,ind:2,enc:3,dash:4}[p];
-  document.querySelectorAll('.nb')[idx].classList.add('on');
+  // nav desktop: botões dentro de .hdr-nav
+  const desktopBtns=document.querySelectorAll('.hdr-nav .nb');
+  if(desktopBtns[idx]) desktopBtns[idx].classList.add('on');
+  // drawer: botões dentro de .drawer-nav
+  const drawerBtns=document.querySelectorAll('.drawer-nav .nb');
+  if(drawerBtns[idx]) drawerBtns[idx].classList.add('on');
   if(p==='dash') renderDash();
   if(p==='demanda'){ document.getElementById('deDia').value=hoje; filtrarDemanda(); }
 }
@@ -1474,6 +1604,7 @@ function renderDemanda(regs, titulo){
   // ── Perfil dist ──
   renderDePerfDist(regs);
   renderDeFaixa(regs);
+  renderDeIdadeTabela();
 }
 
 function renderDePerfDist(regs){
@@ -1511,6 +1642,89 @@ function renderDeFaixa(regs){
   });
 }
 
+let _deIdadeChart = null;
+
+function renderDeIdadeTabela(){
+  const regs = _deRegsAtual;
+  const body  = document.getElementById('deIdadeTblBody');
+  const empty = document.getElementById('deIdadeEmpty');
+  if(!body) return;
+
+  if(!regs.length){
+    body.innerHTML=''; empty.style.display='block';
+    if(_deIdadeChart){ _deIdadeChart.destroy(); _deIdadeChart=null; }
+    return;
+  }
+  empty.style.display='none';
+
+  // Conta por idade exata
+  const cnt   = {}; // { idade: { qtd, perfis: {p:n} } }
+  const total = regs.length;
+  regs.forEach(r=>{
+    const idade = r.idade;
+    if(!cnt[idade]) cnt[idade]={ qtd:0, perfis:{} };
+    cnt[idade].qtd++;
+    (r.perfil||[]).forEach(p=>{
+      cnt[idade].perfis[p] = (cnt[idade].perfis[p]||0)+1;
+    });
+  });
+
+  const ordem = document.getElementById('deIdadeOrdem')?.value || 'idade';
+  let entries = Object.entries(cnt).map(([idade, v])=>({ idade:+idade, qtd:v.qtd, perfis:v.perfis }));
+  if(ordem==='idade') entries.sort((a,b)=>a.idade-b.idade);
+  else                entries.sort((a,b)=>b.qtd-a.qtd);
+
+  // Tabela
+  body.innerHTML = entries.map(e=>{
+    const pct  = total ? (e.qtd/total*100).toFixed(1) : 0;
+    const topP = Object.entries(e.perfis).sort((a,b)=>b[1]-a[1]).map(([p,n])=>
+      `<span class="tag tag-p" style="font-size:10px;padding:1px 6px">${p}${n>1?' ('+n+')':''}</span>`
+    ).join('');
+    return `<tr>
+      <td><strong>${e.idade} anos</strong></td>
+      <td><span class="badge badge-b">${e.qtd}</span></td>
+      <td style="font-family:'DM Mono',monospace;font-size:12px">${pct}%</td>
+      <td><div class="tag-list">${topP}</div></td>
+    </tr>`;
+  }).join('');
+
+  // Linha de total
+  body.innerHTML += `<tr style="background:var(--a2)">
+    <td style="font-weight:600;color:var(--accent)">Total</td>
+    <td><span class="badge badge-b">${total}</span></td>
+    <td style="font-family:'DM Mono',monospace;font-size:12px">100%</td>
+    <td></td>
+  </tr>`;
+
+  // Gráfico — sempre ordenado por idade para o gráfico
+  const chartEntries = [...entries].sort((a,b)=>a.idade-b.idade);
+  if(_deIdadeChart) _deIdadeChart.destroy();
+  _deIdadeChart = new Chart(document.getElementById('deIdadeChart'),{
+    type: 'bar',
+    data:{
+      labels: chartEntries.map(e=>e.idade+' a'),
+      datasets:[{
+        data: chartEntries.map(e=>e.qtd),
+        backgroundColor: '#1B4F8A',
+        borderRadius: 4,
+        borderWidth: 0,
+      }]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{display:false}, tooltip:{ callbacks:{
+        label: ctx => ` ${ctx.parsed.y} demanda(s) — ${(ctx.parsed.y/total*100).toFixed(1)}%`
+      }}},
+      scales:{
+        y:{ beginAtZero:true, ticks:{stepSize:1}, grid:{color:'rgba(0,0,0,.04)'} },
+        x:{ grid:{display:false}, ticks:{font:{size:10}} }
+      }
+    }
+  });
+}
+
+
+
 function exportarExcelDemanda(){
   const regs=_deRegsAtual;
   if(!regs.length){alert('Nenhuma demanda para exportar. Aplique um filtro primeiro.');return;}
@@ -1524,29 +1738,47 @@ function exportarExcelDemanda(){
   ws1['!cols']=[{wch:12},{wch:8},{wch:25},{wch:35}];
   XLSX.utils.book_append_sheet(wb,ws1,'Demandas');
 
+  // Aba por idade específica
+  const cntI={};
+  regs.forEach(r=>{
+    if(!cntI[r.idade]) cntI[r.idade]={qtd:0,perfis:{}};
+    cntI[r.idade].qtd++;
+    (r.perfil||[]).forEach(p=>{ cntI[r.idade].perfis[p]=(cntI[r.idade].perfis[p]||0)+1; });
+  });
+  const r2=[['Idade (anos)','Qtd. Demandas','% do Total','Perfis']];
+  Object.entries(cntI).sort((a,b)=>+a[0]-+b[0]).forEach(([idade,v])=>{
+    const pct=parseFloat((v.qtd/regs.length*100).toFixed(1));
+    const perfisStr=Object.entries(v.perfis).sort((a,b)=>b[1]-a[1]).map(([p,n])=>n>1?`${p} (${n})`:p).join(', ');
+    r2.push([+idade, v.qtd, pct, perfisStr]);
+  });
+  r2.push([],['TOTAL',regs.length,100,'']);
+  const ws2=XLSX.utils.aoa_to_sheet(r2);
+  ws2['!cols']=[{wch:14},{wch:14},{wch:12},{wch:40}];
+  XLSX.utils.book_append_sheet(wb,ws2,'Por Idade');
+
   // Aba perfil
   const cnt={};
   regs.forEach(r=>(r.perfil||[]).forEach(p=>cnt[p]=(cnt[p]||0)+1));
-  const r2=[['Perfil','Qtd','% do Total']];
+  const r3=[['Perfil','Qtd','% do Total']];
   const tot=Object.values(cnt).reduce((s,v)=>s+v,0);
   Object.entries(cnt).sort((a,b)=>b[1]-a[1])
-    .forEach(([p,v])=>r2.push([p,v,parseFloat((v/tot*100).toFixed(1))]));
-  r2.push(['TOTAL',tot,100]);
-  const ws2=XLSX.utils.aoa_to_sheet(r2);
-  ws2['!cols']=[{wch:25},{wch:8},{wch:12}];
-  XLSX.utils.book_append_sheet(wb,ws2,'Por Perfil');
+    .forEach(([p,v])=>r3.push([p,v,parseFloat((v/tot*100).toFixed(1))]));
+  r3.push(['TOTAL',tot,100]);
+  const ws3=XLSX.utils.aoa_to_sheet(r3);
+  ws3['!cols']=[{wch:25},{wch:8},{wch:12}];
+  XLSX.utils.book_append_sheet(wb,ws3,'Por Perfil');
 
   // Aba faixa etária
   const faixas=[['18–29',[18,29]],['30–39',[30,39]],['40–49',[40,49]],['50–59',[50,59]],
     ['60–69',[60,69]],['70–79',[70,79]],['80–89',[80,89]],['90–100',[90,100]]];
-  const r3=[['Faixa Etária','Qtd','% do Total']];
+  const r4=[['Faixa Etária','Qtd','% do Total']];
   faixas.forEach(([l,[a,b]])=>{
     const v=regs.filter(r=>r.idade>=a&&r.idade<=b).length;
-    r3.push([l,v,parseFloat((v/regs.length*100).toFixed(1))]);
+    r4.push([l,v,parseFloat((v/regs.length*100).toFixed(1))]);
   });
-  const ws3=XLSX.utils.aoa_to_sheet(r3);
-  ws3['!cols']=[{wch:14},{wch:8},{wch:12}];
-  XLSX.utils.book_append_sheet(wb,ws3,'Por Faixa Etária');
+  const ws4=XLSX.utils.aoa_to_sheet(r4);
+  ws4['!cols']=[{wch:14},{wch:8},{wch:12}];
+  XLSX.utils.book_append_sheet(wb,ws4,'Por Faixa Etária');
 
   XLSX.writeFile(wb,`demanda_espontanea_${hoje}.xlsx`);
 }
