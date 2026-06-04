@@ -181,19 +181,6 @@
       ],
       "obs": "",
       "criado": "2026-06-03T15:00:36.230Z"
-    },
-    "16": {
-      "id": 16,
-      "data": "2026-06-04",
-      "idade": 37,
-      "atividades": [
-        "Atendimento de Demanda Espontânea"
-      ],
-      "perfil": [
-        "Homem adulto"
-      ],
-      "obs": "",
-      "criado": "2026-06-04T13:27:09.342Z"
     }
   },
   "istDB": {},
@@ -213,5 +200,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-06-04T13:27:10.846Z"
+  "savedAt": "2026-06-04T13:32:37.614Z"
 }
