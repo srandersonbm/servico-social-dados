@@ -1026,6 +1026,19 @@
       ],
       "obs": "Maria Lúcia",
       "criado": "2026-06-12T23:35:23.216Z"
+    },
+    "83": {
+      "id": 83,
+      "data": "2026-06-11",
+      "idade": 46,
+      "atividades": [
+        "Atendimento de Demanda Espontânea"
+      ],
+      "perfil": [
+        "Homem adulto"
+      ],
+      "obs": "José Alves",
+      "criado": "2026-06-12T23:35:41.884Z"
     }
   },
   "istDB": {},
@@ -1045,5 +1058,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-06-12T23:35:24.719Z"
+  "savedAt": "2026-06-12T23:35:43.387Z"
 }
