@@ -987,6 +987,19 @@
       ],
       "obs": "Marcos",
       "criado": "2026-06-12T23:34:03.133Z"
+    },
+    "80": {
+      "id": 80,
+      "data": "2026-06-11",
+      "idade": 59,
+      "atividades": [
+        "Visita Social Beira Leito"
+      ],
+      "perfil": [
+        "Mulher adulta"
+      ],
+      "obs": "Erisnete",
+      "criado": "2026-06-12T23:34:34.277Z"
     }
   },
   "istDB": {},
@@ -1006,5 +1019,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-06-12T23:34:04.635Z"
+  "savedAt": "2026-06-12T23:34:35.779Z"
 }
