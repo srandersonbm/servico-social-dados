@@ -857,6 +857,19 @@
       ],
       "obs": "Josefa",
       "criado": "2026-06-12T23:28:46.642Z"
+    },
+    "70": {
+      "id": 70,
+      "data": "2026-06-11",
+      "idade": 53,
+      "atividades": [
+        "Atendimento de Demanda Espontânea"
+      ],
+      "perfil": [
+        "Homem adulto"
+      ],
+      "obs": "Adelino",
+      "criado": "2026-06-12T23:29:07.753Z"
     }
   },
   "istDB": {},
@@ -876,5 +889,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-06-12T23:28:48.144Z"
+  "savedAt": "2026-06-12T23:29:09.256Z"
 }
