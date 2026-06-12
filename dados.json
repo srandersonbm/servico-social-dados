@@ -883,6 +883,19 @@
       ],
       "obs": "Mirelly",
       "criado": "2026-06-12T23:29:53.906Z"
+    },
+    "72": {
+      "id": 72,
+      "data": "2026-06-11",
+      "idade": 46,
+      "atividades": [
+        "Atendimento de Demanda Espontânea"
+      ],
+      "perfil": [
+        "Homem adulto"
+      ],
+      "obs": "João",
+      "criado": "2026-06-12T23:30:13.314Z"
     }
   },
   "istDB": {},
@@ -902,5 +915,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-06-12T23:29:55.409Z"
+  "savedAt": "2026-06-12T23:30:14.816Z"
 }
