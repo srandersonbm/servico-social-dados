@@ -1013,6 +1013,19 @@
       ],
       "obs": "Luís Felipe",
       "criado": "2026-06-12T23:34:57.514Z"
+    },
+    "82": {
+      "id": 82,
+      "data": "2026-06-11",
+      "idade": 65,
+      "atividades": [
+        "Visita Social Beira Leito"
+      ],
+      "perfil": [
+        "Pessoa Idosa mulher"
+      ],
+      "obs": "Maria Lúcia",
+      "criado": "2026-06-12T23:35:23.216Z"
     }
   },
   "istDB": {},
@@ -1032,5 +1045,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-06-12T23:34:59.017Z"
+  "savedAt": "2026-06-12T23:35:24.719Z"
 }
