@@ -1260,6 +1260,19 @@
       ],
       "obs": "Encaminhamento para o NIR orientação de cirurgia",
       "criado": "2026-06-17T16:10:29.981Z"
+    },
+    "101": {
+      "id": 101,
+      "data": "2026-06-17",
+      "idade": 32,
+      "atividades": [
+        "Atendimento de Demanda Espontânea"
+      ],
+      "perfil": [
+        "Homem adulto"
+      ],
+      "obs": "Autorização de alimentação- Alexandro",
+      "criado": "2026-06-17T16:17:58.337Z"
     }
   },
   "istDB": {},
@@ -1279,5 +1292,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-06-17T16:10:46.551Z"
+  "savedAt": "2026-06-17T16:17:59.843Z"
 }
