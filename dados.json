@@ -1195,6 +1195,19 @@
       ],
       "obs": "Salviano Lucena",
       "criado": "2026-06-17T14:23:25.409Z"
+    },
+    "96": {
+      "id": 96,
+      "data": "2026-06-17",
+      "idade": 47,
+      "atividades": [
+        "Atendimento de Demanda Espontânea"
+      ],
+      "perfil": [
+        "Homem adulto"
+      ],
+      "obs": "Jorias Lucena",
+      "criado": "2026-06-17T14:24:01.504Z"
     }
   },
   "istDB": {},
@@ -1214,5 +1227,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-06-17T14:23:26.914Z"
+  "savedAt": "2026-06-17T14:24:03.007Z"
 }
