@@ -1247,6 +1247,19 @@
       ],
       "obs": "Maria Francilene",
       "criado": "2026-06-17T14:26:37.172Z"
+    },
+    "100": {
+      "id": 100,
+      "data": "2026-06-17",
+      "idade": 24,
+      "atividades": [
+        "Atendimento de Demanda Espontânea"
+      ],
+      "perfil": [
+        "Mulher adulta"
+      ],
+      "obs": "Encaminhamento para o NIR orientação de cirurgia",
+      "criado": "2026-06-17T16:10:29.981Z"
     }
   },
   "istDB": {},
@@ -1266,5 +1279,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-06-17T14:26:38.675Z"
+  "savedAt": "2026-06-17T16:10:31.485Z"
 }
