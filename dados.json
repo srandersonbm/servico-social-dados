@@ -1403,6 +1403,19 @@
       ],
       "obs": "Euderenice",
       "criado": "2026-06-19T13:27:52.496Z"
+    },
+    "112": {
+      "id": 112,
+      "data": "2026-06-17",
+      "idade": 39,
+      "atividades": [
+        "Atendimento de Demanda Espontânea"
+      ],
+      "perfil": [
+        "Homem adulto"
+      ],
+      "obs": "Bemael",
+      "criado": "2026-06-19T13:28:19.571Z"
     }
   },
   "istDB": {},
@@ -1422,5 +1435,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-06-19T13:27:53.998Z"
+  "savedAt": "2026-06-19T13:28:21.073Z"
 }
