@@ -2131,6 +2131,19 @@
       ],
       "obs": "Margarida",
       "criado": "2026-06-24T17:51:00.830Z"
+    },
+    "169": {
+      "id": 169,
+      "data": "2026-06-23",
+      "idade": 39,
+      "atividades": [
+        "Contatos Institucionais/Familiares"
+      ],
+      "perfil": [
+        "Mulher adulta"
+      ],
+      "obs": "Livia",
+      "criado": "2026-06-24T17:51:50.187Z"
     }
   },
   "istDB": {},
@@ -2150,5 +2163,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-06-24T17:51:02.335Z"
+  "savedAt": "2026-06-24T17:51:51.690Z"
 }
