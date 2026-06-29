@@ -2443,6 +2443,19 @@
       ],
       "obs": "JURANI MENEZES LOPES - encaminhamento",
       "criado": "2026-06-29T22:15:03.514Z"
+    },
+    "193": {
+      "id": 193,
+      "data": "2026-06-29",
+      "idade": 58,
+      "atividades": [
+        "Atendimento de Demanda Espontânea"
+      ],
+      "perfil": [
+        "Homem adulto"
+      ],
+      "obs": "EDILSON",
+      "criado": "2026-06-29T22:15:47.690Z"
     }
   },
   "istDB": {},
@@ -2462,5 +2475,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-06-29T22:15:05.020Z"
+  "savedAt": "2026-06-29T22:15:49.195Z"
 }
