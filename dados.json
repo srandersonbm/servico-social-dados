@@ -2924,6 +2924,19 @@
       ],
       "obs": "GLEICIANE 32 ANOS",
       "criado": "2026-07-04T21:23:16.634Z"
+    },
+    "230": {
+      "id": 230,
+      "data": "2026-07-04",
+      "idade": 50,
+      "atividades": [
+        "Atendimento de Demanda Espontânea"
+      ],
+      "perfil": [
+        "Mulher adulta"
+      ],
+      "obs": "LUCELIA",
+      "criado": "2026-07-04T21:24:06.692Z"
     }
   },
   "istDB": {},
@@ -2943,5 +2956,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-07-04T21:23:18.140Z"
+  "savedAt": "2026-07-04T21:24:08.198Z"
 }
