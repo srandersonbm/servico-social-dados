@@ -228,14 +228,6 @@ tbody tr:hover td{background:var(--s2)}
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:6px;vertical-align:middle"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
       Indicadores
     </button>
-    <button class="nb" onclick="goPage('enc');fecharDrawer()">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:6px;vertical-align:middle"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-      Encaminhamentos
-    </button>
-    <button class="nb" onclick="goPage('dash');fecharDrawer()">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:6px;vertical-align:middle"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-      Dashboard
-    </button>
   </nav>
   <div class="drawer-chips">
     <span class="chip" id="chipSyncD" onclick="abrirConfigGH();fecharDrawer()" style="cursor:pointer;text-align:center">⚙ GitHub</span>
@@ -260,8 +252,8 @@ tbody tr:hover td{background:var(--s2)}
     <button class="nb on"  onclick="goPage('atend')">Atendimentos</button>
     <button class="nb"     onclick="goPage('demanda')">Demanda Espontânea</button>
     <button class="nb"     onclick="goPage('ind')">Indicadores</button>
-    <button class="nb"     onclick="goPage('enc')">Encaminhamentos</button>
-    <button class="nb"     onclick="goPage('dash')">Dashboard</button>
+    <button class="nb" style="display:none" onclick="goPage('enc')">Encaminhamentos</button>
+    <button class="nb" style="display:none" onclick="goPage('dash')">Dashboard</button>
   </nav>
   <div class="hdr-right">
     <span class="chip" id="chipSync" onclick="abrirConfigGH()" title="Configurar GitHub" style="cursor:pointer">⚙ GitHub</span>
@@ -275,34 +267,57 @@ tbody tr:hover td{background:var(--s2)}
 <div id="page-atend" class="page on">
 
   <!-- Barra de filtro / ações -->
-  <div class="fbar">
-    <label>Filtrar:</label>
-    <select id="fTipo" onchange="mudarFiltroAtend()">
-      <option value="dia">Dia</option>
-      <option value="mes">Mês</option>
-      <option value="periodo">Período</option>
-    </select>
-    <span id="fs-dia" style="display:flex;align-items:center;gap:6px">
-      <input type="date" id="fDia"/>
-    </span>
-    <span id="fs-mes" style="display:none;align-items:center;gap:6px">
-      <input type="month" id="fMes"/>
-    </span>
-    <span id="fs-periodo" style="display:none;align-items:center;gap:6px">
-      <input type="date" id="fIni"/> <span style="color:var(--t3)">até</span> <input type="date" id="fFim"/>
-    </span>
-    <button class="btn btn-p" onclick="filtrarAtend()">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      Filtrar
-    </button>
-    <button class="btn btn-p" onclick="abrirModal()">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-      Novo Atendimento
-    </button>
-    <button class="btn btn-xl" onclick="exportarExcelAtend()">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-      Excel
-    </button>
+  <div class="fbar" style="flex-wrap:wrap;gap:8px">
+    <!-- Linha 1: período -->
+    <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;width:100%">
+      <select id="fTipo" onchange="mudarFiltroAtend()" style="min-width:90px">
+        <option value="dia">Dia</option>
+        <option value="mes">Mês</option>
+        <option value="periodo">Período</option>
+        <option value="todos">Todos</option>
+      </select>
+      <span id="fs-dia" style="display:flex;align-items:center;gap:6px">
+        <input type="date" id="fDia"/>
+      </span>
+      <span id="fs-mes" style="display:none;align-items:center;gap:6px">
+        <input type="month" id="fMes"/>
+      </span>
+      <span id="fs-periodo" style="display:none;align-items:center;gap:6px">
+        <input type="date" id="fIni"/> <span style="color:var(--t3)">até</span> <input type="date" id="fFim"/>
+      </span>
+      <button class="btn btn-p" onclick="filtrarAtend()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        Filtrar
+      </button>
+      <button class="btn btn-p" onclick="abrirModal()" style="margin-left:auto">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Novo Atendimento
+      </button>
+      <button class="btn" onclick="abrirImportModal()" style="background:#6B3FA0;color:#fff;border-color:#6B3FA0">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+        + Relatório
+      </button>
+      <button class="btn btn-xl" onclick="exportarExcelAtend()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Excel
+      </button>
+    </div>
+    <!-- Linha 2: filtros adicionais -->
+    <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;width:100%;padding-top:6px;border-top:1px solid var(--border)">
+      <label style="font-size:12px;color:var(--t2);white-space:nowrap">Atividade:</label>
+      <select id="fAtiv" style="min-width:200px;max-width:280px">
+        <option value="">Todas</option>
+      </select>
+      <label style="font-size:12px;color:var(--t2);white-space:nowrap">Perfil:</label>
+      <select id="fPerfil" style="min-width:150px">
+        <option value="">Todos</option>
+      </select>
+      <label style="font-size:12px;color:var(--t2);white-space:nowrap">Idade:</label>
+      <input type="number" id="fIdadeMin" min="18" max="100" placeholder="de" style="width:58px"/>
+      <span style="color:var(--t3);font-size:12px">–</span>
+      <input type="number" id="fIdadeMax" min="18" max="100" placeholder="até" style="width:58px"/>
+      <button class="btn btn-sm" onclick="limparFiltrosExtra()" style="font-size:11px">✕ Limpar filtros</button>
+    </div>
   </div>
 
   <div id="msgAtend" class="msg"></div>
@@ -612,6 +627,63 @@ tbody tr:hover td{background:var(--s2)}
   </div>
 </div>
 
+<!-- ═══════════════════ MODAL IMPORTAR RELATÓRIO ═══════════════════ -->
+<div class="overlay" id="overlayImport">
+  <div class="modal" style="max-width:780px">
+    <div class="modal-hdr">
+      <h2>Importar Relatório de Serviço Social</h2>
+      <button onclick="fecharImportModal()" aria-label="Fechar">×</button>
+    </div>
+    <div class="modal-body">
+      <div id="msgImport" class="msg"></div>
+      <div style="background:var(--a2);border:1px solid var(--a3);border-radius:var(--rad);padding:12px 14px;font-size:12px;color:var(--accent);margin-bottom:14px;line-height:1.6">
+        Cole o texto do relatório abaixo. O sistema identificará automaticamente Fichas Sociais, Demandas Espontâneas, Visitas no Leito e Ligações, extraindo nome, idade, data e atividade de cada registro.
+      </div>
+      <div class="field" style="margin-bottom:12px">
+        <label>Texto do Relatório</label>
+        <textarea id="importTexto" rows="12" placeholder="Cole aqui o texto completo do relatório..." style="font-size:12px;font-family:monospace;line-height:1.5"></textarea>
+      </div>
+      <button class="btn btn-p" onclick="analisarRelatorio()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        Analisar Relatório
+      </button>
+      <!-- Preview dos registros identificados -->
+      <div id="importPreview" style="display:none;margin-top:16px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;flex-wrap:wrap;gap:6px">
+          <div class="ct" style="margin-bottom:0" id="importPreviewTitulo">Registros identificados</div>
+          <div style="display:flex;gap:6px">
+            <button class="btn btn-sm" onclick="selecionarTodosImport(true)">Selecionar todos</button>
+            <button class="btn btn-sm" onclick="selecionarTodosImport(false)">Desmarcar todos</button>
+          </div>
+        </div>
+        <div style="max-height:320px;overflow-y:auto;border:1px solid var(--border);border-radius:var(--rad)">
+          <table style="width:100%;border-collapse:collapse;font-size:12px">
+            <thead>
+              <tr>
+                <th style="padding:7px 10px;border-bottom:1px solid var(--border);background:var(--s2);width:32px"><input type="checkbox" id="chkTodos" onchange="selecionarTodosImport(this.checked)"/></th>
+                <th style="padding:7px 10px;border-bottom:1px solid var(--border);background:var(--s2);text-align:left">Data</th>
+                <th style="padding:7px 10px;border-bottom:1px solid var(--border);background:var(--s2);text-align:left">Nome</th>
+                <th style="padding:7px 10px;border-bottom:1px solid var(--border);background:var(--s2);text-align:left">Idade</th>
+                <th style="padding:7px 10px;border-bottom:1px solid var(--border);background:var(--s2);text-align:left">Perfil</th>
+                <th style="padding:7px 10px;border-bottom:1px solid var(--border);background:var(--s2);text-align:left">Atividade</th>
+                <th style="padding:7px 10px;border-bottom:1px solid var(--border);background:var(--s2);text-align:left">Observação</th>
+              </tr>
+            </thead>
+            <tbody id="importTblBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" onclick="fecharImportModal()">Cancelar</button>
+      <button class="btn" id="btnConfirmarImport" style="display:none;background:#6B3FA0;color:#fff;border-color:#6B3FA0" onclick="confirmarImport()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/></svg>
+        Importar Selecionados
+      </button>
+    </div>
+  </div>
+</div>
+
 <!-- ═══════════════════ MODAL ATENDIMENTO ═══════════════════ -->
 <div class="overlay" id="overlay">
   <div class="modal">
@@ -739,31 +811,51 @@ function ghFileUrl(){
   const branch=c.branch||'main';
   return `https://api.github.com/repos/${c.user}/${c.repo}/contents/dados.json?ref=${branch}`;
 }
+function ghFileUrlRaw(){
+  // Leitura sem autenticação, sem CORS — funciona em qualquer device
+  const c=ghCfg();
+  const branch=c.branch||'main';
+  return `https://raw.githubusercontent.com/${c.user}/${c.repo}/${branch}/dados.json`;
+}
 function ghFileUrlPut(){
   const c=ghCfg();
   return `https://api.github.com/repos/${c.user}/${c.repo}/contents/dados.json`;
+}
+
+/* Busca o SHA atual do arquivo (necessário para PUT) */
+async function ghGetSHA(){
+  try{
+    const res = await fetch(ghFileUrl(), { headers: ghHeaders(), cache:'no-store' });
+    if(res.status===404) return null;
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const j = await res.json();
+    return j.sha||null;
+  } catch(e){
+    return null;
+  }
 }
 
 async function ghPull(){
   if(!ghOk()) return false;
   setSyncStatus('syncing');
   try{
-    const res = await fetch(ghFileUrl(), {
-      headers: ghHeaders(),
-      cache: 'no-store'
-    });
+    // Lê via raw.githubusercontent — sem autenticação, sem problema de CORS no mobile
+    const url = ghFileUrlRaw()+'?t='+Date.now(); // cache-bust
+    const res = await fetch(url, { cache:'no-store' });
+
     if(res.status===404){
+      // Arquivo ainda não existe — ok, será criado no primeiro push
       _ghSHA = null;
       setSyncStatus('ok');
       return true;
     }
-    if(res.status===401){ setSyncStatus('err','Token inválido'); return false; }
-    if(!res.ok) throw new Error('HTTP '+res.status);
-    const json = await res.json();
-    _ghSHA = json.sha;
-    // Decodifica conteúdo base64 do GitHub (pode vir com quebras de linha)
-    const raw = json.content.replace(/\s/g,'');
-    const decoded = JSON.parse(decodeURIComponent(escape(atob(raw))));
+    if(!res.ok) throw new Error('HTTP '+res.status+' ao ler dados');
+
+    const text = await res.text();
+    let decoded;
+    try{ decoded = JSON.parse(text); }
+    catch(e){ throw new Error('Arquivo dados.json inválido no repositório'); }
+
     pacDB  = decoded.pacDB  || {};
     istDB  = decoded.istDB  || {};
     encDB  = decoded.encDB  || {};
@@ -771,11 +863,15 @@ async function ghPull(){
     recalcNextId();
     localSave();
     updateChip();
+
+    // Busca SHA em background para ter pronto no próximo push
+    ghGetSHA().then(sha=>{ if(sha) _ghSHA=sha; });
+
     setSyncStatus('ok');
     return true;
   } catch(e){
     console.error('ghPull',e);
-    setSyncStatus('err','Falha ao carregar: '+e.message);
+    setSyncStatus('err','Leitura: '+e.message);
     return false;
   }
 }
@@ -784,16 +880,11 @@ async function ghPush(){
   if(!ghOk()) return false;
   setSyncStatus('syncing');
   try{
-    // Se não temos SHA, busca antes de tentar escrever
+    // Garante SHA atualizado antes de escrever
     if(!_ghSHA){
-      const check = await fetch(ghFileUrl(), { headers: ghHeaders(), cache:'no-store' });
-      if(check.ok){
-        const j = await check.json();
-        _ghSHA = j.sha;
-      } else if(check.status !== 404){
-        throw new Error('HTTP '+check.status+' ao verificar arquivo');
-      }
+      _ghSHA = await ghGetSHA();
     }
+
     const payload = { pacDB, istDB, encDB, encRec, savedAt: new Date().toISOString() };
     const content = btoa(unescape(encodeURIComponent(JSON.stringify(payload, null, 2))));
     const c = ghCfg();
@@ -803,28 +894,30 @@ async function ghPush(){
       branch: c.branch||'main',
     };
     if(_ghSHA) body.sha = _ghSHA;
+
     const res = await fetch(ghFileUrlPut(), {
       method:'PUT', headers: ghHeaders(), body: JSON.stringify(body)
     });
+
     if(!res.ok){
       const err = await res.json().catch(()=>({}));
-      // SHA desatualizado — pega o novo SHA e tenta de novo (1 retry)
-      if((res.status===409||res.status===422) && !body._retry){
-        _ghSHA = null;
-        body._retry = true;
-        const check2 = await fetch(ghFileUrl(), { headers: ghHeaders(), cache:'no-store' });
-        if(check2.ok){ const j2=await check2.json(); _ghSHA=j2.sha; }
+      if(res.status===401) throw new Error('Token inválido ou expirado');
+      if(res.status===403) throw new Error('Sem permissão — verifique o token');
+      // SHA desatualizado: busca SHA novo e tenta mais uma vez
+      if(res.status===409||res.status===422){
+        _ghSHA = await ghGetSHA();
         return await ghPush();
       }
       throw new Error(err.message||'HTTP '+res.status);
     }
+
     const json = await res.json();
     _ghSHA = json.content?.sha || _ghSHA;
     setSyncStatus('ok');
     return true;
   } catch(e){
     console.error('ghPush',e);
-    setSyncStatus('err','Erro ao salvar: '+e.message);
+    setSyncStatus('err','Escrita: '+e.message);
     return false;
   }
 }
@@ -855,11 +948,11 @@ function dbSave(){
 /* ── Status de sync no chip ── */
 function setSyncStatus(state, msg){
   const states={
-    ok:     {txt:'✓ GitHub',  style:'background:#E1F5EE;color:#0F6E56;border-color:#9FE1CB'},
-    pending:{txt:'● pendente',style:'background:var(--am2);color:var(--amber);border-color:#e8c96a'},
+    ok:     {txt:'✓ GitHub',   style:'background:#E1F5EE;color:#0F6E56;border-color:#9FE1CB'},
+    pending:{txt:'● pendente', style:'background:var(--am2);color:var(--amber);border-color:#e8c96a'},
     syncing:{txt:'↻ sincronizando',style:'background:var(--a2);color:var(--accent);border-color:var(--a3)'},
-    err:    {txt:'✗ erro sync',style:'background:var(--r2);color:var(--red);border-color:#F0997B'},
-    off:    {txt:'⚙ GitHub',  style:''},
+    err:    {txt:'✗ erro sync', style:'background:var(--r2);color:var(--red);border-color:#F0997B'},
+    off:    {txt:'⚙ GitHub',   style:''},
   };
   const s=states[state]||states.off;
   ['chipSync','chipSyncD'].forEach(id=>{
@@ -867,8 +960,14 @@ function setSyncStatus(state, msg){
     if(!el) return;
     el.textContent=s.txt;
     el.style.cssText='cursor:pointer;'+s.style;
+    // No erro, mostra detalhes no console e abre config ao clicar
+    if(state==='err' && msg){
+      el.title=msg;
+      console.error('[GitHub sync]',msg);
+    } else {
+      el.title = state==='off'?'Configurar GitHub':'Status: '+state;
+    }
   });
-  if(msg) console.warn('[GitHub sync]',msg);
 }
 
 function updateChip(){
@@ -914,42 +1013,60 @@ async function testarConexaoGH(){
   const repo   = document.getElementById('ghRepo').value.trim();
   const token  = document.getElementById('ghToken').value.trim();
   const branch = document.getElementById('ghBranch').value.trim()||'main';
-  if(!user||!repo||!token){ showMsg('msgGH','Preencha os campos primeiro.','err'); return; }
-  showMsg('msgGH','Testando conexão…','ok');
+  if(!user||!repo||!token){ showMsg('msgGH','Preencha todos os campos primeiro.','err'); return; }
+
+  showMsg('msgGH','⏳ Testando leitura…','ok');
+
+  // PASSO 1 — leitura via raw (sem autenticação, sem CORS)
   try{
-    // Testa lendo o conteúdo do repositório (rota que sabemos que funciona)
-    const url = `https://api.github.com/repos/${user}/${repo}/contents/?ref=${branch}`;
-    const res = await fetch(url, {
+    const rawUrl = `https://raw.githubusercontent.com/${user}/${repo}/${branch}/dados.json?t=${Date.now()}`;
+    const r1 = await fetch(rawUrl, { cache:'no-store' });
+    // 404 é OK — arquivo ainda não existe
+    if(r1.status!==200 && r1.status!==404){
+      showMsg('msgGH','❌ Repositório não encontrado ou privado sem permissão. Verifique usuário/repositório. (HTTP '+r1.status+')','err');
+      return;
+    }
+  } catch(e){
+    showMsg('msgGH','❌ Erro de rede na leitura: '+e.message+'. Verifique sua conexão.','err');
+    return;
+  }
+
+  showMsg('msgGH','⏳ Testando permissão de escrita…','ok');
+
+  // PASSO 2 — verificação de escrita via API autenticada
+  try{
+    const apiUrl = `https://api.github.com/repos/${user}/${repo}/contents/dados.json?ref=${branch}`;
+    const r2 = await fetch(apiUrl, {
       headers:{
         'Authorization':'token '+token,
         'Accept':'application/vnd.github.v3+json',
         'Cache-Control':'no-cache'
-      }
+      },
+      cache:'no-store'
     });
-    if(res.status===401){
-      showMsg('msgGH','❌ Token inválido ou expirado. Gere um novo token no GitHub.','err'); return;
+    if(r2.status===401){
+      showMsg('msgGH','❌ Token inválido ou expirado. Gere um novo token no GitHub com permissão "repo".','err'); return;
     }
-    if(res.status===403){
-      showMsg('msgGH','❌ Sem permissão. Verifique se o token tem permissão "repo".','err'); return;
+    if(r2.status===403){
+      showMsg('msgGH','❌ Sem permissão de escrita. Verifique se o token tem escopo "repo".','err'); return;
     }
-    if(res.status===404){
-      showMsg('msgGH','❌ Repositório não encontrado. Verifique o usuário e nome.','err'); return;
+    // 200 = arquivo existe, 404 = ainda não existe — ambos OK para escrita
+    if(r2.status!==200 && r2.status!==404){
+      showMsg('msgGH','❌ Erro de autenticação HTTP '+r2.status,'err'); return;
     }
-    if(!res.ok){
-      showMsg('msgGH','❌ Erro HTTP '+res.status+'. Tente novamente.','err'); return;
-    }
-    // Sucesso — salva config e mostra ok
-    localStorage.setItem(KEY_GH, JSON.stringify({user,repo,token,branch}));
-    showMsg('msgGH','✓ Conexão OK! Repositório '+user+'/'+repo+' acessível.','ok');
-    document.getElementById('btnSincNow').style.display='inline-flex';
   } catch(e){
-    // Erro de rede (CORS, offline, etc)
-    if(e.message&&e.message.includes('fetch')){
-      showMsg('msgGH','❌ Erro de rede. Verifique sua conexão com a internet.','err');
-    } else {
-      showMsg('msgGH','❌ '+e.message,'err');
-    }
+    // Falha na API autenticada mas leitura OK — pode ser limitação do browser
+    // Tenta mesmo assim; o push vai revelar se o token é válido
+    showMsg('msgGH','⚠️ Leitura OK, mas não foi possível verificar escrita agora. Salve e tente sincronizar.','ok');
+    localStorage.setItem(KEY_GH, JSON.stringify({user,repo,token,branch}));
+    document.getElementById('btnSincNow').style.display='inline-flex';
+    return;
   }
+
+  // Tudo OK
+  localStorage.setItem(KEY_GH, JSON.stringify({user,repo,token,branch}));
+  showMsg('msgGH','✅ Conexão OK! Repositório '+user+'/'+repo+' pronto para uso.','ok');
+  document.getElementById('btnSincNow').style.display='inline-flex';
 }
 
 async function sincronizarAgora(){
@@ -975,7 +1092,9 @@ function showMsg(id,txt,tipo){
   const el=document.getElementById(id);
   if(!el)return;
   el.textContent=txt; el.className='msg '+tipo; el.style.display='block';
-  clearTimeout(el._t); el._t=setTimeout(()=>el.style.display='none',5000);
+  // Erros ficam 10s, sucesso 5s
+  const dur = tipo==='err' ? 10000 : 5000;
+  clearTimeout(el._t); el._t=setTimeout(()=>el.style.display='none', dur);
 }
 function diasNoMes(ym){
   if(!ym)return 31;
@@ -1124,6 +1243,22 @@ function salvarAtendimento(){
 document.getElementById('fDia').value = hoje;
 document.getElementById('fMes').value = mesAtual;
 
+// Preenche selects de filtro extra
+(function buildFiltroSelects(){
+  const fa=document.getElementById('fAtiv');
+  const fp=document.getElementById('fPerfil');
+  ATIVIDADES.forEach(a=>{ const o=document.createElement('option');o.value=a;o.textContent=a;fa.appendChild(o); });
+  PERFIL.forEach(p=>{ const o=document.createElement('option');o.value=p;o.textContent=p;fp.appendChild(o); });
+})();
+
+function limparFiltrosExtra(){
+  document.getElementById('fAtiv').value='';
+  document.getElementById('fPerfil').value='';
+  document.getElementById('fIdadeMin').value='';
+  document.getElementById('fIdadeMax').value='';
+  filtrarAtend();
+}
+
 function mudarFiltroAtend(){
   const t=document.getElementById('fTipo').value;
   document.getElementById('fs-dia').style.display    = t==='dia'?'flex':'none';
@@ -1135,6 +1270,8 @@ function filtrarAtend(){
   const t=document.getElementById('fTipo').value;
   let regs=Object.values(pacDB);
   let titulo='Todos os atendimentos';
+
+  // Filtro de período
   if(t==='dia'){
     const d=document.getElementById('fDia').value;
     regs=regs.filter(r=>r.data===d);
@@ -1147,6 +1284,24 @@ function filtrarAtend(){
     const ini=document.getElementById('fIni').value, fim=document.getElementById('fFim').value;
     if(ini&&fim){ regs=regs.filter(r=>r.data>=ini&&r.data<=fim); titulo=`Período ${fmtDate(ini)} – ${fmtDate(fim)}`; }
   }
+
+  // Filtros extras
+  const fAtiv   = document.getElementById('fAtiv').value;
+  const fPerfil = document.getElementById('fPerfil').value;
+  const fIdMin  = parseInt(document.getElementById('fIdadeMin').value)||0;
+  const fIdMax  = parseInt(document.getElementById('fIdadeMax').value)||999;
+
+  if(fAtiv)   regs=regs.filter(r=>(r.atividades||[]).includes(fAtiv));
+  if(fPerfil) regs=regs.filter(r=>(r.perfil||[]).includes(fPerfil));
+  if(fIdMin>0 || fIdMax<999) regs=regs.filter(r=>r.idade>=fIdMin&&r.idade<=fIdMax);
+
+  // Indica filtros ativos no título
+  const extras=[];
+  if(fAtiv) extras.push(fAtiv);
+  if(fPerfil) extras.push(fPerfil);
+  if(fIdMin>0||fIdMax<999) extras.push(`${fIdMin||18}–${fIdMax||100} anos`);
+  if(extras.length) titulo += ' · '+extras.join(' · ');
+
   regs.sort((a,b)=>a.data<b.data?-1:a.data>b.data?1:0);
   _filtroAtual=regs;
   renderTabelaAtend(regs, titulo);
@@ -1821,6 +1976,249 @@ function exportarExcelDemanda(){
 
   XLSX.writeFile(wb,`demanda_espontanea_${hoje}.xlsx`);
 }
+/* ═══════════════════════════════════ IMPORTAR RELATÓRIO ═══════════════════════════════════ */
+
+const NOMES_MASC = new Set('SAMUEL JOSE JOAO PEDRO ANTONIO CARLOS FRANCISCO RAIMUNDO MANOEL PAULO LUIS LUIZ MARCOS MARCELO ROBERTO ANDRE MARIO JORGE EDUARDO TIAGO DIEGO FABIO CICERO GILMAR VALDECY KAIQUE NILDO BRITO ANTONIO ARIRNEY'.split(' '));
+const NOMES_FEM  = new Set('MARIA ANA FRANCISCA RAIMUNDA ANTONIA ADRIANA JULIANA MARCIA FERNANDA PATRICIA ALINE SANDRA CAMILA AMANDA BRUNA JAQUELINE SOLANGE EUZIANE DAIANE LUDIMILA VANUSA SARA ELENICE CREUDILENE ALDENORA JOANE ODILIA ANTONIETA ERISNETE ELIETE IVONETE NAZARE'.split(' '));
+
+let _importRegs = [];
+
+function inferirSexo(nome){
+  if(!nome) return null;
+  const primeiro = nome.trim().split(/\s+/)[0].toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  if(NOMES_MASC.has(primeiro)) return 'M';
+  if(NOMES_FEM.has(primeiro))  return 'F';
+  return null;
+}
+
+function inferirPerfil(nome, idade){
+  const sexo = inferirSexo(nome);
+  const id = parseInt(idade)||0;
+  if(id >= 60){ return sexo==='M'?'Pessoa Idosa homem': sexo==='F'?'Pessoa Idosa mulher':'Pessoa Idosa homem'; }
+  if(sexo==='M') return 'Homem adulto';
+  if(sexo==='F') return 'Mulher adulta';
+  return 'Homem adulto';
+}
+
+function extrairData(texto){
+  const m = texto.match(/(\d{2})[\/\.](\d{2})[\/\.](\d{4})/);
+  return m ? `${m[3]}-${m[2]}-${m[1]}` : hoje;
+}
+
+function extrairIdade(txt){
+  const m = txt.match(/(\d+)\s*ANOS?/i);
+  return m ? parseInt(m[1]) : null;
+}
+
+function removerIdade(txt){
+  return txt.replace(/[-–,]?\s*\d+\s*ANOS?\.?/gi,'').replace(/\s{2,}/g,' ').trim();
+}
+
+function extrairSecaoJS(texto, secAtual, secProxima){
+  const upper = texto.toUpperCase();
+  const re1 = new RegExp(String(secAtual).replace(/\d/,d=>d)+'\\s*\\)');
+  const idx1 = upper.search(re1);
+  if(idx1===-1) return '';
+  if(!secProxima) return texto.slice(idx1);
+  const re2 = new RegExp(String(secProxima)+'\\s*\\)');
+  const idx2 = upper.search(re2);
+  return idx2===-1 ? texto.slice(idx1) : texto.slice(idx1, idx2);
+}
+
+// Palavras que indicam que o texto antes do traço é uma descrição, não um nome
+const PALAVRAS_OBS = /^(DECLARAC|ORIENTAC|EM CONTATO|SOLICITAR|INFORMAR|PARA |PACIENTE|UTI |ALA )/i;
+
+function abrirImportModal(){
+  document.getElementById('importTexto').value='';
+  document.getElementById('importPreview').style.display='none';
+  document.getElementById('btnConfirmarImport').style.display='none';
+  document.getElementById('msgImport').style.display='none';
+  _importRegs=[];
+  document.getElementById('overlayImport').classList.add('on');
+}
+function fecharImportModal(){
+  document.getElementById('overlayImport').classList.remove('on');
+}
+document.getElementById('overlayImport').addEventListener('click',function(e){ if(e.target===this) fecharImportModal(); });
+
+function analisarRelatorio(){
+  const texto = document.getElementById('importTexto').value.trim();
+  if(!texto){ showMsg('msgImport','Cole o texto do relatório antes de analisar.','err'); return; }
+
+  const dataDoc = extrairData(texto);
+  _importRegs = [];
+
+  const sec1 = extrairSecaoJS(texto,'01','02');
+  const sec2 = extrairSecaoJS(texto,'02','03');
+  const sec3 = extrairSecaoJS(texto,'03','04');
+  const sec4 = extrairSecaoJS(texto,'04',null);
+
+  /* ── SEÇÃO 1: FICHA SOCIAL ──
+     Padrão: "ALA XX LEITO XX - NOME, IDADE ANOS" ou "ALA XX LEITO XX - NOME – IDADE ANOS" */
+  if(sec1){
+    sec1.split('\n').forEach(linha=>{
+      linha = linha.trim();
+      if(!/LEITO/i.test(linha)) return;
+      // Separa obs (ala/leito) do resto pelo primeiro traço/vírgula após LEITO NN
+      const m = linha.match(/^(ALA\s+\d+\s+LEITO\s+\d+)\s*[-–,]\s*(.+)$/i);
+      if(!m) return;
+      const obs  = m[1].trim();
+      const rest = m[2];
+      const idade = extrairIdade(rest);
+      // Remove idade e separa nome de obs adicional
+      const semId = removerIdade(rest);
+      // Nome pode ter vírgula antes da idade: pega tudo antes da última vírgula se houver
+      const nome = semId.replace(/,.*$/,'').replace(/[-–]/g,'').trim();
+      if(nome.length > 1){
+        _importRegs.push({ data:dataDoc, nome, idade:idade||18, perfil:inferirPerfil(nome,idade), atividade:'Entrevista Social de 1ª vez/Admissão', obs });
+      }
+    });
+  }
+
+  /* ── SEÇÃO 2: DEMANDA ESPONTÂNEA ──
+     Casos:
+     A) "NOME, IDADE ANOS. obs"           → simples
+     B) "obs - NOME - IDADE ANOS"         → orientação + nome no meio
+     C) "obs- NOME-IDADE ANOS"            → nome entre dois traços antes de ANOS
+     D) "NOME IDADE ANOS"                 → só nome e idade sem separador  */
+  if(sec2){
+    sec2.split('\n').forEach(linha=>{
+      linha = linha.replace(/^[•·\-\*]\s*/,'').trim();
+      if(!linha || /^\d+[\)\.]/.test(linha)) return;
+
+      const idade = extrairIdade(linha);
+      // Estratégia: encontra a posição de "IDADE ANOS" e pega os tokens imediatamente antes
+      // que parecem um nome (maiúsculas, não contêm palavras de descrição)
+
+      // Caso B/C: texto_descricao - NOME - IDADE ANOS ou texto - NOME-IDADEANOS
+      // Padrão: qualquer coisa - NOME_EM_CAPS - NUM ANOS
+      const mNomeIdade = linha.match(/[-–]\s*([A-ZÁÉÍÓÚÀÂÊÔÃÕÇ][A-ZÁÉÍÓÚÀÂÊÔÃÕÇ\s\.]+?)\s*[-–]?\s*\d+\s*ANOS?\.?/i);
+      if(mNomeIdade){
+        const candidato = mNomeIdade[1].trim();
+        // Valida: candidato não deve começar com palavra de descrição
+        if(!PALAVRAS_OBS.test(candidato) && candidato.length > 2){
+          const obs = removerIdade(linha).replace(mNomeIdade[0],'').replace(/[-–]/g,' ').replace(/\s+/g,' ').trim();
+          _importRegs.push({ data:dataDoc, nome:candidato, idade:idade||18, perfil:inferirPerfil(candidato,idade), atividade:'Atendimento de Demanda Espontânea', obs });
+          return;
+        }
+      }
+
+      // Caso A/D: linha começa com nome (não com palavra de obs)
+      if(!PALAVRAS_OBS.test(linha)){
+        const semId = removerIdade(linha);
+        // Pega só antes da primeira vírgula ou ponto
+        const nome = semId.split(/[,\.]/)[0].trim();
+        if(nome.length > 1){
+          const obs = semId.replace(nome,'').replace(/^[,\.\s]+/,'').trim();
+          _importRegs.push({ data:dataDoc, nome, idade:idade||18, perfil:inferirPerfil(nome,idade), atividade:'Atendimento de Demanda Espontânea', obs });
+        }
+      }
+    });
+  }
+
+  /* ── SEÇÃO 3: VISITA NO LEITO ──
+     Tabela: "N  NOME  IDADE" — ignora coluna 1 (número) */
+  if(sec3){
+    sec3.split('\n').forEach(linha=>{
+      linha = linha.trim();
+      // Padrão: número(s) + bullet opcional + NOME + número de 2-3 dígitos no final
+      const m = linha.match(/^\d+\s*[•·]?\s*(.+?)\s+(\d{2,3})\s*$/);
+      if(m){
+        const nome  = m[1].replace(/[•·]/g,'').trim();
+        const idade = parseInt(m[2]);
+        // Ignora linhas de cabeçalho e idades implausíveis
+        if(nome.length > 1 && idade >= 18 && idade <= 110){
+          _importRegs.push({ data:dataDoc, nome, idade, perfil:inferirPerfil(nome,idade), atividade:'Visita Social Beira Leito', obs:'' });
+        }
+      }
+    });
+  }
+
+  /* ── SEÇÃO 4: LIGAÇÃO ──
+     Padrão: texto descritivo - NOME - IDADE ANOS  */
+  if(sec4){
+    sec4.split('\n').forEach(linha=>{
+      linha = linha.replace(/^[•·\-\*]\s*/,'').trim();
+      if(!linha) return;
+      if(/CRESS|ASSISTENTE SOCIAL/i.test(linha)) return;
+
+      const idade = extrairIdade(linha);
+      if(!idade) return;
+
+      // Nome está antes de "IDADE ANOS" precedido de traço
+      const mN = linha.match(/[-–]\s*([A-ZÁÉÍÓÚÀÂÊÔÃÕÇ][A-ZÁÉÍÓÚÀÂÊÔÃÕÇ\s]+?)\s*[-–]?\s*\d+\s*ANOS?\.?\s*$/i);
+      if(!mN) return;
+      const nome = mN[1].trim();
+      const obs  = linha.slice(0, linha.indexOf(mN[0])).replace(/[-–•·]/g,' ').replace(/\s+/g,' ').trim();
+      if(nome.length > 1){
+        _importRegs.push({ data:dataDoc, nome, idade, perfil:inferirPerfil(nome,idade), atividade:'Contatos Institucionais/Familiares', obs });
+      }
+    });
+  }
+
+  if(!_importRegs.length){
+    showMsg('msgImport','Nenhum registro identificado. Verifique se o texto está no formato correto do relatório.','err');
+    return;
+  }
+  renderImportPreview();
+}
+
+function renderImportPreview(){
+  document.getElementById('importPreview').style.display='block';
+  document.getElementById('btnConfirmarImport').style.display='inline-flex';
+  document.getElementById('importPreviewTitulo').textContent=`${_importRegs.length} registro(s) identificado(s) — revise antes de importar`;
+  document.getElementById('chkTodos').checked=true;
+
+  const body = document.getElementById('importTblBody');
+  body.innerHTML = _importRegs.map((r,i)=>`
+    <tr style="${i%2===0?'':'background:var(--s2)'}">
+      <td style="padding:6px 10px;border-bottom:1px solid var(--border);text-align:center">
+        <input type="checkbox" class="chk-import" data-i="${i}" checked/>
+      </td>
+      <td style="padding:6px 10px;border-bottom:1px solid var(--border);white-space:nowrap">
+        <input type="date" value="${r.data}" onchange="_importRegs[${i}].data=this.value" style="font-size:11px;padding:3px 6px;width:130px"/>
+      </td>
+      <td style="padding:6px 10px;border-bottom:1px solid var(--border);font-size:12px;font-weight:500">${r.nome}</td>
+      <td style="padding:6px 10px;border-bottom:1px solid var(--border);text-align:center">
+        <input type="number" value="${r.idade}" min="1" max="120" onchange="_importRegs[${i}].idade=+this.value" style="width:52px;font-size:11px;padding:3px 5px"/>
+      </td>
+      <td style="padding:6px 10px;border-bottom:1px solid var(--border)">
+        <select onchange="_importRegs[${i}].perfil=this.value" style="font-size:11px;padding:3px 5px;max-width:160px">
+          ${PERFIL.map(p=>`<option value="${p}" ${p===r.perfil?'selected':''}>${p}</option>`).join('')}
+        </select>
+      </td>
+      <td style="padding:6px 10px;border-bottom:1px solid var(--border)">
+        <select onchange="_importRegs[${i}].atividade=this.value" style="font-size:11px;padding:3px 5px;max-width:200px">
+          ${ATIVIDADES.map(a=>`<option value="${a}" ${a===r.atividade?'selected':''}>${a}</option>`).join('')}
+        </select>
+      </td>
+      <td style="padding:6px 10px;border-bottom:1px solid var(--border)">
+        <input type="text" value="${(r.obs||'').replace(/"/g,'&quot;')}" onchange="_importRegs[${i}].obs=this.value" style="width:100%;min-width:120px;font-size:11px;padding:3px 5px;border:1px solid var(--border2);border-radius:4px"/>
+      </td>
+    </tr>`).join('');
+}
+
+function selecionarTodosImport(val){
+  document.querySelectorAll('.chk-import').forEach(c=>c.checked=val);
+  document.getElementById('chkTodos').checked=val;
+}
+
+function confirmarImport(){
+  const checks = [...document.querySelectorAll('.chk-import')];
+  const selecionados = checks.map((c,i)=>c.checked?_importRegs[i]:null).filter(Boolean);
+  if(!selecionados.length){ showMsg('msgImport','Selecione pelo menos um registro.','err'); return; }
+
+  selecionados.forEach(r=>{
+    const id=uid();
+    pacDB[id]={ id, data:r.data, idade:r.idade, atividades:[r.atividade], perfil:[r.perfil], obs:r.obs||'', nome:r.nome, criado:new Date().toISOString() };
+  });
+
+  dbSave();
+  fecharImportModal();
+  filtrarAtend();
+  showMsg('msgAtend','✓ '+selecionados.length+' atendimento(s) importado(s) com sucesso!','ok');
+}
+
 
 </script>
 </body>
