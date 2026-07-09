@@ -7,6 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <style>
 :root{
   --bg:#F4F2ED;--surface:#FFF;--s2:#EDEAE3;--s3:#E4E0D8;
@@ -629,24 +630,44 @@ tbody tr:hover td{background:var(--s2)}
 
 <!-- ═══════════════════ MODAL IMPORTAR RELATÓRIO ═══════════════════ -->
 <div class="overlay" id="overlayImport">
-  <div class="modal" style="max-width:780px">
+  <div class="modal" style="max-width:820px">
     <div class="modal-hdr">
       <h2>Importar Relatório de Serviço Social</h2>
       <button onclick="fecharImportModal()" aria-label="Fechar">×</button>
     </div>
     <div class="modal-body">
       <div id="msgImport" class="msg"></div>
-      <div style="background:var(--a2);border:1px solid var(--a3);border-radius:var(--rad);padding:12px 14px;font-size:12px;color:var(--accent);margin-bottom:14px;line-height:1.6">
-        Cole o texto do relatório abaixo. O sistema identificará automaticamente Fichas Sociais, Demandas Espontâneas, Visitas no Leito e Ligações, extraindo nome, idade, data e atividade de cada registro.
+
+      <!-- Área de upload -->
+      <div id="uploadArea" style="border:2px dashed var(--b2);border-radius:var(--radl);padding:32px 20px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:14px;background:var(--s2)"
+        onclick="document.getElementById('inputPDF').click()"
+        ondragover="event.preventDefault();this.style.borderColor='var(--accent)';this.style.background='var(--a2)'"
+        ondragleave="this.style.borderColor='var(--b2)';this.style.background='var(--s2)'"
+        ondrop="event.preventDefault();this.style.borderColor='var(--b2)';this.style.background='var(--s2)';carregarPDF(event.dataTransfer.files[0])">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="1.5" style="margin:0 auto 10px;display:block"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+        <div style="font-size:14px;font-weight:500;color:var(--t2);margin-bottom:4px">Clique ou arraste o PDF aqui</div>
+        <div style="font-size:12px;color:var(--t3)">Relatório de Serviço Social em formato PDF</div>
+        <input type="file" id="inputPDF" accept=".pdf" style="display:none" onchange="carregarPDF(this.files[0])"/>
       </div>
-      <div class="field" style="margin-bottom:12px">
-        <label>Texto do Relatório</label>
-        <textarea id="importTexto" rows="12" placeholder="Cole aqui o texto completo do relatório..." style="font-size:12px;font-family:monospace;line-height:1.5"></textarea>
+
+      <!-- Status da leitura -->
+      <div id="pdfStatus" style="display:none;align-items:center;gap:10px;padding:10px 14px;background:var(--s2);border-radius:var(--rad);margin-bottom:12px;font-size:13px">
+        <svg id="pdfStatusIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        <span id="pdfStatusTxt"></span>
+        <button class="btn btn-sm" onclick="limparPDF()" style="margin-left:auto">✕ Remover</button>
       </div>
-      <button class="btn btn-p" onclick="analisarRelatorio()">
+
+      <!-- Texto extraído (oculto, editável se precisar) -->
+      <details style="margin-bottom:12px">
+        <summary style="font-size:12px;color:var(--t3);cursor:pointer;user-select:none">Ver / editar texto extraído</summary>
+        <textarea id="importTexto" rows="8" placeholder="O texto do PDF aparecerá aqui após o upload..." style="font-size:11px;font-family:monospace;line-height:1.5;margin-top:8px;width:100%"></textarea>
+      </details>
+
+      <button class="btn btn-p" onclick="analisarRelatorio()" id="btnAnalisar" disabled style="opacity:.5">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         Analisar Relatório
       </button>
+
       <!-- Preview dos registros identificados -->
       <div id="importPreview" style="display:none;margin-top:16px">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;flex-wrap:wrap;gap:6px">
@@ -2028,12 +2049,98 @@ function extrairSecaoJS(texto, secAtual, secProxima){
 // Palavras que indicam que o texto antes do traço é uma descrição, não um nome
 const PALAVRAS_OBS = /^(DECLARAC|ORIENTAC|EM CONTATO|SOLICITAR|INFORMAR|PARA |PACIENTE|UTI |ALA )/i;
 
+// Configura PDF.js worker
+if(typeof pdfjsLib !== 'undefined'){
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+}
+
+async function carregarPDF(file){
+  if(!file) return;
+  if(file.type !== 'application/pdf'){
+    showMsg('msgImport','Selecione um arquivo PDF válido.','err'); return;
+  }
+
+  // Mostra status de carregando
+  const status = document.getElementById('pdfStatus');
+  const statusTxt = document.getElementById('pdfStatusTxt');
+  const statusIcon = document.getElementById('pdfStatusIcon');
+  status.style.display = 'flex';
+  statusTxt.textContent = 'Lendo PDF...';
+  statusIcon.innerHTML = '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>';
+  statusIcon.style.stroke = 'var(--amber)';
+
+  try{
+    const arrayBuffer = await file.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+
+    let textoCompleto = '';
+    for(let p = 1; p <= pdf.numPages; p++){
+      const page = await pdf.getPage(p);
+      const content = await page.getTextContent();
+      // Reconstrói linhas agrupando itens pela posição Y
+      const items = content.items;
+      let lastY = null;
+      for(const item of items){
+        const y = item.transform[5];
+        if(lastY !== null && Math.abs(y - lastY) > 2){
+          textoCompleto += '\n';
+        }
+        textoCompleto += item.str;
+        lastY = y;
+      }
+      textoCompleto += '\n';
+    }
+
+    textoCompleto = textoCompleto.trim();
+
+    if(!textoCompleto){
+      statusTxt.textContent = 'PDF sem texto extraível (pode ser imagem escaneada).';
+      statusIcon.innerHTML = '<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>';
+      statusIcon.style.stroke = 'var(--red)';
+      return;
+    }
+
+    // Sucesso
+    document.getElementById('importTexto').value = textoCompleto;
+    statusTxt.textContent = file.name + ' — ' + pdf.numPages + ' página(s) lida(s)';
+    statusIcon.innerHTML = '<polyline points="20 6 9 17 4 12"/>';
+    statusIcon.style.stroke = 'var(--green)';
+
+    // Habilita botão analisar e dispara automaticamente
+    const btnAn = document.getElementById('btnAnalisar');
+    btnAn.disabled = false;
+    btnAn.style.opacity = '1';
+    analisarRelatorio();
+
+  } catch(e){
+    console.error('PDF error:', e);
+    statusTxt.textContent = 'Erro ao ler PDF: ' + e.message;
+    statusIcon.innerHTML = '<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>';
+    statusIcon.style.stroke = 'var(--red)';
+  }
+}
+
+function limparPDF(){
+  document.getElementById('inputPDF').value = '';
+  document.getElementById('importTexto').value = '';
+  document.getElementById('pdfStatus').style.display = 'none';
+  document.getElementById('importPreview').style.display = 'none';
+  document.getElementById('btnConfirmarImport').style.display = 'none';
+  const btn = document.getElementById('btnAnalisar');
+  btn.disabled = true; btn.style.opacity = '.5';
+  _importRegs = [];
+}
+
 function abrirImportModal(){
-  document.getElementById('importTexto').value='';
-  document.getElementById('importPreview').style.display='none';
-  document.getElementById('btnConfirmarImport').style.display='none';
-  document.getElementById('msgImport').style.display='none';
-  _importRegs=[];
+  document.getElementById('inputPDF').value = '';
+  document.getElementById('importTexto').value = '';
+  document.getElementById('pdfStatus').style.display = 'none';
+  document.getElementById('importPreview').style.display = 'none';
+  document.getElementById('btnConfirmarImport').style.display = 'none';
+  document.getElementById('msgImport').style.display = 'none';
+  const btn = document.getElementById('btnAnalisar');
+  btn.disabled = true; btn.style.opacity = '.5';
+  _importRegs = [];
   document.getElementById('overlayImport').classList.add('on');
 }
 function fecharImportModal(){
@@ -2043,7 +2150,10 @@ document.getElementById('overlayImport').addEventListener('click',function(e){ i
 
 function analisarRelatorio(){
   const texto = document.getElementById('importTexto').value.trim();
-  if(!texto){ showMsg('msgImport','Cole o texto do relatório antes de analisar.','err'); return; }
+  if(!texto){ showMsg('msgImport','Nenhum texto para analisar. Faça o upload do PDF.','err'); return; }
+  // Garante botão habilitado
+  const btnAn = document.getElementById('btnAnalisar');
+  btnAn.disabled = false; btnAn.style.opacity = '1';
 
   const dataDoc = extrairData(texto);
   _importRegs = [];
