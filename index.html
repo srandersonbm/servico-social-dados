@@ -7,7 +7,6 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <style>
 :root{
   --bg:#F4F2ED;--surface:#FFF;--s2:#EDEAE3;--s3:#E4E0D8;
@@ -295,8 +294,8 @@ tbody tr:hover td{background:var(--s2)}
         Novo Atendimento
       </button>
       <button class="btn" onclick="abrirImportModal()" style="background:#6B3FA0;color:#fff;border-color:#6B3FA0">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
-        + Relatório
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        Lançar em Lote
       </button>
       <button class="btn btn-xl" onclick="exportarExcelAtend()">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
@@ -329,7 +328,7 @@ tbody tr:hover td{background:var(--s2)}
       <table>
         <thead>
           <tr>
-            <th>Data</th><th>Idade</th><th>Perfil</th><th>Atividades</th><th>Obs</th><th style="width:80px"></th>
+            <th>Data</th><th>Idade</th><th>Perfil</th><th>Atividades</th><th>Nome / Obs</th><th style="width:80px"></th>
           </tr>
         </thead>
         <tbody id="tblBody"></tbody>
@@ -378,7 +377,7 @@ tbody tr:hover td{background:var(--s2)}
       <table>
         <thead>
           <tr>
-            <th>Data</th><th>Idade</th><th>Perfil</th><th>Obs</th><th style="width:60px"></th>
+            <th>Data</th><th>Idade</th><th>Perfil</th><th>Nome / Obs</th><th style="width:60px"></th>
           </tr>
         </thead>
         <tbody id="deTblBody"></tbody>
@@ -628,78 +627,76 @@ tbody tr:hover td{background:var(--s2)}
   </div>
 </div>
 
-<!-- ═══════════════════ MODAL IMPORTAR RELATÓRIO ═══════════════════ -->
+<!-- ═══════════════════ MODAL LANÇAR EM LOTE ═══════════════════ -->
 <div class="overlay" id="overlayImport">
-  <div class="modal" style="max-width:820px">
+  <div class="modal" style="max-width:700px">
     <div class="modal-hdr">
-      <h2>Importar Relatório de Serviço Social</h2>
+      <h2>Lançar Atendimentos em Lote</h2>
       <button onclick="fecharImportModal()" aria-label="Fechar">×</button>
     </div>
     <div class="modal-body">
       <div id="msgImport" class="msg"></div>
 
-      <!-- Área de upload -->
-      <div id="uploadArea" style="border:2px dashed var(--b2);border-radius:var(--radl);padding:32px 20px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:14px;background:var(--s2)"
-        onclick="document.getElementById('inputPDF').click()"
-        ondragover="event.preventDefault();this.style.borderColor='var(--accent)';this.style.background='var(--a2)'"
-        ondragleave="this.style.borderColor='var(--b2)';this.style.background='var(--s2)'"
-        ondrop="event.preventDefault();this.style.borderColor='var(--b2)';this.style.background='var(--s2)';carregarPDF(event.dataTransfer.files[0])">
-        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="1.5" style="margin:0 auto 10px;display:block"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
-        <div style="font-size:14px;font-weight:500;color:var(--t2);margin-bottom:4px">Clique ou arraste o PDF aqui</div>
-        <div style="font-size:12px;color:var(--t3)">Relatório de Serviço Social em formato PDF</div>
-        <input type="file" id="inputPDF" accept=".pdf" style="display:none" onchange="carregarPDF(this.files[0])"/>
+      <!-- Instrução -->
+      <div style="background:var(--a2);border:1px solid var(--a3);border-radius:var(--rad);padding:12px 14px;font-size:12px;color:var(--accent);margin-bottom:14px;line-height:1.8">
+        <strong>Como preencher — uma pessoa por linha:</strong><br>
+        <code style="background:var(--surface);border-radius:4px;padding:2px 6px;font-size:11px">Nome, Idade - Observação</code><br>
+        Exemplos:<br>
+        <code style="background:var(--surface);border-radius:4px;padding:2px 6px;font-size:11px">Roberto Silva, 61 - Leito UTI</code><br>
+        <code style="background:var(--surface);border-radius:4px;padding:2px 6px;font-size:11px">Maria Oliveira, 45</code><br>
+        <code style="background:var(--surface);border-radius:4px;padding:2px 6px;font-size:11px">ANTONIO, 50 - Orientações e normas</code><br>
+        <span style="color:var(--t2)">A observação é opcional. O perfil é identificado automaticamente pelo nome e idade.</span>
       </div>
 
-      <!-- Status da leitura -->
-      <div id="pdfStatus" style="display:none;align-items:center;gap:10px;padding:10px 14px;background:var(--s2);border-radius:var(--rad);margin-bottom:12px;font-size:13px">
-        <svg id="pdfStatusIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-        <span id="pdfStatusTxt"></span>
-        <button class="btn btn-sm" onclick="limparPDF()" style="margin-left:auto">✕ Remover</button>
-      </div>
-
-      <!-- Texto extraído (oculto, editável se precisar) -->
-      <details style="margin-bottom:12px">
-        <summary style="font-size:12px;color:var(--t3);cursor:pointer;user-select:none">Ver / editar texto extraído</summary>
-        <textarea id="importTexto" rows="8" placeholder="O texto do PDF aparecerá aqui após o upload..." style="font-size:11px;font-family:monospace;line-height:1.5;margin-top:8px;width:100%"></textarea>
-      </details>
-
-      <button class="btn btn-p" onclick="analisarRelatorio()" id="btnAnalisar" disabled style="opacity:.5">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        Analisar Relatório
-      </button>
-
-      <!-- Preview dos registros identificados -->
-      <div id="importPreview" style="display:none;margin-top:16px">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;flex-wrap:wrap;gap:6px">
-          <div class="ct" style="margin-bottom:0" id="importPreviewTitulo">Registros identificados</div>
-          <div style="display:flex;gap:6px">
-            <button class="btn btn-sm" onclick="selecionarTodosImport(true)">Selecionar todos</button>
-            <button class="btn btn-sm" onclick="selecionarTodosImport(false)">Desmarcar todos</button>
-          </div>
+      <!-- Data e Atividade globais -->
+      <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap">
+        <div class="field" style="min-width:160px">
+          <label>Data dos Atendimentos</label>
+          <input type="date" id="loteData"/>
         </div>
-        <div style="max-height:320px;overflow-y:auto;border:1px solid var(--border);border-radius:var(--rad)">
+        <div class="field" style="flex:1;min-width:220px">
+          <label>Atividade Realizada</label>
+          <select id="loteAtiv" style="width:100%"></select>
+        </div>
+      </div>
+
+      <!-- Caixa de texto -->
+      <div class="field" style="margin-bottom:12px">
+        <label>Pacientes <span id="loteContador" style="font-weight:400;color:var(--t3)"></span></label>
+        <textarea id="loteTexto" rows="10"
+          placeholder="Roberto Silva, 61 - Leito UTI&#10;Maria Oliveira, 45&#10;ANTONIO, 50 - Orientações&#10;Jaqueline, 28"
+          style="font-size:13px;line-height:1.7;width:100%"
+          oninput="atualizarContadorLote()"></textarea>
+      </div>
+
+      <!-- Preview -->
+      <div id="lotePreview" style="display:none;margin-top:14px">
+        <div class="ct" style="margin-bottom:8px" id="lotePrevTitulo"></div>
+        <div style="max-height:280px;overflow-y:auto;border:1px solid var(--border);border-radius:var(--rad)">
           <table style="width:100%;border-collapse:collapse;font-size:12px">
             <thead>
               <tr>
-                <th style="padding:7px 10px;border-bottom:1px solid var(--border);background:var(--s2);width:32px"><input type="checkbox" id="chkTodos" onchange="selecionarTodosImport(this.checked)"/></th>
-                <th style="padding:7px 10px;border-bottom:1px solid var(--border);background:var(--s2);text-align:left">Data</th>
-                <th style="padding:7px 10px;border-bottom:1px solid var(--border);background:var(--s2);text-align:left">Nome</th>
-                <th style="padding:7px 10px;border-bottom:1px solid var(--border);background:var(--s2);text-align:left">Idade</th>
-                <th style="padding:7px 10px;border-bottom:1px solid var(--border);background:var(--s2);text-align:left">Perfil</th>
-                <th style="padding:7px 10px;border-bottom:1px solid var(--border);background:var(--s2);text-align:left">Atividade</th>
-                <th style="padding:7px 10px;border-bottom:1px solid var(--border);background:var(--s2);text-align:left">Observação</th>
+                <th style="padding:6px 10px;border-bottom:1px solid var(--border);background:var(--s2);text-align:left">Nome</th>
+                <th style="padding:6px 10px;border-bottom:1px solid var(--border);background:var(--s2);text-align:left">Idade</th>
+                <th style="padding:6px 10px;border-bottom:1px solid var(--border);background:var(--s2);text-align:left">Perfil</th>
+                <th style="padding:6px 10px;border-bottom:1px solid var(--border);background:var(--s2);text-align:left">Observação</th>
+                <th style="padding:6px 10px;border-bottom:1px solid var(--border);background:var(--s2);text-align:left">Status</th>
               </tr>
             </thead>
-            <tbody id="importTblBody"></tbody>
+            <tbody id="lotePrevBody"></tbody>
           </table>
         </div>
       </div>
     </div>
     <div class="modal-foot">
       <button class="btn" onclick="fecharImportModal()">Cancelar</button>
-      <button class="btn" id="btnConfirmarImport" style="display:none;background:#6B3FA0;color:#fff;border-color:#6B3FA0" onclick="confirmarImport()">
+      <button class="btn btn-p" onclick="processarLote()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        Pré-visualizar
+      </button>
+      <button class="btn" id="btnLoteConfirmar" style="display:none;background:#6B3FA0;color:#fff;border-color:#6B3FA0" onclick="confirmarLote()">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/></svg>
-        Importar Selecionados
+        Lançar Todos
       </button>
     </div>
   </div>
@@ -741,8 +738,8 @@ tbody tr:hover td{background:var(--s2)}
 
       <!-- Observações -->
       <div class="field">
-        <label>Observações</label>
-        <textarea id="mObs" rows="2" placeholder="Observações sobre o atendimento..."></textarea>
+        <label>Nome do Paciente / Observações</label>
+        <textarea id="mObs" rows="2" placeholder="Ex: João da Silva — Leito UTI 02, orientações sobre alta..."></textarea>
       </div>
     </div>
     <div class="modal-foot">
@@ -1338,18 +1335,21 @@ function renderTabelaAtend(regs, titulo){
   if(!regs.length){ body.innerHTML=''; empty.style.display='block'; sumario.textContent=''; return; }
   empty.style.display='none';
   sumario.textContent=`${regs.length} atendimento(s) — ${new Set(regs.map(r=>r.data)).size} dia(s)`;
-  body.innerHTML=regs.map(r=>`
+  body.innerHTML=regs.map(r=>{
+    const nomeObs = [r.nome, r.obs].filter(Boolean).join(' — ');
+    return `
     <tr>
       <td><strong>${fmtDate(r.data)}</strong></td>
       <td><span class="badge badge-b">${r.idade} anos</span></td>
       <td><div class="tag-list">${(r.perfil||[]).map(p=>`<span class="tag tag-p">${p}</span>`).join('')||'<span style="color:var(--t3);font-size:11px">—</span>'}</div></td>
       <td><div class="tag-list">${(r.atividades||[]).map(a=>`<span class="tag">${a}</span>`).join('')||'<span style="color:var(--t3);font-size:11px">—</span>'}</div></td>
-      <td style="font-size:12px;color:var(--t2);max-width:160px">${r.obs||''}</td>
+      <td style="font-size:12px;color:var(--t2);max-width:200px">${nomeObs||'—'}</td>
       <td style="white-space:nowrap">
         <button class="btn btn-sm" onclick="abrirModal(${r.id})" title="Editar">✏️</button>
         <button class="btn btn-sm btn-d" onclick="excluirAtend(${r.id})" title="Excluir">🗑</button>
       </td>
-    </tr>`).join('');
+    </tr>`;
+  }).join('');
 }
 
 function excluirAtend(id){
@@ -1807,14 +1807,17 @@ function renderDemanda(regs, titulo){
   empty.style.display='none';
   sum.textContent=`${total} demanda(s) — ${diasU} dia(s)`;
 
-  body.innerHTML=regs.map(r=>`
+  body.innerHTML=regs.map(r=>{
+    const nomeObs=[r.nome,r.obs].filter(Boolean).join(' — ');
+    return `
     <tr>
       <td><strong>${fmtDate(r.data)}</strong></td>
       <td><span class="badge badge-b">${r.idade} anos</span></td>
       <td><div class="tag-list">${(r.perfil||[]).map(p=>`<span class="tag tag-p">${p}</span>`).join('')||'—'}</div></td>
-      <td style="font-size:12px;color:var(--t2)">${r.obs||''}</td>
+      <td style="font-size:12px;color:var(--t2);max-width:220px">${nomeObs||'—'}</td>
       <td><button class="btn btn-sm" onclick="abrirModal(${r.id})" title="Editar">✏️</button></td>
-    </tr>`).join('');
+    </tr>`;
+  }).join('');
 
   // ── Perfil dist ──
   renderDePerfDist(regs);
@@ -1997,16 +2000,15 @@ function exportarExcelDemanda(){
 
   XLSX.writeFile(wb,`demanda_espontanea_${hoje}.xlsx`);
 }
-/* ═══════════════════════════════════ IMPORTAR RELATÓRIO ═══════════════════════════════════ */
+/* ═══════════════════════════════════ LANÇAR EM LOTE ═══════════════════════════════════ */
 
-const NOMES_MASC = new Set('SAMUEL JOSE JOAO PEDRO ANTONIO CARLOS FRANCISCO RAIMUNDO MANOEL PAULO LUIS LUIZ MARCOS MARCELO ROBERTO ANDRE MARIO JORGE EDUARDO TIAGO DIEGO FABIO CICERO GILMAR VALDECY KAIQUE NILDO BRITO ANTONIO ARIRNEY'.split(' '));
+const NOMES_MASC = new Set('SAMUEL JOSE JOAO PEDRO ANTONIO CARLOS FRANCISCO RAIMUNDO MANOEL PAULO LUIS LUIZ MARCOS MARCELO ROBERTO ANDRE MARIO JORGE EDUARDO TIAGO DIEGO FABIO CICERO GILMAR VALDECY KAIQUE NILDO BRITO ARIRNEY GILMAR RAIMUNDO'.split(' '));
 const NOMES_FEM  = new Set('MARIA ANA FRANCISCA RAIMUNDA ANTONIA ADRIANA JULIANA MARCIA FERNANDA PATRICIA ALINE SANDRA CAMILA AMANDA BRUNA JAQUELINE SOLANGE EUZIANE DAIANE LUDIMILA VANUSA SARA ELENICE CREUDILENE ALDENORA JOANE ODILIA ANTONIETA ERISNETE ELIETE IVONETE NAZARE'.split(' '));
-
-let _importRegs = [];
 
 function inferirSexo(nome){
   if(!nome) return null;
-  const primeiro = nome.trim().split(/\s+/)[0].toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  const primeiro = nome.trim().split(/\s+/)[0].toUpperCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g,'');
   if(NOMES_MASC.has(primeiro)) return 'M';
   if(NOMES_FEM.has(primeiro))  return 'F';
   return null;
@@ -2015,319 +2017,153 @@ function inferirSexo(nome){
 function inferirPerfil(nome, idade){
   const sexo = inferirSexo(nome);
   const id = parseInt(idade)||0;
-  if(id >= 60){ return sexo==='M'?'Pessoa Idosa homem': sexo==='F'?'Pessoa Idosa mulher':'Pessoa Idosa homem'; }
+  if(id >= 60) return sexo==='M'?'Pessoa Idosa homem': sexo==='F'?'Pessoa Idosa mulher':'Pessoa Idosa homem';
   if(sexo==='M') return 'Homem adulto';
   if(sexo==='F') return 'Mulher adulta';
   return 'Homem adulto';
 }
 
-function extrairData(texto){
-  const m = texto.match(/(\d{2})[\/\.](\d{2})[\/\.](\d{4})/);
-  return m ? `${m[3]}-${m[2]}-${m[1]}` : hoje;
-}
+// Preenche select de atividade no modal lote
+(function buildLoteSelects(){
+  const sa = document.getElementById('loteAtiv');
+  if(!sa) return;
+  ATIVIDADES.forEach(a=>{ const o=document.createElement('option');o.value=a;o.textContent=a;sa.appendChild(o); });
+  sa.value = 'Atendimento de Demanda Espontânea';
+})();
 
-function extrairIdade(txt){
-  const m = txt.match(/(\d+)\s*ANOS?/i);
-  return m ? parseInt(m[1]) : null;
-}
-
-function removerIdade(txt){
-  return txt.replace(/[-–,]?\s*\d+\s*ANOS?\.?/gi,'').replace(/\s{2,}/g,' ').trim();
-}
-
-function extrairSecaoJS(texto, secAtual, secProxima){
-  const upper = texto.toUpperCase();
-  const re1 = new RegExp(String(secAtual).replace(/\d/,d=>d)+'\\s*\\)');
-  const idx1 = upper.search(re1);
-  if(idx1===-1) return '';
-  if(!secProxima) return texto.slice(idx1);
-  const re2 = new RegExp(String(secProxima)+'\\s*\\)');
-  const idx2 = upper.search(re2);
-  return idx2===-1 ? texto.slice(idx1) : texto.slice(idx1, idx2);
-}
-
-// Palavras que indicam que o texto antes do traço é uma descrição, não um nome
-const PALAVRAS_OBS = /^(DECLARAC|ORIENTAC|EM CONTATO|SOLICITAR|INFORMAR|PARA |PACIENTE|UTI |ALA )/i;
-
-// Configura PDF.js worker
-if(typeof pdfjsLib !== 'undefined'){
-  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-}
-
-async function carregarPDF(file){
-  if(!file) return;
-  if(file.type !== 'application/pdf'){
-    showMsg('msgImport','Selecione um arquivo PDF válido.','err'); return;
-  }
-
-  // Mostra status de carregando
-  const status = document.getElementById('pdfStatus');
-  const statusTxt = document.getElementById('pdfStatusTxt');
-  const statusIcon = document.getElementById('pdfStatusIcon');
-  status.style.display = 'flex';
-  statusTxt.textContent = 'Lendo PDF...';
-  statusIcon.innerHTML = '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>';
-  statusIcon.style.stroke = 'var(--amber)';
-
-  try{
-    const arrayBuffer = await file.arrayBuffer();
-    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-
-    let textoCompleto = '';
-    for(let p = 1; p <= pdf.numPages; p++){
-      const page = await pdf.getPage(p);
-      const content = await page.getTextContent();
-      // Reconstrói linhas agrupando itens pela posição Y
-      const items = content.items;
-      let lastY = null;
-      for(const item of items){
-        const y = item.transform[5];
-        if(lastY !== null && Math.abs(y - lastY) > 2){
-          textoCompleto += '\n';
-        }
-        textoCompleto += item.str;
-        lastY = y;
-      }
-      textoCompleto += '\n';
-    }
-
-    textoCompleto = textoCompleto.trim();
-
-    if(!textoCompleto){
-      statusTxt.textContent = 'PDF sem texto extraível (pode ser imagem escaneada).';
-      statusIcon.innerHTML = '<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>';
-      statusIcon.style.stroke = 'var(--red)';
-      return;
-    }
-
-    // Sucesso
-    document.getElementById('importTexto').value = textoCompleto;
-    statusTxt.textContent = file.name + ' — ' + pdf.numPages + ' página(s) lida(s)';
-    statusIcon.innerHTML = '<polyline points="20 6 9 17 4 12"/>';
-    statusIcon.style.stroke = 'var(--green)';
-
-    // Habilita botão analisar e dispara automaticamente
-    const btnAn = document.getElementById('btnAnalisar');
-    btnAn.disabled = false;
-    btnAn.style.opacity = '1';
-    analisarRelatorio();
-
-  } catch(e){
-    console.error('PDF error:', e);
-    statusTxt.textContent = 'Erro ao ler PDF: ' + e.message;
-    statusIcon.innerHTML = '<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>';
-    statusIcon.style.stroke = 'var(--red)';
-  }
-}
-
-function limparPDF(){
-  document.getElementById('inputPDF').value = '';
-  document.getElementById('importTexto').value = '';
-  document.getElementById('pdfStatus').style.display = 'none';
-  document.getElementById('importPreview').style.display = 'none';
-  document.getElementById('btnConfirmarImport').style.display = 'none';
-  const btn = document.getElementById('btnAnalisar');
-  btn.disabled = true; btn.style.opacity = '.5';
-  _importRegs = [];
-}
+let _loteRegs = [];
 
 function abrirImportModal(){
-  document.getElementById('inputPDF').value = '';
-  document.getElementById('importTexto').value = '';
-  document.getElementById('pdfStatus').style.display = 'none';
-  document.getElementById('importPreview').style.display = 'none';
-  document.getElementById('btnConfirmarImport').style.display = 'none';
+  document.getElementById('loteData').value = hoje;
+  document.getElementById('loteAtiv').value = 'Atendimento de Demanda Espontânea';
+  document.getElementById('loteTexto').value = '';
+  document.getElementById('lotePreview').style.display = 'none';
+  document.getElementById('btnLoteConfirmar').style.display = 'none';
   document.getElementById('msgImport').style.display = 'none';
-  const btn = document.getElementById('btnAnalisar');
-  btn.disabled = true; btn.style.opacity = '.5';
-  _importRegs = [];
+  document.getElementById('loteContador').textContent = '';
+  _loteRegs = [];
   document.getElementById('overlayImport').classList.add('on');
+  setTimeout(()=>document.getElementById('loteTexto').focus(), 100);
 }
+
 function fecharImportModal(){
   document.getElementById('overlayImport').classList.remove('on');
 }
 document.getElementById('overlayImport').addEventListener('click',function(e){ if(e.target===this) fecharImportModal(); });
 
-function analisarRelatorio(){
-  const texto = document.getElementById('importTexto').value.trim();
-  if(!texto){ showMsg('msgImport','Nenhum texto para analisar. Faça o upload do PDF.','err'); return; }
-  // Garante botão habilitado
-  const btnAn = document.getElementById('btnAnalisar');
-  btnAn.disabled = false; btnAn.style.opacity = '1';
-
-  const dataDoc = extrairData(texto);
-  _importRegs = [];
-
-  const sec1 = extrairSecaoJS(texto,'01','02');
-  const sec2 = extrairSecaoJS(texto,'02','03');
-  const sec3 = extrairSecaoJS(texto,'03','04');
-  const sec4 = extrairSecaoJS(texto,'04',null);
-
-  /* ── SEÇÃO 1: FICHA SOCIAL ──
-     Padrão: "ALA XX LEITO XX - NOME, IDADE ANOS" ou "ALA XX LEITO XX - NOME – IDADE ANOS" */
-  if(sec1){
-    sec1.split('\n').forEach(linha=>{
-      linha = linha.trim();
-      if(!/LEITO/i.test(linha)) return;
-      // Separa obs (ala/leito) do resto pelo primeiro traço/vírgula após LEITO NN
-      const m = linha.match(/^(ALA\s+\d+\s+LEITO\s+\d+)\s*[-–,]\s*(.+)$/i);
-      if(!m) return;
-      const obs  = m[1].trim();
-      const rest = m[2];
-      const idade = extrairIdade(rest);
-      // Remove idade e separa nome de obs adicional
-      const semId = removerIdade(rest);
-      // Nome pode ter vírgula antes da idade: pega tudo antes da última vírgula se houver
-      const nome = semId.replace(/,.*$/,'').replace(/[-–]/g,'').trim();
-      if(nome.length > 1){
-        _importRegs.push({ data:dataDoc, nome, idade:idade||18, perfil:inferirPerfil(nome,idade), atividade:'Entrevista Social de 1ª vez/Admissão', obs });
-      }
-    });
-  }
-
-  /* ── SEÇÃO 2: DEMANDA ESPONTÂNEA ──
-     Casos:
-     A) "NOME, IDADE ANOS. obs"           → simples
-     B) "obs - NOME - IDADE ANOS"         → orientação + nome no meio
-     C) "obs- NOME-IDADE ANOS"            → nome entre dois traços antes de ANOS
-     D) "NOME IDADE ANOS"                 → só nome e idade sem separador  */
-  if(sec2){
-    sec2.split('\n').forEach(linha=>{
-      linha = linha.replace(/^[•·\-\*]\s*/,'').trim();
-      if(!linha || /^\d+[\)\.]/.test(linha)) return;
-
-      const idade = extrairIdade(linha);
-      // Estratégia: encontra a posição de "IDADE ANOS" e pega os tokens imediatamente antes
-      // que parecem um nome (maiúsculas, não contêm palavras de descrição)
-
-      // Caso B/C: texto_descricao - NOME - IDADE ANOS ou texto - NOME-IDADEANOS
-      // Padrão: qualquer coisa - NOME_EM_CAPS - NUM ANOS
-      const mNomeIdade = linha.match(/[-–]\s*([A-ZÁÉÍÓÚÀÂÊÔÃÕÇ][A-ZÁÉÍÓÚÀÂÊÔÃÕÇ\s\.]+?)\s*[-–]?\s*\d+\s*ANOS?\.?/i);
-      if(mNomeIdade){
-        const candidato = mNomeIdade[1].trim();
-        // Valida: candidato não deve começar com palavra de descrição
-        if(!PALAVRAS_OBS.test(candidato) && candidato.length > 2){
-          const obs = removerIdade(linha).replace(mNomeIdade[0],'').replace(/[-–]/g,' ').replace(/\s+/g,' ').trim();
-          _importRegs.push({ data:dataDoc, nome:candidato, idade:idade||18, perfil:inferirPerfil(candidato,idade), atividade:'Atendimento de Demanda Espontânea', obs });
-          return;
-        }
-      }
-
-      // Caso A/D: linha começa com nome (não com palavra de obs)
-      if(!PALAVRAS_OBS.test(linha)){
-        const semId = removerIdade(linha);
-        // Pega só antes da primeira vírgula ou ponto
-        const nome = semId.split(/[,\.]/)[0].trim();
-        if(nome.length > 1){
-          const obs = semId.replace(nome,'').replace(/^[,\.\s]+/,'').trim();
-          _importRegs.push({ data:dataDoc, nome, idade:idade||18, perfil:inferirPerfil(nome,idade), atividade:'Atendimento de Demanda Espontânea', obs });
-        }
-      }
-    });
-  }
-
-  /* ── SEÇÃO 3: VISITA NO LEITO ──
-     Tabela: "N  NOME  IDADE" — ignora coluna 1 (número) */
-  if(sec3){
-    sec3.split('\n').forEach(linha=>{
-      linha = linha.trim();
-      // Padrão: número(s) + bullet opcional + NOME + número de 2-3 dígitos no final
-      const m = linha.match(/^\d+\s*[•·]?\s*(.+?)\s+(\d{2,3})\s*$/);
-      if(m){
-        const nome  = m[1].replace(/[•·]/g,'').trim();
-        const idade = parseInt(m[2]);
-        // Ignora linhas de cabeçalho e idades implausíveis
-        if(nome.length > 1 && idade >= 18 && idade <= 110){
-          _importRegs.push({ data:dataDoc, nome, idade, perfil:inferirPerfil(nome,idade), atividade:'Visita Social Beira Leito', obs:'' });
-        }
-      }
-    });
-  }
-
-  /* ── SEÇÃO 4: LIGAÇÃO ──
-     Padrão: texto descritivo - NOME - IDADE ANOS  */
-  if(sec4){
-    sec4.split('\n').forEach(linha=>{
-      linha = linha.replace(/^[•·\-\*]\s*/,'').trim();
-      if(!linha) return;
-      if(/CRESS|ASSISTENTE SOCIAL/i.test(linha)) return;
-
-      const idade = extrairIdade(linha);
-      if(!idade) return;
-
-      // Nome está antes de "IDADE ANOS" precedido de traço
-      const mN = linha.match(/[-–]\s*([A-ZÁÉÍÓÚÀÂÊÔÃÕÇ][A-ZÁÉÍÓÚÀÂÊÔÃÕÇ\s]+?)\s*[-–]?\s*\d+\s*ANOS?\.?\s*$/i);
-      if(!mN) return;
-      const nome = mN[1].trim();
-      const obs  = linha.slice(0, linha.indexOf(mN[0])).replace(/[-–•·]/g,' ').replace(/\s+/g,' ').trim();
-      if(nome.length > 1){
-        _importRegs.push({ data:dataDoc, nome, idade, perfil:inferirPerfil(nome,idade), atividade:'Contatos Institucionais/Familiares', obs });
-      }
-    });
-  }
-
-  if(!_importRegs.length){
-    showMsg('msgImport','Nenhum registro identificado. Verifique se o texto está no formato correto do relatório.','err');
-    return;
-  }
-  renderImportPreview();
+function atualizarContadorLote(){
+  const linhas = document.getElementById('loteTexto').value
+    .split('\n').filter(l=>l.trim().length > 0);
+  const el = document.getElementById('loteContador');
+  el.textContent = linhas.length ? '— ' + linhas.length + ' linha(s)' : '';
+  // Esconde preview ao editar novamente
+  document.getElementById('lotePreview').style.display = 'none';
+  document.getElementById('btnLoteConfirmar').style.display = 'none';
 }
 
-function renderImportPreview(){
-  document.getElementById('importPreview').style.display='block';
-  document.getElementById('btnConfirmarImport').style.display='inline-flex';
-  document.getElementById('importPreviewTitulo').textContent=`${_importRegs.length} registro(s) identificado(s) — revise antes de importar`;
-  document.getElementById('chkTodos').checked=true;
+function parseLinha(linha){
+  linha = linha.trim();
+  if(!linha) return null;
 
-  const body = document.getElementById('importTblBody');
-  body.innerHTML = _importRegs.map((r,i)=>`
-    <tr style="${i%2===0?'':'background:var(--s2)'}">
-      <td style="padding:6px 10px;border-bottom:1px solid var(--border);text-align:center">
-        <input type="checkbox" class="chk-import" data-i="${i}" checked/>
-      </td>
-      <td style="padding:6px 10px;border-bottom:1px solid var(--border);white-space:nowrap">
-        <input type="date" value="${r.data}" onchange="_importRegs[${i}].data=this.value" style="font-size:11px;padding:3px 6px;width:130px"/>
-      </td>
-      <td style="padding:6px 10px;border-bottom:1px solid var(--border);font-size:12px;font-weight:500">${r.nome}</td>
-      <td style="padding:6px 10px;border-bottom:1px solid var(--border);text-align:center">
-        <input type="number" value="${r.idade}" min="1" max="120" onchange="_importRegs[${i}].idade=+this.value" style="width:52px;font-size:11px;padding:3px 5px"/>
-      </td>
-      <td style="padding:6px 10px;border-bottom:1px solid var(--border)">
-        <select onchange="_importRegs[${i}].perfil=this.value" style="font-size:11px;padding:3px 5px;max-width:160px">
-          ${PERFIL.map(p=>`<option value="${p}" ${p===r.perfil?'selected':''}>${p}</option>`).join('')}
-        </select>
-      </td>
-      <td style="padding:6px 10px;border-bottom:1px solid var(--border)">
-        <select onchange="_importRegs[${i}].atividade=this.value" style="font-size:11px;padding:3px 5px;max-width:200px">
-          ${ATIVIDADES.map(a=>`<option value="${a}" ${a===r.atividade?'selected':''}>${a}</option>`).join('')}
-        </select>
-      </td>
-      <td style="padding:6px 10px;border-bottom:1px solid var(--border)">
-        <input type="text" value="${(r.obs||'').replace(/"/g,'&quot;')}" onchange="_importRegs[${i}].obs=this.value" style="width:100%;min-width:120px;font-size:11px;padding:3px 5px;border:1px solid var(--border2);border-radius:4px"/>
-      </td>
-    </tr>`).join('');
+  // Separa observação: tudo depois do primeiro " - " ou " – "
+  let obs = '';
+  const mObs = linha.match(/\s+[-–]\s+(.+)$/);
+  if(mObs){
+    obs = mObs[1].trim();
+    linha = linha.slice(0, mObs.index).trim();
+  }
+
+  // Extrai idade: número antes de "anos" ou último número após vírgula
+  let idade = null;
+  const mIdadeAnos = linha.match(/,?\s*(\d+)\s*anos?/i);
+  if(mIdadeAnos){
+    idade = parseInt(mIdadeAnos[1]);
+    linha = linha.replace(mIdadeAnos[0], '').trim();
+  } else {
+    // Tenta pegar último token numérico após vírgula
+    const mVirgula = linha.match(/,\s*(\d+)\s*$/);
+    if(mVirgula){
+      idade = parseInt(mVirgula[1]);
+      linha = linha.slice(0, mVirgula.index).trim();
+    }
+  }
+
+  // Nome: o que sobrou (remove vírgulas soltas no final)
+  const nome = linha.replace(/,\s*$/, '').trim();
+
+  if(!nome) return null;
+
+  return { nome, idade: idade||0, obs, perfil: inferirPerfil(nome, idade) };
 }
 
-function selecionarTodosImport(val){
-  document.querySelectorAll('.chk-import').forEach(c=>c.checked=val);
-  document.getElementById('chkTodos').checked=val;
-}
+function processarLote(){
+  const texto  = document.getElementById('loteTexto').value;
+  const data   = document.getElementById('loteData').value;
+  const ativ   = document.getElementById('loteAtiv').value;
 
-function confirmarImport(){
-  const checks = [...document.querySelectorAll('.chk-import')];
-  const selecionados = checks.map((c,i)=>c.checked?_importRegs[i]:null).filter(Boolean);
-  if(!selecionados.length){ showMsg('msgImport','Selecione pelo menos um registro.','err'); return; }
+  if(!data){ showMsg('msgImport','Selecione a data antes de pré-visualizar.','err'); return; }
+  if(!texto.trim()){ showMsg('msgImport','Digite pelo menos um paciente.','err'); return; }
 
-  selecionados.forEach(r=>{
-    const id=uid();
-    pacDB[id]={ id, data:r.data, idade:r.idade, atividades:[r.atividade], perfil:[r.perfil], obs:r.obs||'', nome:r.nome, criado:new Date().toISOString() };
+  const linhas = texto.split('\n').filter(l=>l.trim());
+  _loteRegs = [];
+  const erros = [];
+
+  linhas.forEach((linha, i) => {
+    const r = parseLinha(linha);
+    if(r){
+      _loteRegs.push({ ...r, data, atividade: ativ });
+    } else {
+      erros.push('Linha '+(i+1)+': "'+linha+'"');
+    }
   });
 
+  // Renderiza preview
+  const body = document.getElementById('lotePrevBody');
+  body.innerHTML = _loteRegs.map(r=>`
+    <tr>
+      <td style="padding:6px 10px;border-bottom:1px solid var(--border);font-weight:500">${r.nome}</td>
+      <td style="padding:6px 10px;border-bottom:1px solid var(--border);text-align:center">
+        ${r.idade ? '<span class="badge badge-b">'+r.idade+' a</span>' : '<span style="color:var(--red);font-size:11px">⚠ sem idade</span>'}
+      </td>
+      <td style="padding:6px 10px;border-bottom:1px solid var(--border)"><span class="tag tag-p" style="font-size:11px">${r.perfil}</span></td>
+      <td style="padding:6px 10px;border-bottom:1px solid var(--border);font-size:12px;color:var(--t2)">${r.obs||'—'}</td>
+      <td style="padding:6px 10px;border-bottom:1px solid var(--border);font-size:11px">
+        ${r.idade ? '<span style="color:var(--green)">✓ OK</span>' : '<span style="color:var(--amber)">⚠ Sem idade</span>'}
+      </td>
+    </tr>`).join('');
+
+  document.getElementById('lotePreview').style.display = 'block';
+  document.getElementById('lotePrevTitulo').textContent =
+    _loteRegs.length + ' atendimento(s) prontos para lançar' +
+    (erros.length ? ' · ' + erros.length + ' linha(s) ignorada(s)' : '');
+
+  if(_loteRegs.length > 0){
+    document.getElementById('btnLoteConfirmar').style.display = 'inline-flex';
+  }
+  if(erros.length){
+    showMsg('msgImport','Linhas não reconhecidas foram ignoradas: '+erros.join(', '),'err');
+  }
+}
+
+function confirmarLote(){
+  if(!_loteRegs.length) return;
+  _loteRegs.forEach(r=>{
+    const id = uid();
+    pacDB[id] = {
+      id, data:r.data, idade:r.idade||18,
+      atividades:[r.atividade],
+      perfil:[r.perfil],
+      obs:r.obs||'',
+      nome:r.nome,
+      criado:new Date().toISOString()
+    };
+  });
   dbSave();
   fecharImportModal();
   filtrarAtend();
-  showMsg('msgAtend','✓ '+selecionados.length+' atendimento(s) importado(s) com sucesso!','ok');
+  showMsg('msgAtend','✓ '+_loteRegs.length+' atendimento(s) lançados com sucesso!','ok');
 }
+
 
 
 </script>
