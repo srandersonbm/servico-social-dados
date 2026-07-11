@@ -3665,10 +3665,9 @@
         "Visita Social Beira Leito"
       ],
       "perfil": [
-        "Homem adulto"
+        "Indígena"
       ],
-      "obs": "UTI 1, Leito 04",
-      "nome": "Jocilene Naiva Mariano Guajajara",
+      "obs": "Jocilene Naiva Mariano Guajajara, 18 - UTI 1, Leito 04",
       "criado": "2026-07-11T12:53:50.714Z"
     },
     "285": {
@@ -3759,5 +3758,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-07-11T12:53:52.220Z"
+  "savedAt": "2026-07-11T12:54:36.170Z"
 }
