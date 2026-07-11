@@ -3355,10 +3355,9 @@
         "Contatos Institucionais/Familiares"
       ],
       "perfil": [
-        "Homem adulto"
+        "Mulher adulta"
       ],
-      "obs": "Contato com familiar da paciente Cândida Pereira do Nascimento (UTI 02 - Leito 01), a pedido médico (alta)",
-      "nome": "Tatyana",
+      "obs": "Tatyana, 42 - Contato com familiar da paciente Cândida Pereira do Nascimento (UTI 02 - Leito 01), a pedido médico (alta)",
       "criado": "2026-07-11T12:30:21.921Z"
     },
     "262": {
@@ -3393,5 +3392,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-07-11T12:34:55.361Z"
+  "savedAt": "2026-07-11T12:35:12.462Z"
 }
