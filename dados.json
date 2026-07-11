@@ -3642,6 +3642,104 @@
       "obs": "",
       "nome": "PATRÍCIA",
       "criado": "2026-07-11T12:50:13.603Z"
+    },
+    "283": {
+      "id": 283,
+      "data": "2026-07-04",
+      "idade": 98,
+      "atividades": [
+        "Visita Social Beira Leito"
+      ],
+      "perfil": [
+        "Pessoa Idosa homem"
+      ],
+      "obs": "UTI 1, Leito 03",
+      "nome": "Raimundo Vieira Barrada",
+      "criado": "2026-07-11T12:53:50.714Z"
+    },
+    "284": {
+      "id": 284,
+      "data": "2026-07-04",
+      "idade": 18,
+      "atividades": [
+        "Visita Social Beira Leito"
+      ],
+      "perfil": [
+        "Homem adulto"
+      ],
+      "obs": "UTI 1, Leito 04",
+      "nome": "Jocilene Naiva Mariano Guajajara",
+      "criado": "2026-07-11T12:53:50.714Z"
+    },
+    "285": {
+      "id": 285,
+      "data": "2026-07-04",
+      "idade": 59,
+      "atividades": [
+        "Visita Social Beira Leito"
+      ],
+      "perfil": [
+        "Homem adulto"
+      ],
+      "obs": "UTI 1, Leito 05",
+      "nome": "Wasny Filho Silva Ramos",
+      "criado": "2026-07-11T12:53:50.714Z"
+    },
+    "286": {
+      "id": 286,
+      "data": "2026-07-04",
+      "idade": 17,
+      "atividades": [
+        "Visita Social Beira Leito"
+      ],
+      "perfil": [
+        "Homem adulto"
+      ],
+      "obs": "UTI 1, Leito 07",
+      "nome": "Gabriel Barros Ribeiro",
+      "criado": "2026-07-11T12:53:50.714Z"
+    },
+    "287": {
+      "id": 287,
+      "data": "2026-07-04",
+      "idade": 38,
+      "atividades": [
+        "Visita Social Beira Leito"
+      ],
+      "perfil": [
+        "Homem adulto"
+      ],
+      "obs": "UTI 1, Leito 08",
+      "nome": "Moisés de Sousa Aguiar",
+      "criado": "2026-07-11T12:53:50.714Z"
+    },
+    "288": {
+      "id": 288,
+      "data": "2026-07-04",
+      "idade": 56,
+      "atividades": [
+        "Visita Social Beira Leito"
+      ],
+      "perfil": [
+        "Homem adulto"
+      ],
+      "obs": "UTI 1, Leito 09",
+      "nome": "Clayton Silva de Sousa",
+      "criado": "2026-07-11T12:53:50.714Z"
+    },
+    "289": {
+      "id": 289,
+      "data": "2026-07-04",
+      "idade": 56,
+      "atividades": [
+        "Visita Social Beira Leito"
+      ],
+      "perfil": [
+        "Homem adulto"
+      ],
+      "obs": "UTI 1, Leito 10",
+      "nome": "Francilene Bernardo Nunes",
+      "criado": "2026-07-11T12:53:50.714Z"
     }
   },
   "istDB": {},
@@ -3661,5 +3759,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-07-11T12:52:38.000Z"
+  "savedAt": "2026-07-11T12:53:52.220Z"
 }
