@@ -3261,10 +3261,9 @@
         "Contatos Institucionais/Familiares"
       ],
       "perfil": [
-        "Pessoa Idosa homem"
+        "Pessoa Idosa mulher"
       ],
-      "obs": "Ligação para informar mudança de visita",
-      "nome": "Tânia",
+      "obs": "Tânia, 63 - Ligação para informar mudança de visita",
       "criado": "2026-07-11T12:30:21.921Z"
     },
     "255": {
@@ -3397,5 +3396,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-07-11T12:32:50.703Z"
+  "savedAt": "2026-07-11T12:33:22.025Z"
 }
