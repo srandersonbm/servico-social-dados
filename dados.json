@@ -3418,15 +3418,14 @@
     "266": {
       "id": 266,
       "data": "2026-07-05",
-      "idade": 13,
+      "idade": null,
       "atividades": [
         "Visita Social Beira Leito"
       ],
       "perfil": [
-        "Homem adulto"
+        "Adolescente"
       ],
-      "obs": "adoslecente mulher - UTI 2, Leito 08",
-      "nome": "Ashily Alves da Silva",
+      "obs": "Ashily Alves da Silva, 13 anos - UTI 2, Leito 08",
       "criado": "2026-07-11T12:38:30.962Z"
     },
     "267": {
@@ -3475,5 +3474,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-07-11T12:38:32.466Z"
+  "savedAt": "2026-07-11T12:39:16.944Z"
 }
