@@ -3733,10 +3733,9 @@
         "Visita Social Beira Leito"
       ],
       "perfil": [
-        "Homem adulto"
+        "Mulher adulta"
       ],
-      "obs": "UTI 1, Leito 10",
-      "nome": "Francilene Bernardo Nunes",
+      "obs": "Francilene Bernardo Nunes, 56 - UTI 1, Leito 10",
       "criado": "2026-07-11T12:53:50.714Z"
     }
   },
@@ -3757,5 +3756,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-07-11T12:55:27.283Z"
+  "savedAt": "2026-07-11T12:55:55.146Z"
 }
