@@ -3193,10 +3193,9 @@
         "Contatos Institucionais/Familiares"
       ],
       "perfil": [
-        "Homem adulto"
+        "Mulher adulta"
       ],
-      "obs": "Contato com familiar do paciente Wasny Filho (UTI 01 - Leito 05), a pedido médico (alta)",
-      "nome": "Thaysa",
+      "obs": "Thaysa, 36 - Contato com familiar do paciente Wasny Filho (UTI 01 - Leito 05), a pedido médico (alta)",
       "criado": "2026-07-11T12:30:21.921Z"
     },
     "250": {
@@ -3399,5 +3398,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-07-11T12:30:23.425Z"
+  "savedAt": "2026-07-11T12:31:29.613Z"
 }
