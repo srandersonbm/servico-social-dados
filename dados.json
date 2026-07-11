@@ -3687,15 +3687,14 @@
     "286": {
       "id": 286,
       "data": "2026-07-04",
-      "idade": 17,
+      "idade": 18,
       "atividades": [
         "Visita Social Beira Leito"
       ],
       "perfil": [
-        "Homem adulto"
+        "Adolescente"
       ],
-      "obs": "UTI 1, Leito 07",
-      "nome": "Gabriel Barros Ribeiro",
+      "obs": "Gabriel Barros Ribeiro, 17 - UTI 1, Leito 07",
       "criado": "2026-07-11T12:53:50.714Z"
     },
     "287": {
@@ -3758,5 +3757,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-07-11T12:54:36.170Z"
+  "savedAt": "2026-07-11T12:55:27.283Z"
 }
