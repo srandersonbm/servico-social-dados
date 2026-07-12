@@ -640,12 +640,13 @@ tbody tr:hover td{background:var(--s2)}
       <!-- Instrução -->
       <div style="background:var(--a2);border:1px solid var(--a3);border-radius:var(--rad);padding:12px 14px;font-size:12px;color:var(--accent);margin-bottom:14px;line-height:1.8">
         <strong>Como preencher — uma pessoa por linha:</strong><br>
-        <code style="background:var(--surface);border-radius:4px;padding:2px 6px;font-size:11px">Nome, Idade - Observação</code><br>
+        <code style="background:var(--surface);border-radius:4px;padding:2px 6px;font-size:11px">Nome, Idade, Perfil - Observação</code><br>
         Exemplos:<br>
-        <code style="background:var(--surface);border-radius:4px;padding:2px 6px;font-size:11px">Roberto Silva, 61 - Leito UTI</code><br>
-        <code style="background:var(--surface);border-radius:4px;padding:2px 6px;font-size:11px">Maria Oliveira, 45</code><br>
+        <code style="background:var(--surface);border-radius:4px;padding:2px 6px;font-size:11px">Roberto Silva, 61, idoso - Leito UTI</code><br>
+        <code style="background:var(--surface);border-radius:4px;padding:2px 6px;font-size:11px">Maria Oliveira, 45, mulher adulta</code><br>
         <code style="background:var(--surface);border-radius:4px;padding:2px 6px;font-size:11px">ANTONIO, 50 - Orientações e normas</code><br>
-        <span style="color:var(--t2)">A observação é opcional. O perfil é identificado automaticamente pelo nome e idade.</span>
+        <code style="background:var(--surface);border-radius:4px;padding:2px 6px;font-size:11px">Jaqueline, 28, adolescente</code><br>
+        <span style="color:var(--t2)">Perfil e observação são opcionais. Se o perfil não for informado ou não reconhecido, é inferido pelo nome e idade.</span>
       </div>
 
       <!-- Data e Atividade globais -->
@@ -2061,6 +2062,30 @@ function atualizarContadorLote(){
   document.getElementById('btnLoteConfirmar').style.display = 'none';
 }
 
+function matchPerfil(txt){
+  if(!txt) return null;
+  const t = txt.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  // Tenta casar com os perfis cadastrados por palavras-chave
+  const mapa = [
+    ['HOMEM ADULTO',       ['HOMEM ADULTO','MASCULINO ADULTO']],
+    ['Mulher adulta',      ['MULHER ADULTA','FEMININO ADULTA','FEMININO ADULTO']],
+    ['Pessoa Idosa homem', ['IDOSO','IDOSA HOMEM','PESSOA IDOSA HOMEM','IDOSO HOMEM','HOMEM IDOSO']],
+    ['Pessoa Idosa mulher',['IDOSA','PESSOA IDOSA MULHER','IDOSA MULHER','MULHER IDOSA']],
+    ['Criança',            ['CRIANCA','CRIANÇA','INFANTIL']],
+    ['Adolescente',        ['ADOLESCENTE','TEEN','JUVENIL']],
+    ['LGBTI+',             ['LGBT','LGBTI','LGBTQ','TRANS','GAY','LESBICA']],
+    ['Pessoa com deficiência',['DEFICIENTE','DEFICIENCIA','PCD','PESSOA COM DEFICIENCIA']],
+    ['Indígena',           ['INDIGENA','INDIO','INDIA']],
+    ['Quilombola',         ['QUILOMBOLA']],
+    ['População de rua',   ['POPULACAO DE RUA','RUA','MORADOR DE RUA','SEM TETO']],
+    ['Apenados',           ['APENADO','PRESO','DETENTO','APENADOS']],
+  ];
+  for(const [perfil, palavras] of mapa){
+    if(palavras.some(p=>t.includes(p))) return perfil;
+  }
+  return null;
+}
+
 function parseLinha(linha){
   linha = linha.trim();
   if(!linha) return null;
@@ -2073,27 +2098,44 @@ function parseLinha(linha){
     linha = linha.slice(0, mObs.index).trim();
   }
 
-  // Extrai idade: número antes de "anos" ou último número após vírgula
+  // Extrai idade: número antes de "anos" ou número após vírgula
   let idade = null;
   const mIdadeAnos = linha.match(/,?\s*(\d+)\s*anos?/i);
   if(mIdadeAnos){
     idade = parseInt(mIdadeAnos[1]);
     linha = linha.replace(mIdadeAnos[0], '').trim();
   } else {
-    // Tenta pegar último token numérico após vírgula
-    const mVirgula = linha.match(/,\s*(\d+)\s*$/);
+    const mVirgula = linha.match(/,\s*(\d+)\s*(?:,|$)/);
     if(mVirgula){
       idade = parseInt(mVirgula[1]);
-      linha = linha.slice(0, mVirgula.index).trim();
+      linha = linha.slice(0, mVirgula.index) + linha.slice(mVirgula.index + mVirgula[0].length - (mVirgula[0].endsWith(',') ? 1 : 0));
+      linha = linha.trim();
+    } else {
+      const mVirgulaFim = linha.match(/,\s*(\d+)\s*$/);
+      if(mVirgulaFim){
+        idade = parseInt(mVirgulaFim[1]);
+        linha = linha.slice(0, mVirgulaFim.index).trim();
+      }
     }
   }
 
-  // Nome: o que sobrou (remove vírgulas soltas no final)
-  const nome = linha.replace(/,\s*$/, '').trim();
+  // Extrai perfil: texto após a idade (após vírgula) antes da observação
+  // Formato: "Nome, Idade, Perfil - Obs" ou "Nome, Idade, Perfil"
+  let perfilTexto = null;
+  const mPerfil = linha.match(/,\s*([^,\-–]+)$/);
+  if(mPerfil){
+    perfilTexto = mPerfil[1].trim();
+    linha = linha.slice(0, mPerfil.index).trim();
+  }
 
+  // Nome: o que sobrou
+  const nome = linha.replace(/,\s*$/, '').trim();
   if(!nome) return null;
 
-  return { nome, idade: idade||0, obs, perfil: inferirPerfil(nome, idade) };
+  // Resolve perfil: tenta casar texto digitado → fallback por nome+idade → padrão
+  const perfil = matchPerfil(perfilTexto) || inferirPerfil(nome, idade);
+
+  return { nome, idade: idade||0, obs, perfil, perfilOriginal: perfilTexto||null };
 }
 
 function processarLote(){
@@ -2125,10 +2167,13 @@ function processarLote(){
       <td style="padding:6px 10px;border-bottom:1px solid var(--border);text-align:center">
         ${r.idade ? '<span class="badge badge-b">'+r.idade+' a</span>' : '<span style="color:var(--red);font-size:11px">⚠ sem idade</span>'}
       </td>
-      <td style="padding:6px 10px;border-bottom:1px solid var(--border)"><span class="tag tag-p" style="font-size:11px">${r.perfil}</span></td>
+      <td style="padding:6px 10px;border-bottom:1px solid var(--border)">
+        <span class="tag tag-p" style="font-size:11px">${r.perfil}</span>
+        ${r.perfilOriginal && matchPerfil(r.perfilOriginal) ? '' : '<span style="font-size:10px;color:var(--t3);display:block">inferido</span>'}
+      </td>
       <td style="padding:6px 10px;border-bottom:1px solid var(--border);font-size:12px;color:var(--t2)">${r.obs||'—'}</td>
       <td style="padding:6px 10px;border-bottom:1px solid var(--border);font-size:11px">
-        ${r.idade ? '<span style="color:var(--green)">✓ OK</span>' : '<span style="color:var(--amber)">⚠ Sem idade</span>'}
+        ${r.idade ? '<span style="color:var(--green)">✓</span>' : '<span style="color:var(--amber)">⚠ sem idade</span>'}
       </td>
     </tr>`).join('');
 
