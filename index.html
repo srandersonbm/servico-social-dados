@@ -313,9 +313,9 @@ tbody tr:hover td{background:var(--s2)}
         <option value="">Todos</option>
       </select>
       <label style="font-size:12px;color:var(--t2);white-space:nowrap">Idade:</label>
-      <input type="number" id="fIdadeMin" min="18" max="100" placeholder="de" style="width:58px"/>
+      <input type="number" id="fIdadeMin" min="0" max="100" placeholder="de" style="width:58px"/>
       <span style="color:var(--t3);font-size:12px">–</span>
-      <input type="number" id="fIdadeMax" min="18" max="100" placeholder="até" style="width:58px"/>
+      <input type="number" id="fIdadeMax" min="0" max="100" placeholder="até" style="width:58px"/>
       <button class="btn btn-sm" onclick="limparFiltrosExtra()" style="font-size:11px">✕ Limpar filtros</button>
     </div>
   </div>
@@ -1107,6 +1107,11 @@ const anoAtual = new Date().getFullYear();
 const mesAtual = new Date().toISOString().slice(0,7);
 
 function fmtDate(d){ if(!d)return''; const[y,m,dia]=d.split('-'); return`${dia}/${m}/${y}`; }
+function idadeBadge(idade){
+  const v=parseInt(idade);
+  const txt = v===0?'< 10 anos': v>=100?'> 99 anos': v+' anos';
+  return `<span class="badge badge-b">${txt}</span>`;
+}
 function showMsg(id,txt,tipo){
   const el=document.getElementById(id);
   if(!el)return;
@@ -1174,9 +1179,15 @@ function goTab(grupo, tab){
 (function buildModal(){
   // Select idade
   const si=document.getElementById('mIdade');
-  for(let i=18;i<=100;i++){
+  si.innerHTML='';
+  // Menor de 10
+  const oMenor=document.createElement('option');oMenor.value=0;oMenor.textContent='Menor de 10 anos';si.appendChild(oMenor);
+  // 10 a 99
+  for(let i=10;i<=99;i++){
     const o=document.createElement('option');o.value=i;o.textContent=i+' anos';si.appendChild(o);
   }
+  // Mais de 99
+  const oMaior=document.createElement('option');oMaior.value=100;oMaior.textContent='Mais de 99 anos';si.appendChild(oMaior);
   // Select atividades (seleção única)
   const sa=document.getElementById('selAtiv');
   sa.innerHTML='';
@@ -1188,17 +1199,15 @@ function goTab(grupo, tab){
   PERFIL.forEach(p=>{const o=document.createElement('option');o.value=p;o.textContent=p;sp.appendChild(o);});
 })();
 
-/* Auto-seleciona perfil idoso quando idade ≥ 60 */
 function autoPerfilIdade(){
-  const idade = parseInt(document.getElementById('mIdade').value);
-  const sp = document.getElementById('selPerfil');
-  if(idade >= 60){
-    // Detecta sexo já selecionado: se já for idoso, mantém; senão tenta inferir do perfil atual
-    const atual = sp.value;
-    if(!atual.includes('Idosa')){
-      // Padrão: Pessoa Idosa mulher; usuário pode trocar
-      sp.value = 'Pessoa Idosa mulher';
-    }
+  const val  = parseInt(document.getElementById('mIdade').value);
+  const sp   = document.getElementById('selPerfil');
+  if(val === 0){
+    sp.value = 'Criança';
+  } else if(val >= 10 && val <= 17){
+    sp.value = 'Adolescente';
+  } else if(val >= 60 || val === 100){
+    if(!sp.value.includes('Idosa')) sp.value = 'Pessoa Idosa mulher';
   }
 }
 
@@ -1208,7 +1217,7 @@ function abrirModal(id){
   editId = id||null;
   document.getElementById('modalTitulo').textContent = id?'Editar Atendimento':'Novo Atendimento';
   document.getElementById('mData').value    = hoje;
-  document.getElementById('mIdade').value   = 18;
+  document.getElementById('mIdade').value   = 30;
   document.getElementById('mObs').value     = '';
   // Padrões: Demanda Espontânea + Homem adulto
   document.getElementById('selAtiv').value   = 'Atendimento de Demanda Espontânea';
@@ -1312,13 +1321,12 @@ function filtrarAtend(){
 
   if(fAtiv)   regs=regs.filter(r=>(r.atividades||[]).includes(fAtiv));
   if(fPerfil) regs=regs.filter(r=>(r.perfil||[]).includes(fPerfil));
-  if(fIdMin>0 || fIdMax<999) regs=regs.filter(r=>r.idade>=fIdMin&&r.idade<=fIdMax);
+  if(fIdMin>0||fIdMax<999) regs=regs.filter(r=>r.idade>=fIdMin&&r.idade<=fIdMax);
 
-  // Indica filtros ativos no título
   const extras=[];
-  if(fAtiv) extras.push(fAtiv);
+  if(fAtiv)   extras.push(fAtiv);
   if(fPerfil) extras.push(fPerfil);
-  if(fIdMin>0||fIdMax<999) extras.push(`${fIdMin||18}–${fIdMax||100} anos`);
+  if(fIdMin>0||fIdMax<999) extras.push(`${fIdMin||0}–${fIdMax>=100?'99+':fIdMax} anos`);
   if(extras.length) titulo += ' · '+extras.join(' · ');
 
   regs.sort((a,b)=>a.data<b.data?-1:a.data>b.data?1:0);
@@ -1341,7 +1349,7 @@ function renderTabelaAtend(regs, titulo){
     return `
     <tr>
       <td><strong>${fmtDate(r.data)}</strong></td>
-      <td><span class="badge badge-b">${r.idade} anos</span></td>
+      <td>${idadeBadge(r.idade)}</td>
       <td><div class="tag-list">${(r.perfil||[]).map(p=>`<span class="tag tag-p">${p}</span>`).join('')||'<span style="color:var(--t3);font-size:11px">—</span>'}</div></td>
       <td><div class="tag-list">${(r.atividades||[]).map(a=>`<span class="tag">${a}</span>`).join('')||'<span style="color:var(--t3);font-size:11px">—</span>'}</div></td>
       <td style="font-size:12px;color:var(--t2);max-width:200px">${nomeObs||'—'}</td>
@@ -1813,7 +1821,7 @@ function renderDemanda(regs, titulo){
     return `
     <tr>
       <td><strong>${fmtDate(r.data)}</strong></td>
-      <td><span class="badge badge-b">${r.idade} anos</span></td>
+      <td>${idadeBadge(r.idade)}</td>
       <td><div class="tag-list">${(r.perfil||[]).map(p=>`<span class="tag tag-p">${p}</span>`).join('')||'—'}</div></td>
       <td style="font-size:12px;color:var(--t2);max-width:220px">${nomeObs||'—'}</td>
       <td><button class="btn btn-sm" onclick="abrirModal(${r.id})" title="Editar">✏️</button></td>
@@ -2195,7 +2203,7 @@ function confirmarLote(){
   _loteRegs.forEach(r=>{
     const id = uid();
     pacDB[id] = {
-      id, data:r.data, idade:r.idade||18,
+      id, data:r.data, idade:r.idade||0,
       atividades:[r.atividade],
       perfil:[r.perfil],
       obs:r.obs||'',
