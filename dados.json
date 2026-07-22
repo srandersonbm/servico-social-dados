@@ -3738,76 +3738,6 @@
       "obs": "Francilene Bernardo Nunes, 56 - UTI 1, Leito 10",
       "criado": "2026-07-11T12:53:50.714Z"
     },
-    "292": {
-      "id": 292,
-      "data": "2026-07-22",
-      "idade": 50,
-      "atividades": [
-        "Entrevista Social de 1ª vez/Admissão"
-      ],
-      "perfil": [
-        "HOMEM ADULTO"
-      ],
-      "obs": "",
-      "nome": "Edvanio Quirino de Almeida",
-      "criado": "2026-07-22T00:20:49.177Z"
-    },
-    "293": {
-      "id": 293,
-      "data": "2026-07-22",
-      "idade": 29,
-      "atividades": [
-        "Entrevista Social de 1ª vez/Admissão"
-      ],
-      "perfil": [
-        "Mulher adulta"
-      ],
-      "obs": "",
-      "nome": "Ran Kally Silva Nunes",
-      "criado": "2026-07-22T00:20:49.177Z"
-    },
-    "294": {
-      "id": 294,
-      "data": "2026-07-22",
-      "idade": 30,
-      "atividades": [
-        "Entrevista Social de 1ª vez/Admissão"
-      ],
-      "perfil": [
-        "Mulher adulta"
-      ],
-      "obs": "",
-      "nome": "Jhenifer Nascimento Cristino",
-      "criado": "2026-07-22T00:20:49.177Z"
-    },
-    "295": {
-      "id": 295,
-      "data": "2026-07-22",
-      "idade": 39,
-      "atividades": [
-        "Entrevista Social de 1ª vez/Admissão"
-      ],
-      "perfil": [
-        "HOMEM ADULTO"
-      ],
-      "obs": "",
-      "nome": "Márcio Moreira Souza",
-      "criado": "2026-07-22T00:20:49.177Z"
-    },
-    "296": {
-      "id": 296,
-      "data": "2026-07-22",
-      "idade": 55,
-      "atividades": [
-        "Entrevista Social de 1ª vez/Admissão"
-      ],
-      "perfil": [
-        "HOMEM ADULTO"
-      ],
-      "obs": "",
-      "nome": "Francisco Deliton Monte Viana",
-      "criado": "2026-07-22T00:20:49.177Z"
-    },
     "297": {
       "id": 297,
       "data": "2026-07-20",
@@ -4021,5 +3951,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-07-22T00:29:26.146Z"
+  "savedAt": "2026-07-22T00:29:37.557Z"
 }
