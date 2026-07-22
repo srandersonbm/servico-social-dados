@@ -3738,20 +3738,6 @@
       "obs": "Francilene Bernardo Nunes, 56 - UTI 1, Leito 10",
       "criado": "2026-07-11T12:53:50.714Z"
     },
-    "292": {
-      "id": 292,
-      "data": "2026-07-22",
-      "idade": 50,
-      "atividades": [
-        "Entrevista Social de 1ª vez/Admissão"
-      ],
-      "perfil": [
-        "HOMEM ADULTO"
-      ],
-      "obs": "",
-      "nome": "Edvanio Quirino de Almeida",
-      "criado": "2026-07-22T00:20:49.177Z"
-    },
     "293": {
       "id": 293,
       "data": "2026-07-22",
@@ -3924,5 +3910,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-07-22T00:24:35.878Z"
+  "savedAt": "2026-07-22T00:24:39.285Z"
 }
