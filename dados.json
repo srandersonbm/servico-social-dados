@@ -3738,20 +3738,6 @@
       "obs": "Francilene Bernardo Nunes, 56 - UTI 1, Leito 10",
       "criado": "2026-07-11T12:53:50.714Z"
     },
-    "293": {
-      "id": 293,
-      "data": "2026-07-22",
-      "idade": 29,
-      "atividades": [
-        "Entrevista Social de 1ª vez/Admissão"
-      ],
-      "perfil": [
-        "Mulher adulta"
-      ],
-      "obs": "",
-      "nome": "Ran Kally Silva Nunes",
-      "criado": "2026-07-22T00:20:49.177Z"
-    },
     "294": {
       "id": 294,
       "data": "2026-07-22",
@@ -3910,5 +3896,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-07-22T00:24:39.285Z"
+  "savedAt": "2026-07-22T00:24:45.173Z"
 }
