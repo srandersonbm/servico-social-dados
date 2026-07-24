@@ -4404,10 +4404,9 @@
         "Visita Social Beira Leito"
       ],
       "perfil": [
-        "Pessoa Idosa mulher"
+        "Pessoa Idosa homem"
       ],
-      "obs": "",
-      "nome": "VALDIR BORGES DA SILVA",
+      "obs": "VALDIR BORGES DA SILVA",
       "criado": "2026-07-24T13:47:04.690Z"
     },
     "339": {
@@ -4456,5 +4455,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-07-24T13:47:06.198Z"
+  "savedAt": "2026-07-24T13:47:33.818Z"
 }
