@@ -4376,10 +4376,9 @@
         "Visita Social Beira Leito"
       ],
       "perfil": [
-        "Pessoa Idosa mulher"
+        "Pessoa Idosa homem"
       ],
-      "obs": "",
-      "nome": "FRANCISCO GOMES FERREIRA",
+      "obs": "FRANCISCO GOMES FERREIRA",
       "criado": "2026-07-24T13:47:04.690Z"
     },
     "337": {
@@ -4455,5 +4454,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-07-24T13:47:33.818Z"
+  "savedAt": "2026-07-24T13:48:11.035Z"
 }
