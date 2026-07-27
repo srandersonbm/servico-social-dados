@@ -5040,6 +5040,19 @@
       ],
       "obs": "Luiza (óbito)",
       "criado": "2026-07-27T09:16:14.902Z"
+    },
+    "409": {
+      "id": 409,
+      "data": "2026-07-26",
+      "idade": 53,
+      "atividades": [
+        "Orientação pós-óbito"
+      ],
+      "perfil": [
+        "Mulher adulta"
+      ],
+      "obs": "Luiza (filha de Hosmarina)",
+      "criado": "2026-07-27T09:17:51.274Z"
     }
   },
   "istDB": {},
@@ -5059,5 +5072,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-07-27T09:16:16.408Z"
+  "savedAt": "2026-07-27T09:17:52.781Z"
 }
