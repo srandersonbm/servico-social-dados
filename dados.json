@@ -5687,13 +5687,12 @@
       "data": "2026-07-29",
       "idade": 80,
       "atividades": [
-        "Atendimento de Demanda Espontânea"
+        "Visita Social Beira Leito"
       ],
       "perfil": [
         "Pessoa Idosa homem"
       ],
       "obs": "",
-      "nome": "RAIMUNDO ERSON PEREIRA DA MOTA",
       "criado": "2026-07-30T16:08:40.614Z"
     },
     "458": {
@@ -5755,5 +5754,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-07-30T16:11:03.678Z"
+  "savedAt": "2026-07-30T16:11:09.815Z"
 }
