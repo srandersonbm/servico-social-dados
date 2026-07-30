@@ -5713,13 +5713,12 @@
       "data": "2026-07-29",
       "idade": 77,
       "atividades": [
-        "Atendimento de Demanda Espontânea"
+        "Visita Social Beira Leito"
       ],
       "perfil": [
         "Pessoa Idosa mulher"
       ],
       "obs": "",
-      "nome": "NILZA SANTOS ARAUJO",
       "criado": "2026-07-30T16:08:40.614Z"
     },
     "460": {
@@ -5754,5 +5753,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-07-30T16:11:09.815Z"
+  "savedAt": "2026-07-30T16:11:16.005Z"
 }
