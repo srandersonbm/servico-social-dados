@@ -5674,13 +5674,12 @@
       "data": "2026-07-29",
       "idade": 67,
       "atividades": [
-        "Atendimento de Demanda Espontânea"
+        "Visita Social Beira Leito"
       ],
       "perfil": [
         "Pessoa Idosa homem"
       ],
       "obs": "",
-      "nome": "ANTONIO NILSON VARÃO FERREIRA",
       "criado": "2026-07-30T16:08:40.614Z"
     },
     "457": {
@@ -5757,5 +5756,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-07-30T16:10:37.979Z"
+  "savedAt": "2026-07-30T16:10:53.432Z"
 }
