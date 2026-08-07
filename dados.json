@@ -6725,7 +6725,7 @@
         "Atendimento de Demanda Espontânea"
       ],
       "perfil": [
-        "Pessoa Idosa mulher"
+        "Pessoa Idosa homem"
       ],
       "obs": "Zezinho",
       "criado": "2026-08-07T21:26:24.498Z"
@@ -6748,5 +6748,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-08-07T21:26:26.003Z"
+  "savedAt": "2026-08-07T21:26:36.315Z"
 }
