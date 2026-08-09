@@ -7082,10 +7082,9 @@
         "Visita Social Beira Leito"
       ],
       "perfil": [
-        "Pessoa Idosa homem"
+        "Pessoa Idosa mulher"
       ],
       "obs": "pessoa idosa mulher",
-      "nome": "ELDA DA SILVA COSTA",
       "criado": "2026-08-09T01:02:35.782Z"
     },
     "561": {
@@ -7120,5 +7119,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-08-09T01:02:37.291Z"
+  "savedAt": "2026-08-09T01:03:04.423Z"
 }
