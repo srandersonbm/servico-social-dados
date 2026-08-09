@@ -7142,20 +7142,6 @@
       "nome": "ANTONIA CLEONICE BARROS DE OLIVEIRA RAMOS",
       "criado": "2026-08-09T01:08:09.021Z"
     },
-    "565": {
-      "id": 565,
-      "data": "2026-08-08",
-      "idade": 49,
-      "atividades": [
-        "Atendimento de Demanda Espontânea"
-      ],
-      "perfil": [
-        "Homem adulto"
-      ],
-      "obs": "homem adulto",
-      "nome": "NHANTE",
-      "criado": "2026-08-09T01:08:09.021Z"
-    },
     "566": {
       "id": 566,
       "data": "2026-08-08",
@@ -7426,5 +7412,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-08-09T01:08:10.529Z"
+  "savedAt": "2026-08-09T01:09:35.945Z"
 }
