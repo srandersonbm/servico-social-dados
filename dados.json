@@ -8576,10 +8576,9 @@
         "Visita Social Beira Leito"
       ],
       "perfil": [
-        "Pessoa Idosa homem"
+        "Pessoa Idosa mulher"
       ],
-      "obs": "",
-      "nome": "Jardilina",
+      "obs": "Jardilina",
       "criado": "2026-08-20T21:42:17.323Z"
     },
     "672": {
@@ -8667,5 +8666,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-08-20T21:43:09.713Z"
+  "savedAt": "2026-08-20T21:43:29.344Z"
 }
