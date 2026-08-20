@@ -8631,10 +8631,9 @@
         "Visita Social Beira Leito"
       ],
       "perfil": [
-        "Pessoa Idosa homem"
+        "Pessoa Idosa mulher"
       ],
-      "obs": "",
-      "nome": "Ivone",
+      "obs": "Ivone",
       "criado": "2026-08-20T21:42:17.323Z"
     },
     "676": {
@@ -8669,5 +8668,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-08-20T21:42:42.595Z"
+  "savedAt": "2026-08-20T21:42:59.818Z"
 }
