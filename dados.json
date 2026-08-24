@@ -9053,7 +9053,7 @@
     },
     "707": {
       "id": 707,
-      "data": "2026-08-24",
+      "data": "2026-08-23",
       "idade": 51,
       "atividades": [
         "Atendimento de Demanda Espontânea"
@@ -9062,7 +9062,6 @@
         "Homem adulto"
       ],
       "obs": "",
-      "nome": "Luzia",
       "criado": "2026-08-24T22:27:23.647Z"
     },
     "708": {
@@ -9109,5 +9108,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-08-24T22:32:36.700Z"
+  "savedAt": "2026-08-24T22:32:45.752Z"
 }
