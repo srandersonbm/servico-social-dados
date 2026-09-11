@@ -10741,10 +10741,9 @@
         "Atendimento de Demanda Espontânea"
       ],
       "perfil": [
-        "Pessoa Idosa homem"
+        "Pessoa Idosa mulher"
       ],
-      "obs": "",
-      "nome": "Valdenira Alves da Costa",
+      "obs": "Valdenira",
       "criado": "2026-09-11T23:16:00.678Z"
     },
     "833": {
@@ -10807,5 +10806,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-09-11T23:16:23.395Z"
+  "savedAt": "2026-09-11T23:16:36.407Z"
 }
