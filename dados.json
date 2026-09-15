@@ -10972,10 +10972,9 @@
         "Atendimento de Demanda Espontânea"
       ],
       "perfil": [
-        "Homem adulto"
+        "Mulher adulta"
       ],
-      "obs": "",
-      "nome": "Rosirene Galdina Ferreira Barros",
+      "obs": "Rosirene",
       "criado": "2026-09-15T14:51:32.883Z"
     },
     "850": {
@@ -11262,5 +11261,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-09-15T14:52:27.776Z"
+  "savedAt": "2026-09-15T14:52:42.118Z"
 }
