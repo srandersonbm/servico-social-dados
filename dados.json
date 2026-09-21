@@ -12049,6 +12049,90 @@
       ],
       "obs": "Fabiane",
       "criado": "2026-09-21T12:48:48.001Z"
+    },
+    "929": {
+      "id": 929,
+      "data": "2026-09-19",
+      "idade": 63,
+      "atividades": [
+        "Visita Social Beira Leito"
+      ],
+      "perfil": [
+        "Pessoa Idosa homem"
+      ],
+      "obs": "",
+      "nome": "Regina Lucia da Costa Sousa.",
+      "criado": "2026-09-21T12:50:20.780Z"
+    },
+    "930": {
+      "id": 930,
+      "data": "2026-09-19",
+      "idade": 85,
+      "atividades": [
+        "Visita Social Beira Leito"
+      ],
+      "perfil": [
+        "Pessoa Idosa mulher"
+      ],
+      "obs": "",
+      "nome": "Maria de Lourdes Oliveira.",
+      "criado": "2026-09-21T12:50:20.780Z"
+    },
+    "931": {
+      "id": 931,
+      "data": "2026-09-19",
+      "idade": 74,
+      "atividades": [
+        "Visita Social Beira Leito"
+      ],
+      "perfil": [
+        "Pessoa Idosa homem"
+      ],
+      "obs": "",
+      "nome": "Adelino Pires da Costa.",
+      "criado": "2026-09-21T12:50:20.780Z"
+    },
+    "932": {
+      "id": 932,
+      "data": "2026-09-19",
+      "idade": 16,
+      "atividades": [
+        "Visita Social Beira Leito"
+      ],
+      "perfil": [
+        "Homem adulto"
+      ],
+      "obs": "",
+      "nome": "Genilson Santos de Sousa.",
+      "criado": "2026-09-21T12:50:20.780Z"
+    },
+    "933": {
+      "id": 933,
+      "data": "2026-09-19",
+      "idade": 58,
+      "atividades": [
+        "Visita Social Beira Leito"
+      ],
+      "perfil": [
+        "Homem adulto"
+      ],
+      "obs": "",
+      "nome": "Jurandir Ferreira Chaves.",
+      "criado": "2026-09-21T12:50:20.780Z"
+    },
+    "934": {
+      "id": 934,
+      "data": "2026-09-19",
+      "idade": 68,
+      "atividades": [
+        "Visita Social Beira Leito"
+      ],
+      "perfil": [
+        "Pessoa Idosa mulher"
+      ],
+      "obs": "",
+      "nome": "Maria Neusa Mendonça da Paz.",
+      "criado": "2026-09-21T12:50:20.780Z"
     }
   },
   "istDB": {},
@@ -12068,5 +12152,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-09-21T12:49:56.220Z"
+  "savedAt": "2026-09-21T12:50:22.291Z"
 }
