@@ -12016,13 +12016,12 @@
       "data": "2026-09-19",
       "idade": 49,
       "atividades": [
-        "Atendimento de Demanda Espontânea"
+        "Contatos Institucionais/Familiares"
       ],
       "perfil": [
         "Homem adulto"
       ],
-      "obs": "",
-      "nome": "José Ribamar.",
+      "obs": "José Ribamar",
       "criado": "2026-09-21T12:48:48.001Z"
     },
     "927": {
@@ -12069,5 +12068,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-09-21T12:49:44.608Z"
+  "savedAt": "2026-09-21T12:49:56.220Z"
 }
