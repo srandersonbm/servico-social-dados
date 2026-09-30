@@ -13399,10 +13399,9 @@
         "Visita Social Beira Leito"
       ],
       "perfil": [
-        "Pessoa Idosa homem"
+        "Pessoa Idosa mulher"
       ],
-      "obs": "",
-      "nome": "Eva Barros de Carvalho",
+      "obs": "Eva",
       "criado": "2026-09-30T21:45:22.807Z"
     },
     "1032": {
@@ -13437,5 +13436,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-09-30T21:45:45.210Z"
+  "savedAt": "2026-09-30T21:45:57.356Z"
 }
