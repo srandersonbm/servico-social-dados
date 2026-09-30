@@ -13095,29 +13095,14 @@
     "1006": {
       "id": 1006,
       "data": "2026-09-30",
-      "idade": 0,
+      "idade": 65,
       "atividades": [
         "Atendimento de Demanda Espontânea"
       ],
       "perfil": [
-        "Homem adulto"
+        "Pessoa Idosa mulher"
       ],
-      "obs": "",
-      "nome": "HOSPITAL.",
-      "criado": "2026-09-30T19:39:56.996Z"
-    },
-    "1007": {
-      "id": 1007,
-      "data": "2026-09-30",
-      "idade": 58,
-      "atividades": [
-        "Atendimento de Demanda Espontânea"
-      ],
-      "perfil": [
-        "Homem adulto"
-      ],
-      "obs": "",
-      "nome": "EVANTINA RODRIGUES -ORIENTO SOBRE ROTINAS E NORMAS DO HOSPITAL.",
+      "obs": "Maria de fatima",
       "criado": "2026-09-30T19:39:56.996Z"
     },
     "1008": {
@@ -13250,5 +13235,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-09-30T19:40:44.510Z"
+  "savedAt": "2026-09-30T19:41:42.400Z"
 }
