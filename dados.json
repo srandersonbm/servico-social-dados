@@ -13132,20 +13132,6 @@
       "obs": "Raimundo",
       "criado": "2026-09-30T19:39:56.996Z"
     },
-    "1011": {
-      "id": 1011,
-      "data": "2026-09-30",
-      "idade": 53,
-      "atividades": [
-        "Atendimento de Demanda Espontânea"
-      ],
-      "perfil": [
-        "Homem adulto"
-      ],
-      "obs": "",
-      "nome": "RAIMUNDO NONATO DOS REIS COSTA- ENCAMINHAMENTO DE TER.",
-      "criado": "2026-09-30T19:39:56.996Z"
-    },
     "1012": {
       "id": 1012,
       "data": "2026-09-30",
@@ -13220,5 +13206,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-09-30T19:43:04.971Z"
+  "savedAt": "2026-09-30T19:43:17.819Z"
 }
