@@ -13105,20 +13105,6 @@
       "obs": "Maria de fatima",
       "criado": "2026-09-30T19:39:56.996Z"
     },
-    "1008": {
-      "id": 1008,
-      "data": "2026-09-30",
-      "idade": 65,
-      "atividades": [
-        "Atendimento de Demanda Espontânea"
-      ],
-      "perfil": [
-        "Pessoa Idosa homem"
-      ],
-      "obs": "ORIENTO SOBE ROTINAS E NORMAS DO HOSPITAL.",
-      "nome": "• MARIA DE FATIMA FERREIRA",
-      "criado": "2026-09-30T19:39:56.996Z"
-    },
     "1009": {
       "id": 1009,
       "data": "2026-09-30",
@@ -13235,5 +13221,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-09-30T19:41:42.400Z"
+  "savedAt": "2026-09-30T19:41:58.178Z"
 }
