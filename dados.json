@@ -13481,10 +13481,9 @@
         "Visita Social Beira Leito"
       ],
       "perfil": [
-        "Pessoa Idosa homem"
+        "Pessoa Idosa mulher"
       ],
-      "obs": "",
-      "nome": "Caetana Dias de Sousa",
+      "obs": "Caetana",
       "criado": "2026-10-03T22:36:49.266Z"
     }
   },
@@ -13505,5 +13504,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-10-03T22:37:24.539Z"
+  "savedAt": "2026-10-03T22:37:37.447Z"
 }
