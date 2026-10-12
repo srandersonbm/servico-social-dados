@@ -15154,10 +15154,9 @@
         "Visita Social Beira Leito"
       ],
       "perfil": [
-        "Pessoa Idosa homem"
+        "Pessoa Idosa mulher"
       ],
-      "obs": "",
-      "nome": "Josefa Conceição Barros",
+      "obs": "Josefa",
       "criado": "2026-10-12T02:08:53.744Z"
     },
     "1166": {
@@ -15220,5 +15219,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-10-12T02:09:24.163Z"
+  "savedAt": "2026-10-12T02:09:37.474Z"
 }
