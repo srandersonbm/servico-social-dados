@@ -15181,10 +15181,9 @@
         "Visita Social Beira Leito"
       ],
       "perfil": [
-        "Pessoa Idosa homem"
+        "Pessoa Idosa mulher"
       ],
-      "obs": "",
-      "nome": "Doralice de Jesus Mota",
+      "obs": "Doralice",
       "criado": "2026-10-12T02:08:53.744Z"
     },
     "1168": {
@@ -15219,5 +15218,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-10-12T02:09:37.474Z"
+  "savedAt": "2026-10-12T02:09:48.245Z"
 }
