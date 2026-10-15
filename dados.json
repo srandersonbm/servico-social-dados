@@ -15862,19 +15862,6 @@
       "obs": "Valdenir",
       "criado": "2026-10-15T15:53:04.153Z"
     },
-    "1218": {
-      "id": 1218,
-      "data": "2026-10-15",
-      "idade": 28,
-      "atividades": [
-        "Atendimento de Demanda Espontânea"
-      ],
-      "perfil": [
-        "Mulher adulta"
-      ],
-      "obs": "Auricene",
-      "criado": "2026-10-15T15:53:04.153Z"
-    },
     "1219": {
       "id": 1219,
       "data": "2026-10-15",
@@ -15945,5 +15932,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-10-15T19:56:07.703Z"
+  "savedAt": "2026-10-15T19:56:51.468Z"
 }
