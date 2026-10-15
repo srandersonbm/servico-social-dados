@@ -15964,10 +15964,9 @@
         "Visita Social Beira Leito"
       ],
       "perfil": [
-        "Pessoa Idosa homem"
+        "Pessoa Idosa mulher"
       ],
-      "obs": "",
-      "nome": "RITA XAVIER DO CARMO",
+      "obs": "Rita Xavier",
       "criado": "2026-10-15T21:27:49.080Z"
     },
     "1227": {
@@ -16016,5 +16015,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-10-15T21:27:50.589Z"
+  "savedAt": "2026-10-15T21:28:20.224Z"
 }
