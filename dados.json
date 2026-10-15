@@ -15841,13 +15841,12 @@
       "data": "2026-10-15",
       "idade": 50,
       "atividades": [
-        "Atendimento de Demanda Espontânea"
+        "Contatos Institucionais/Familiares"
       ],
       "perfil": [
         "Homem adulto"
       ],
-      "obs": "",
-      "nome": "Claudivan Pereira",
+      "obs": "Claudivan",
       "criado": "2026-10-15T15:53:04.153Z"
     },
     "1217": {
@@ -15947,5 +15946,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-10-15T19:52:42.548Z"
+  "savedAt": "2026-10-15T19:55:28.884Z"
 }
