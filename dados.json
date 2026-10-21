@@ -16509,10 +16509,9 @@
         "Visita Social Beira Leito"
       ],
       "perfil": [
-        "Pessoa Idosa homem"
+        "Pessoa Idosa mulher"
       ],
-      "obs": "",
-      "nome": "Teresinha Sousa Ramos",
+      "obs": "Terezinha",
       "criado": "2026-10-21T17:35:19.290Z"
     },
     "1267": {
@@ -16575,5 +16574,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-10-21T17:35:20.799Z"
+  "savedAt": "2026-10-21T17:35:38.338Z"
 }
