@@ -17285,7 +17285,7 @@
     "1324": {
       "id": 1324,
       "data": "2026-10-31",
-      "idade": 0,
+      "idade": 32,
       "atividades": [
         "Atendimento de Demanda Espontânea"
       ],
@@ -17293,7 +17293,6 @@
         "Homem adulto"
       ],
       "obs": "32 anos",
-      "nome": "Marta",
       "criado": "2026-11-01T21:04:06.707Z"
     },
     "1325": {
@@ -17604,5 +17603,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-11-01T21:05:12.999Z"
+  "savedAt": "2026-11-01T21:05:29.111Z"
 }
