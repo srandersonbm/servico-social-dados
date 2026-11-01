@@ -17363,7 +17363,7 @@
     "1330": {
       "id": 1330,
       "data": "2026-10-31",
-      "idade": 0,
+      "idade": 52,
       "atividades": [
         "Atendimento de Demanda Espontânea"
       ],
@@ -17371,7 +17371,6 @@
         "Homem adulto"
       ],
       "obs": "52 anos",
-      "nome": "Valdenir",
       "criado": "2026-11-01T21:04:06.707Z"
     },
     "1331": {
@@ -17600,5 +17599,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-11-01T21:07:53.677Z"
+  "savedAt": "2026-11-01T21:08:08.815Z"
 }
