@@ -17545,7 +17545,7 @@
     "1344": {
       "id": 1344,
       "data": "2026-10-31",
-      "idade": 0,
+      "idade": 38,
       "atividades": [
         "Atendimento de Demanda Espontânea"
       ],
@@ -17553,7 +17553,6 @@
         "Homem adulto"
       ],
       "obs": "38 anos",
-      "nome": "Fernando",
       "criado": "2026-11-01T21:04:06.707Z"
     },
     "1345": {
@@ -17587,5 +17586,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-11-01T21:12:29.712Z"
+  "savedAt": "2026-11-01T21:12:41.790Z"
 }
