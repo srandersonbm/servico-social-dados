@@ -17480,15 +17480,14 @@
     "1339": {
       "id": 1339,
       "data": "2026-10-31",
-      "idade": 0,
+      "idade": 42,
       "atividades": [
         "Atendimento de Demanda Espontânea"
       ],
       "perfil": [
         "Homem adulto"
       ],
-      "obs": "42 anos",
-      "nome": "Aurilene",
+      "obs": "42 anos aurilene",
       "criado": "2026-11-01T21:04:06.707Z"
     },
     "1340": {
@@ -17593,5 +17592,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-11-01T21:10:28.742Z"
+  "savedAt": "2026-11-01T21:10:42.017Z"
 }
