@@ -17493,15 +17493,14 @@
     "1340": {
       "id": 1340,
       "data": "2026-10-31",
-      "idade": 0,
+      "idade": 56,
       "atividades": [
         "Atendimento de Demanda Espontânea"
       ],
       "perfil": [
         "Homem adulto"
       ],
-      "obs": "56 anos",
-      "nome": "Auzenir",
+      "obs": "Auzenir 56 anos",
       "criado": "2026-11-01T21:04:06.707Z"
     },
     "1341": {
@@ -17592,5 +17591,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-11-01T21:10:42.017Z"
+  "savedAt": "2026-11-01T21:11:06.969Z"
 }
