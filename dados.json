@@ -17338,7 +17338,7 @@
     "1328": {
       "id": 1328,
       "data": "2026-10-31",
-      "idade": 0,
+      "idade": 36,
       "atividades": [
         "Atendimento de Demanda Espontânea"
       ],
@@ -17346,7 +17346,6 @@
         "Homem adulto"
       ],
       "obs": "34 anos",
-      "nome": "Tiago Barros",
       "criado": "2026-11-01T21:04:06.707Z"
     },
     "1329": {
@@ -17602,5 +17601,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-11-01T21:06:32.458Z"
+  "savedAt": "2026-11-01T21:06:45.021Z"
 }
