@@ -17519,7 +17519,7 @@
     "1342": {
       "id": 1342,
       "data": "2026-10-31",
-      "idade": 0,
+      "idade": 45,
       "atividades": [
         "Atendimento de Demanda Espontânea"
       ],
@@ -17527,7 +17527,6 @@
         "Mulher adulta"
       ],
       "obs": "45 anos",
-      "nome": "Raimunda",
       "criado": "2026-11-01T21:04:06.707Z"
     },
     "1343": {
@@ -17590,5 +17589,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-11-01T21:11:33.430Z"
+  "savedAt": "2026-11-01T21:11:48.845Z"
 }
