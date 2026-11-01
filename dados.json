@@ -17259,7 +17259,7 @@
     "1322": {
       "id": 1322,
       "data": "2026-10-31",
-      "idade": 0,
+      "idade": 56,
       "atividades": [
         "Entrevista Social de 1ª vez/Admissão"
       ],
@@ -17267,7 +17267,6 @@
         "Homem adulto"
       ],
       "obs": "56 anos",
-      "nome": "Antônio Pereira de Oliveira",
       "criado": "2026-11-01T20:56:07.037Z"
     },
     "1323": {
@@ -17302,5 +17301,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-11-01T20:56:08.548Z"
+  "savedAt": "2026-11-01T21:00:07.967Z"
 }
