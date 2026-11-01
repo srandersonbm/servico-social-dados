@@ -17581,6 +17581,62 @@
       "obs": "",
       "nome": "Juriti",
       "criado": "2026-11-01T21:13:28.041Z"
+    },
+    "1347": {
+      "id": 1347,
+      "data": "2026-10-31",
+      "idade": 52,
+      "atividades": [
+        "Visita Social Beira Leito"
+      ],
+      "perfil": [
+        "Homem adulto"
+      ],
+      "obs": "",
+      "nome": "Civaldo",
+      "criado": "2026-11-01T21:14:34.293Z"
+    },
+    "1348": {
+      "id": 1348,
+      "data": "2026-10-31",
+      "idade": 44,
+      "atividades": [
+        "Visita Social Beira Leito"
+      ],
+      "perfil": [
+        "Homem adulto"
+      ],
+      "obs": "",
+      "nome": "Lucivania",
+      "criado": "2026-11-01T21:14:34.294Z"
+    },
+    "1349": {
+      "id": 1349,
+      "data": "2026-10-31",
+      "idade": 79,
+      "atividades": [
+        "Visita Social Beira Leito"
+      ],
+      "perfil": [
+        "Pessoa Idosa homem"
+      ],
+      "obs": "",
+      "nome": "João",
+      "criado": "2026-11-01T21:14:34.294Z"
+    },
+    "1350": {
+      "id": 1350,
+      "data": "2026-10-31",
+      "idade": 71,
+      "atividades": [
+        "Visita Social Beira Leito"
+      ],
+      "perfil": [
+        "Pessoa Idosa mulher"
+      ],
+      "obs": "",
+      "nome": "Maria",
+      "criado": "2026-11-01T21:14:34.294Z"
     }
   },
   "istDB": {},
@@ -17600,5 +17656,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-11-01T21:13:29.547Z"
+  "savedAt": "2026-11-01T21:14:35.801Z"
 }
