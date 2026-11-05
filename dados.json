@@ -17744,6 +17744,19 @@
       "obs": "",
       "nome": "Damião de Freitas",
       "criado": "2026-11-05T01:04:26.048Z"
+    },
+    "1359": {
+      "id": 1359,
+      "data": "2026-11-03",
+      "idade": 56,
+      "atividades": [
+        "Contatos Institucionais/Familiares"
+      ],
+      "perfil": [
+        "Mulher adulta"
+      ],
+      "obs": "Lucivania",
+      "criado": "2026-11-05T01:05:33.621Z"
     }
   },
   "istDB": {},
@@ -17763,5 +17776,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-11-05T01:04:58.920Z"
+  "savedAt": "2026-11-05T01:05:35.128Z"
 }
