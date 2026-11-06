@@ -17757,6 +17757,19 @@
       ],
       "obs": "Lucivania",
       "criado": "2026-11-05T01:05:33.621Z"
+    },
+    "1360": {
+      "id": 1360,
+      "data": "2026-11-05",
+      "idade": 54,
+      "atividades": [
+        "Atendimento de Demanda Espontânea"
+      ],
+      "perfil": [
+        "Mulher adulta"
+      ],
+      "obs": "Maria Nilza Lopes de Andrade Sousa, 54 anos",
+      "criado": "2026-11-06T18:02:59.445Z"
     }
   },
   "istDB": {},
@@ -17776,5 +17789,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-11-05T01:05:35.128Z"
+  "savedAt": "2026-11-06T18:03:00.953Z"
 }
