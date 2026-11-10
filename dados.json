@@ -18634,10 +18634,9 @@
         "Atendimento de Demanda Espontânea"
       ],
       "perfil": [
-        "Homem adulto"
+        "Mulher adulta"
       ],
-      "obs": "",
-      "nome": "JACKELINE CARVALHO BARBOSA-ORIENTO SOBRE ROTINAS E NORMAS DO HOSPITAL.",
+      "obs": "Jackeline",
       "criado": "2026-11-10T10:02:32.024Z"
     }
   },
@@ -18658,5 +18657,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-11-10T10:02:33.533Z"
+  "savedAt": "2026-11-10T10:03:30.128Z"
 }
