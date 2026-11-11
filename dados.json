@@ -18872,10 +18872,9 @@
         "Visita Social Beira Leito"
       ],
       "perfil": [
-        "Pessoa Idosa homem"
+        "Pessoa Idosa mulher"
       ],
-      "obs": "",
-      "nome": "Leonice Carvalho da Silva",
+      "obs": "Leonice",
       "criado": "2026-11-11T21:25:25.298Z"
     },
     "1444": {
@@ -18938,5 +18937,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-11-11T21:25:26.807Z"
+  "savedAt": "2026-11-11T21:25:52.487Z"
 }
