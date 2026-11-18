@@ -19359,15 +19359,14 @@
     "1480": {
       "id": 1480,
       "data": "2026-11-18",
-      "idade": 0,
+      "idade": 43,
       "atividades": [
         "Atendimento de Demanda Espontânea"
       ],
       "perfil": [
         "Homem adulto"
       ],
-      "obs": "43 anos",
-      "nome": "Valdir",
+      "obs": "43 anos Valdir",
       "criado": "2026-11-18T21:42:15.239Z"
     },
     "1481": {
@@ -19542,5 +19541,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-11-18T21:53:23.490Z"
+  "savedAt": "2026-11-18T21:53:36.544Z"
 }
