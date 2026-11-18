@@ -19320,15 +19320,14 @@
     "1477": {
       "id": 1477,
       "data": "2026-11-18",
-      "idade": 0,
+      "idade": 57,
       "atividades": [
         "Atendimento de Demanda Espontânea"
       ],
       "perfil": [
-        "Homem adulto"
+        "Mulher adulta"
       ],
       "obs": "57 anos",
-      "nome": "Elma",
       "criado": "2026-11-18T21:42:15.239Z"
     },
     "1478": {
@@ -19545,5 +19544,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-11-18T21:51:34.998Z"
+  "savedAt": "2026-11-18T21:52:21.286Z"
 }
