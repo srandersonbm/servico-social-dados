@@ -19242,15 +19242,14 @@
     "1471": {
       "id": 1471,
       "data": "2026-11-18",
-      "idade": 0,
+      "idade": 47,
       "atividades": [
         "Atendimento de Demanda Espontânea"
       ],
       "perfil": [
         "Homem adulto"
       ],
-      "obs": "47 anos",
-      "nome": "Antonio Nunes de Sá",
+      "obs": "Antonio",
       "criado": "2026-11-18T21:42:15.239Z"
     },
     "1472": {
@@ -19551,5 +19550,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-11-18T21:47:33.556Z"
+  "savedAt": "2026-11-18T21:48:49.905Z"
 }
