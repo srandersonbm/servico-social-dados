@@ -19164,15 +19164,14 @@
     "1465": {
       "id": 1465,
       "data": "2026-11-18",
-      "idade": 0,
+      "idade": 71,
       "atividades": [
         "Atendimento de Demanda Espontânea"
       ],
       "perfil": [
-        "Homem adulto"
+        "Pessoa Idosa mulher"
       ],
       "obs": "71 anos",
-      "nome": "Vera Lucia",
       "criado": "2026-11-18T21:42:15.239Z"
     },
     "1466": {
@@ -19557,5 +19556,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-11-18T21:43:49.677Z"
+  "savedAt": "2026-11-18T21:44:05.117Z"
 }
