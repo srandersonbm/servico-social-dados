@@ -19346,15 +19346,14 @@
     "1479": {
       "id": 1479,
       "data": "2026-11-18",
-      "idade": 0,
+      "idade": 34,
       "atividades": [
         "Atendimento de Demanda Espontânea"
       ],
       "perfil": [
-        "Homem adulto"
+        "Mulher adulta"
       ],
-      "obs": "34 anos",
-      "nome": "Sinaria",
+      "obs": "34 anos sinaris",
       "criado": "2026-11-18T21:42:15.239Z"
     },
     "1480": {
@@ -19543,5 +19542,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-11-18T21:52:52.059Z"
+  "savedAt": "2026-11-18T21:53:23.490Z"
 }
