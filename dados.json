@@ -19216,15 +19216,14 @@
     "1469": {
       "id": 1469,
       "data": "2026-11-18",
-      "idade": 0,
+      "idade": 55,
       "atividades": [
         "Atendimento de Demanda Espontânea"
       ],
       "perfil": [
         "Homem adulto"
       ],
-      "obs": "55 anos",
-      "nome": "Casmar Costa",
+      "obs": "Casmae",
       "criado": "2026-11-18T21:42:15.239Z"
     },
     "1470": {
@@ -19553,5 +19552,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-11-18T21:46:31.423Z"
+  "savedAt": "2026-11-18T21:47:06.078Z"
 }
