@@ -19203,15 +19203,14 @@
     "1468": {
       "id": 1468,
       "data": "2026-11-18",
-      "idade": 0,
+      "idade": 32,
       "atividades": [
         "Atendimento de Demanda Espontânea"
       ],
       "perfil": [
         "Homem adulto"
       ],
-      "obs": "32 anos",
-      "nome": "Wendel Marcos de Melo Silva",
+      "obs": "Wendel",
       "criado": "2026-11-18T21:42:15.239Z"
     },
     "1469": {
@@ -19554,5 +19553,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-11-18T21:45:08.741Z"
+  "savedAt": "2026-11-18T21:46:31.423Z"
 }
