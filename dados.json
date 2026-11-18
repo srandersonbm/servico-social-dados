@@ -19229,15 +19229,14 @@
     "1470": {
       "id": 1470,
       "data": "2026-11-18",
-      "idade": 0,
+      "idade": 45,
       "atividades": [
         "Atendimento de Demanda Espontânea"
       ],
       "perfil": [
-        "Homem adulto"
+        "Mulher adulta"
       ],
-      "obs": "45 anos",
-      "nome": "Betania Martins Furtado",
+      "obs": "Betânia",
       "criado": "2026-11-18T21:42:15.239Z"
     },
     "1471": {
@@ -19552,5 +19551,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-11-18T21:47:06.078Z"
+  "savedAt": "2026-11-18T21:47:33.556Z"
 }
