@@ -19424,15 +19424,14 @@
     "1485": {
       "id": 1485,
       "data": "2026-11-18",
-      "idade": 0,
+      "idade": 58,
       "atividades": [
         "Atendimento de Demanda Espontânea"
       ],
       "perfil": [
-        "Homem adulto"
+        "Mulher adulta"
       ],
-      "obs": "58 anos",
-      "nome": "Cleonice",
+      "obs": "58 anos Cleonice",
       "criado": "2026-11-18T21:42:15.239Z"
     },
     "1486": {
@@ -19537,5 +19536,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-11-18T21:55:35.925Z"
+  "savedAt": "2026-11-18T21:55:53.482Z"
 }
