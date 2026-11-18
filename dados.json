@@ -19460,20 +19460,6 @@
       "obs": "40 anos Rosilma",
       "criado": "2026-11-18T21:42:15.239Z"
     },
-    "1488": {
-      "id": 1488,
-      "data": "2026-11-18",
-      "idade": 0,
-      "atividades": [
-        "Atendimento de Demanda Espontânea"
-      ],
-      "perfil": [
-        "Homem adulto"
-      ],
-      "obs": "",
-      "nome": "Ligação (familiares)",
-      "criado": "2026-11-18T21:42:15.239Z"
-    },
     "1489": {
       "id": 1489,
       "data": "2026-11-18",
@@ -19534,5 +19520,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-11-18T21:56:22.220Z"
+  "savedAt": "2026-11-18T21:56:29.600Z"
 }
