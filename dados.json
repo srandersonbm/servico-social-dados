@@ -19294,7 +19294,7 @@
     "1475": {
       "id": 1475,
       "data": "2026-11-18",
-      "idade": 0,
+      "idade": 53,
       "atividades": [
         "Atendimento de Demanda Espontânea"
       ],
@@ -19302,7 +19302,6 @@
         "Homem adulto"
       ],
       "obs": "53 anos",
-      "nome": "Lenilda",
       "criado": "2026-11-18T21:42:15.239Z"
     },
     "1476": {
@@ -19547,5 +19546,5 @@
     }
   },
   "encRec": {},
-  "savedAt": "2026-11-18T21:50:30.446Z"
+  "savedAt": "2026-11-18T21:50:48.986Z"
 }
